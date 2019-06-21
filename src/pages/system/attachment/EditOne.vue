@@ -1,0 +1,110 @@
+<template>
+  <div>
+    <a-button @click="editOne">编辑</a-button>
+    <a-modal title="编辑附件" v-model="visible" :maskClosable="false" wrapClassName="form-modal" :destroyOnClose="true">
+      <a-form :form="form" :hideRequiredMark="false">
+        <a-row>
+          <a-col>
+            <a-form-item>
+              <a-input v-decorator="['id']" type="hidden"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="12" :sm="24">
+            <a-form-item label="文件名" :labelCol="{span: 8}" :wrapperCol="{span: 16, offset: 0}">
+              <a-input v-decorator="['name',{rules: [{required: true, message: '必填',}],}]"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="12" :sm="24">
+            <a-form-item label="文件大小" :labelCol="{span: 8}" :wrapperCol="{span: 16, offset: 0}">
+              <a-input v-decorator="['prettySize',{rules: [{required: true, message: '必填',}],}]" :disabled="true"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="12" :sm="24">
+            <a-form-item label="MIME 类型" :labelCol="{span: 9}" :wrapperCol="{span: 15, offset: 0}">
+              <a-input v-decorator="['mimeType',{rules: [{required: true, message: '必填',}],}]" :disabled="true"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="12" :sm="24">
+            <a-form-item label="唯一标识符" :labelCol="{span: 10}" :wrapperCol="{span: 14, offset: 0}">
+              <a-input v-decorator="['guid',{rules: [{required: true, message: '必填',}],}]" :disabled="true"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="24" :sm="24">
+            <a-form-item label="文件路径" :labelCol="{span: 6}" :wrapperCol="{span: 18, offset: 0}">
+              <a-textarea v-decorator="['path',{rules: [{required: true, message: '必填',}],}]" :autosize="{ minRows: 2, maxRows: 10 }" :disabled="true"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="24" :sm="24">
+            <a-form-item label="备注" :labelCol="{span: 4}" :wrapperCol="{span: 20, offset: 0}">
+              <a-textarea v-decorator="['remark',{rules: [{required: false}],}]" :autosize="{ minRows: 2, maxRows: 10 }"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer">
+        <a-button key="cancel" @click="onCancel">取消</a-button>
+        <a-button key="ok" type="primary" @click="onOk">确定</a-button>
+      </template>
+    </a-modal>
+  </div>
+</template>
+
+<script>
+  import { basicNotification } from '../../../common/index.js';
+  import { attachmentGetOneByAttachmentId, attachmentSaveOne } from "../../../api/attachment.js";
+
+  export default {
+    name: 'EditOne',
+    props: {
+      tableSelectedRowKeys: {type: Array, required: true}
+    },
+    data() {
+      return {
+        visible: false,
+        form: this.$form.createForm(this),
+        dictionaryCategory: [],
+        isOrNot: [],
+      }
+    },
+    methods: {
+      editOne() {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+          basicNotification.warning({message: '必须勾选一项'})
+          return
+        }
+
+        this.attachmentGetOneByAttachmentId(tableSelectedRowKeys[0]);
+        this.visible = true
+      },
+      onCancel() {
+        this.visible = false
+        this.$emit('onCancel', this.visible)
+      },
+      onOk() {
+        this.form.validateFieldsAndScroll((error, values) => {
+          if (!error) {
+            attachmentSaveOne(values).then((data) => {
+              basicNotification.success({message: '操作成功'})
+              this.visible = false
+              this.$emit('onOk', data)
+            }).catch((error) => {
+              console.log(error)
+            })
+          }
+        });
+      },
+      attachmentGetOneByAttachmentId(id) {
+        attachmentGetOneByAttachmentId(id).then((data) => {
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+    },
+  }
+</script>
+
+<style lang="less">
+  @import "../../../../static/less/common.less";
+</style>

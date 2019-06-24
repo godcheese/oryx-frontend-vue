@@ -4,4 +4,4 @@ sudo: true # faster builds
 install:
 - npm install
 script:
-- npm run dev
+- npm run build

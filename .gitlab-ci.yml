@@ -2,10 +2,7 @@ stages:
 - install
 install:
   stage: install
-  image: maven:3.5-jdk-8
-  before_script:
-  - java -version
-  - chmod +x mvnw
+  image: node:latest
   script:
   - chmod +x ./scripts/gitlabci.build.sh
   - ./scripts/gitlabci.build.sh

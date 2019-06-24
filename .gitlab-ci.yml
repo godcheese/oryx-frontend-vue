@@ -7,5 +7,5 @@ install:
   - java -version
   - chmod +x mvnw
   script:
-  - ./mvnw -e clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dspring-boot.run.profiles=dev
-  - ./mvnw -e clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dspring-boot.run.profiles=prod
+  - chmod +x ./scripts/gitlabci.build.sh
+  - ./scripts/gitlabci.build.sh

@@ -1,7 +1,6 @@
 language: node_js
 node_js: stable
 sudo: true # faster builds
-install:
 script:
-  - npm install
-  - npm run build
+  - chmod +x ./scripts/travisci.build.sh
+  - ./scripts/travisci.build.sh

@@ -2,16 +2,17 @@
   <img width="320" src="https://github.com/godcheese/nimrod-backend/blob/master/nimrod_banner.png?raw=true">
 </p>
 <p align="center">
-  <a href="https://github.com/godcheese/nimrod-backend">
-    <img src="https://img.shields.io/github/last-commit/godcheese/nimrod-backend.svg" alt="GitHub Last Commit">
+  <a href="https://github.com/godcheese/nimrod-frontend-vue">
+    <img src="https://img.shields.io/github/last-commit/godcheese/nimrod-frontend-vue.svg" alt="GitHub Last Commit">
   </a>
-  <a href="https://github.com/godcheese/nimrod-backend/releases">
-    <img src="https://img.shields.io/github/release/godcheese/nimrod-backend.svg" alt="GitHub release">
+  <!-- <a href="https://github.com/godcheese/nimrod-frontend-vue/releases">
+    <img src="https://img.shields.io/github/release/godcheese/nimrod-frontend-vue.svg" alt="GitHub release">
+  </a> -->
+  <a href="https://travis-ci.org/godcheese/nimrod-frontend-vue" rel="nofollow">
+    <img src="https://travis-ci.org/godcheese/nimrod-frontend-vue.svg?branch=master" alt="Build Status">
   </a>
-  <a href="https://travis-ci.org/godcheese/nimrod-backend" rel="nofollow">
-    <img src="https://travis-ci.org/godcheese/nimrod-backend.svg?branch=master" alt="Build Status">
-  </a>
-  <a href="https://github.com/godcheese/nirmod-backend/blob/master/LICENSE">
+   <a href="https://app.codacy.com/app/godcheese/nimrod-frontend-vue?utm_source=github.com&utm_medium=referral&utm_content=godcheese/nimrod-frontend-vue&utm_campaign=Badge_Grade_Dashboard" rel="nofollow">
+  <a href="https://github.com/godcheese/nimrod-frontend-vue/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
 <!--   <a href="https://gitter.im/repo-name/discuss">

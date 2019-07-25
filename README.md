@@ -11,7 +11,9 @@
   <a href="https://travis-ci.org/godcheese/nimrod-frontend-vue" rel="nofollow">
     <img src="https://travis-ci.org/godcheese/nimrod-frontend-vue.svg?branch=master" alt="Build Status">
   </a>
-   <a href="https://app.codacy.com/app/godcheese/nimrod-frontend-vue?utm_source=github.com&utm_medium=referral&utm_content=godcheese/nimrod-frontend-vue&utm_campaign=Badge_Grade_Dashboard" rel="nofollow">
+  <a href="https://app.codacy.com/app/godcheese/nimrod-frontend-vue?utm_source=github.com&utm_medium=referral&utm_content=godcheese/nimrod-frontend-vue&utm_campaign=Badge_Grade_Dashboard" rel="nofollow">
+    <img src="https://api.codacy.com/project/badge/Grade/317da66b2b0a40dd840a773c6f7e6c3d" alt="Codacy Badge">
+  </a>
   <a href="https://github.com/godcheese/nimrod-frontend-vue/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
@@ -24,8 +26,6 @@
 </p>
 
 ## 简介 Introduction
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/317da66b2b0a40dd840a773c6f7e6c3d)](https://app.codacy.com/app/godcheese/nimrod-frontend-vue?utm_source=github.com&utm_medium=referral&utm_content=godcheese/nimrod-frontend-vue&utm_campaign=Badge_Grade_Dashboard)
 
 > Nimrod 英[ˈnimrɔd] 美[ˈnɪmˌrɑd] n.	好猎手，猎人;
 

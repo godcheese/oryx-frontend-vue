@@ -11,12 +11,10 @@
   <a href="https://travis-ci.org/godcheese/nimrod-backend" rel="nofollow">
     <img src="https://travis-ci.org/godcheese/nimrod-backend.svg?branch=master" alt="Build Status">
   </a>
-    <a href="https://app.codacy.com/app/godcheese/nimrod-frontend-vue?utm_source=github.com&utm_medium=referral&utm_content=godcheese/nimrod-frontend-vue&utm_campaign=Badge_Grade_Dashboard" rel="nofollow">
-      <img src="https://api.codacy.com/project/badge/Grade/317da66b2b0a40dd840a773c6f7e6c3d" alt="Codacy Badge">
-    </a>
-      <a href="https://sonarcloud.io/dashboard?id=godcheese_nimrod-frontend-vue" rel="nofollow">
-          <img src="https://sonarcloud.io/api/project_badges/measure?project=godcheese_nimrod-frontend-vue&metric=alert_status" alt="Quality Gate Status">
-        </a>
+  <a href="https://sonarcloud.io/dashboard?id=godcheese_nimrod-frontend-vue" rel="nofollow">
+     <img src="https://sonarcloud.io/api/project_badges/measure?project=godcheese_nimrod-frontend-vue&metric=alert_status" alt="Quality Gate Status">
+   </a>
+ <a href="https://www.codacy.com/app/godcheese/nimrod-frontend-vue?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=godcheese/nimrod-frontend-vue&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/e64226d583a14fd9b9c5fd51fe323a94" alt="Codacy Badge"/></a>
   <a href="https://github.com/godcheese/nirmod-backend/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>

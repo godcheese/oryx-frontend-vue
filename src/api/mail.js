@@ -1,4 +1,4 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/mail';
 
@@ -7,7 +7,7 @@ export const mailGetOneByMailId = ((id) => {
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const mailAddOne = ((params = {}) => {
   return request({
@@ -15,7 +15,7 @@ export const mailAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 
 export const mailDeleteAll = ((params = {}) => {
@@ -24,7 +24,7 @@ export const mailDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const mailPageAll = ( (params = {}) => {
   return request({
@@ -32,5 +32,5 @@ export const mailPageAll = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 

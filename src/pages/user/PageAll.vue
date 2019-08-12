@@ -6,34 +6,34 @@
       </div>
       <div class="table-operations">
         <AddOne v-has-any-authority="['/COMPONENT/USER/ADD_ONE']" @onOk="reloadTable"/>
-        <EditOne v-has-any-authority="['/COMPONENT/USER/EDIT_ONE']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-        <FakeDeleteAll v-has-any-authority="['/COMPONENT/USER/FAKE_DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-        <RevokeFakeDeleteAll v-has-any-authority="['/COMPONENT/USER/REVOKE_FAKE_DELETE_ALL']"  :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-        <UserRole v-has-any-authority="['/COMPONENT/USER/USER_ROLE/PAGE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <EditOne v-has-any-authority="['/COMPONENT/USER/EDIT_ONE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <FakeDeleteAll v-has-any-authority="['/COMPONENT/USER/FAKE_DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <RevokeFakeDeleteAll v-has-any-authority="['/COMPONENT/USER/REVOKE_FAKE_DELETE_ALL']"  :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <UserRolePageAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
       </div>
-      <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="tablePagination" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: tableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
+      <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="tablePagination" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: TableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
       </a-table>
     </div>
   </BasicPage>
 </template>
 
 <script type="text/jsx">
-  import BasicPage from '../../components/BasicPage.vue'
-  import { userPageAll, userAvatar } from '../../api/user.js'
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../api/dictionary.js'
-  import AddOne from './AddOne.vue'
-  import EditOne from './EditOne.vue';
-  import FakeDeleteAll from './FakeDeleteAll.vue';
-  import RevokeFakeDeleteAll from './RevokeFakeDeleteAll.vue';
-  import DeleteAll from './DeleteAll.vue';
-  import SearchForm from './SearchForm.vue';
-  import UserRole from './user_role/PageAll.vue';
-  import moment from 'moment';
+    import BasicPage from '../../components/BasicPage.vue'
+    import {userAvatar, userPageAll} from '../../api/user.js'
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../api/dictionary.js'
+    import AddOne from './AddOne.vue'
+    import EditOne from './EditOne.vue'
+    import FakeDeleteAll from './FakeDeleteAll.vue'
+    import RevokeFakeDeleteAll from './RevokeFakeDeleteAll.vue'
+    import DeleteAll from './DeleteAll.vue'
+    import SearchForm from './SearchForm.vue'
+    import UserRolePageAll from './user_role/PageAll.vue'
+    import moment from 'moment'
 
-  export default {
+    export default {
     name: 'PageAll',
-    components: {BasicPage, SearchForm, AddOne, EditOne, FakeDeleteAll, RevokeFakeDeleteAll, DeleteAll, UserRole, },
+    components: {BasicPage, SearchForm, AddOne, EditOne, FakeDeleteAll, RevokeFakeDeleteAll, DeleteAll, UserRolePageAll, },
     data() {
       return {
         tableDataSource: [],
@@ -99,7 +99,7 @@
             sorter: true,
           },
         ],
-        tableSelectedRowKeys: [],
+        TableSelectedRowKeys: [],
         tableLoading: false,
         tablePagination: {
           defaultCurrent: 1,
@@ -141,7 +141,7 @@
             console.log(values)
 
             this.getTableDataSource(values)
-            this.tableSelectedRowKeys = []
+            this.TableSelectedRowKeys = []
           }
         })
       },
@@ -153,14 +153,14 @@
         return {
           on: {
             click: () => {
-              this.tableSelectedRowKeys = []
-              this.tableSelectedRowKeys.push(record.id)
+              this.TableSelectedRowKeys = []
+              this.TableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
       tableOnSelectChange (selectedRowKeys) {
-        this.tableSelectedRowKeys = selectedRowKeys
+        this.TableSelectedRowKeys = selectedRowKeys
       },
       tableOnChange(pagination, filters, sorter) {
         this.tablePagination = pagination;
@@ -190,7 +190,7 @@
       },
       reloadTable() {
         this.getTableDataSource()
-        this.tableSelectedRowKeys = []
+        this.TableSelectedRowKeys = []
       },
     },
   }

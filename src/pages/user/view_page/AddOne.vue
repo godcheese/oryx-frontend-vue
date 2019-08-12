@@ -20,7 +20,7 @@
                 :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
                 :treeData="viewPageCategory"
                 treeDefaultExpandAll
-                v-decorator="['pageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
+                v-decorator="['viewPageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
             </a-form-item>
           </a-col>
           <a-col :md="24" :sm="24">
@@ -49,12 +49,15 @@
 </template>
 
 <script>
-  import {viewPageCategoryListAllAsAntdTreeNode } from '../../../api/viewPageCategory.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {viewPageAddOne} from "../../../api/viewPage.js";
+    import {viewPageCategoryListAllAsAntdTreeNode} from '../../../api/viewPageCategory.js'
+    import {basicNotification} from '../../../common/index.js'
+    import {viewPageAddOne, viewPageGetOneByViewPageId} from "../../../api/viewPage.js"
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -69,6 +72,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+          this.viewPageGetOneByViewPageId(TableSelectedRowKeys[0]);
+        }
         this.visible = true
       },
       onCancel() {
@@ -88,10 +95,18 @@
           }
         });
       },
+      viewPageGetOneByViewPageId(id) {
+        viewPageGetOneByViewPageId(id).then((data) => {
+          data.viewPageCategoryId = data.viewPageCategoryId !== undefined && data.viewPageCategoryId !== null ? data.viewPageCategoryId + '' : ''
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

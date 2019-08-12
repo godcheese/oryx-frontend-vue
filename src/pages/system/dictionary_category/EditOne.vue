@@ -45,16 +45,13 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import {
-    dictionaryCategoryGetOneByDictionaryCategoryId,
-    dictionaryCategoryListAllAsAntdTreeNode, dictionaryCategorySaveOne
-  } from "../../../api/dictionaryCategory.js";
+    import {basicNotification} from '../../../common/index.js'
+    import {dictionaryCategoryGetOneByDictionaryCategoryId, dictionaryCategoryListAllAsAntdTreeNode, dictionaryCategorySaveOne} from "../../../api/dictionaryCategory.js"
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -63,13 +60,10 @@
         dictionaryCategory: [],
       }
     },
-    created() {
-
-    },
     methods: {
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys.length > 1 || tableSelectedRowKeys.length <= 0) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys.length > 1 || TableSelectedRowKeys.length <= 0) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -78,7 +72,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.dictionaryCategoryGetOneByDictionaryCategoryId(tableSelectedRowKeys[0]);
+        this.dictionaryCategoryGetOneByDictionaryCategoryId(TableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -110,6 +104,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

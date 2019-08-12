@@ -3,8 +3,8 @@
     <a-button @click="userRole">角色分配</a-button>
     <a-modal title="角色分配" v-model="visible" :maskClosable="false" wrapClassName="form-modal" :destroyOnClose="true" :width="1200" style="height: 300px">
       <div class="table-operations">
-        <GrantAll :tableSelectedRowKeys="roleTableSelectedRowKeys" :userId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
-        <RevokeAll :tableSelectedRowKeys="roleTableSelectedRowKeys" :userId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
+        <GrantAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE/GRANT_ALL']" :TableSelectedRowKeys="roleTableSelectedRowKeys" :userId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
+        <RevokeAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE/REVOKE_ALL']" :TableSelectedRowKeys="roleTableSelectedRowKeys" :userId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
       </div>
       <a-table :rowKey="(record) => record.id" @change="roleTableOnChange" :columns="roleTableColumns" size="middle" :pagination="roleTablePagination" :dataSource="roleTableDataSource" :loading="roleTableLoading" :customRow="roleTableCustomRow" :rowSelection="{selectedRowKeys: roleTableSelectedRowKeys, onChange: roleTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" bordered>
       </a-table>
@@ -16,18 +16,17 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../api/dictionary.js'
-  import { basicNotification } from '../../../common/index.js';
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../../api/dictionary.js'
+    import {basicNotification} from '../../../common/index.js'
+    import GrantAll from './GrantAll.vue'
+    import RevokeAll from './RevokeAll.vue'
+    import {rolePageAllAsAntdTableByUserId} from "../../../api/role.js"
 
-  import GrantAll from './GrantAll.vue';
-  import RevokeAll from './RevokeAll.vue';
-  import {rolePageAllAsAntdTableByUserId} from "../../../api/role.js";
-
-  export default {
+    export default {
     name: 'PageAll',
     components: {GrantAll, RevokeAll,},
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -93,13 +92,13 @@
     },
     methods: {
       userRole() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.userId = tableSelectedRowKeys[0]
+        this.userId = TableSelectedRowKeys[0]
         this.roleTableDataSource = []
         this.roleTableSelectedRowKeys = []
         this.getRoleTableDataSource()
@@ -136,13 +135,13 @@
         })
       },
       getRoleTableDataSource(params = {}) {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
         this.roleTableLoading = true
         const pagination = {...this.roleTablePagination}
         let page = pagination.current || pagination.defaultCurrent
         let rows = pagination.pageSize || pagination.defaultPageSize
-          params.userId = tableSelectedRowKeys[0]
+          params.userId = TableSelectedRowKeys[0]
           rolePageAllAsAntdTableByUserId({page: page, rows: rows, ...params}).then((data) => {
           this.roleTableLoading = false
           this.roleTableDataSource = data.rows
@@ -162,6 +161,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

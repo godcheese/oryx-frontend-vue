@@ -40,11 +40,14 @@
 </template>
 
 <script>
-  import { dictionaryCategoryAddOne, dictionaryCategoryListAllAsAntdTreeNode } from '../../../api/dictionaryCategory.js'
-  import { basicNotification } from '../../../common/index.js';
+    import {dictionaryCategoryAddOne, dictionaryCategoryListAllAsAntdTreeNode} from '../../../api/dictionaryCategory.js'
+    import {basicNotification} from '../../../common/index.js'
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -59,6 +62,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+          this.dictionaryCategoryGetOneByDictionaryCategoryId(TableSelectedRowKeys[0])
+        }
         this.visible = true
       },
       onCancel() {
@@ -82,6 +89,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

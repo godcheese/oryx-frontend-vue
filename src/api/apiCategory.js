@@ -1,4 +1,4 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/user/api_category';
 
@@ -8,7 +8,7 @@ export const apiCategoryListAllAsAntdTableByRoleId = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const apiCategoryListAllAsAntdTable = ( (params = {}) => {
   return request({
@@ -16,14 +16,14 @@ export const apiCategoryListAllAsAntdTable = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const apiCategoryGetOneByApiCategoryId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const apiCategoryAddOne = ((params = {}) => {
   return request({
@@ -31,7 +31,7 @@ export const apiCategoryAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const apiCategorySaveOne = ((params = {}) => {
   return request({
@@ -39,7 +39,7 @@ export const apiCategorySaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const apiCategoryDeleteAll = ((params = {}) => {
   return request({
@@ -47,13 +47,13 @@ export const apiCategoryDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const apiCategoryListAllAsAntdTreeNode = (() => {
   return request({
     url: `${preUrlPath}/list_all_as_antd_tree_node`,
     method: 'get',
   })
-})
+});
 
 

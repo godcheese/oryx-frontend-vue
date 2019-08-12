@@ -45,11 +45,14 @@
 </template>
 
 <script>
-  import { viewMenuCategoryAddOne, viewMenuCategoryListAllAsAntdTreeNode } from '../../../api/viewMenuCategory.js'
-  import { basicNotification } from '../../../common/index.js';
+    import {viewMenuCategoryAddOne, viewMenuCategoryGetOneByViewMenuCategoryId, viewMenuCategoryListAllAsAntdTreeNode} from '../../../api/viewMenuCategory.js'
+    import {basicNotification} from '../../../common/index.js'
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -64,6 +67,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+       if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+         this.viewMenuCategoryGetOneByViewMenuCategoryId(TableSelectedRowKeys[0])
+       }
         this.visible = true
       },
       onCancel() {
@@ -83,10 +90,18 @@
           }
         });
       },
+      viewMenuCategoryGetOneByViewMenuCategoryId(id) {
+        viewMenuCategoryGetOneByViewMenuCategoryId(id).then((data) => {
+          data.parentId = data.parentId !== undefined && data.parentId !== null ? data.parentId + '' : ''
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

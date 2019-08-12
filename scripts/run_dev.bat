@@ -4,5 +4,5 @@ echo.author godcheese
 set "CURRENT_DIR=%~dp0"
 cd %CURRENT_DIR%
 cd ..
-call mvnw spring-boot:run -DskipTests=true -Dmaven.javadoc.skip=true -Dspring-boot.run.profiles=dev
+call npm run dev
 cd %CURRENT_DIR%

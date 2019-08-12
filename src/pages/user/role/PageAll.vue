@@ -6,31 +6,31 @@
       </div>
       <div class="table-operations">
         <AddOne v-has-any-authority="['/COMPONENT/USER/ROLE/ADD_ONE']" @onOk="reloadTable"/>
-         <EditOne v-has-any-authority="['/COMPONENT/USER/ROLE/EDIT_ONE']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-         <DeleteAll v-has-any-authority="['/COMPONENT/USER/ROLE/DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-         <ViewMenuPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/PAGE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-         <ViewPagePageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/PAGE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-         <ApiPageAll v-has-any-authority="['/COMPONENT/USER/API/PAGE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+         <EditOne v-has-any-authority="['/COMPONENT/USER/ROLE/EDIT_ONE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+         <DeleteAll v-has-any-authority="['/COMPONENT/USER/ROLE/DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+         <ViewMenuPageAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU_PAGE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+         <ViewPagePageAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE_PAGE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+         <ApiPageAll v-has-any-authority="['/COMPONENT/USER/ROLE/API_PAGE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
       </div>
-      <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="tablePagination" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: tableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1000, y: 0}" bordered>
+      <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="tablePagination" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: TableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1000, y: 0}" bordered>
       </a-table>
     </div>
   </BasicPage>
 </template>
 
 <script type="text/jsx">
-  import BasicPage from '../../../components/BasicPage.vue'
-  import AddOne from './AddOne.vue'
-  import EditOne from './EditOne.vue';
-  import DeleteAll from './DeleteAll.vue';
-  import SearchForm from './SearchForm.vue';
-  import moment from 'moment';
-  import { rolePageAll } from '../../../api/role.js';
-  import ViewMenuPageAll from "../role/view_menu/PageAll.vue";
-  import ViewPagePageAll from "../role/view_page/PageAll.vue";
-  import ApiPageAll from "../role/api/PageAll.vue";
+    import BasicPage from '../../../components/BasicPage.vue'
+    import AddOne from './AddOne.vue'
+    import EditOne from './EditOne.vue'
+    import DeleteAll from './DeleteAll.vue'
+    import SearchForm from './SearchForm.vue'
+    import moment from 'moment'
+    import {rolePageAll} from '../../../api/role.js'
+    import ViewMenuPageAll from "../role/view_menu/PageAll.vue"
+    import ViewPagePageAll from "../role/view_page/PageAll.vue"
+    import ApiPageAll from "../role/api/PageAll.vue"
 
-  export default {
+    export default {
     name: 'PageAll',
     components: {BasicPage, SearchForm, AddOne, EditOne, DeleteAll, ViewMenuPageAll, ViewPagePageAll, ApiPageAll,
     },
@@ -66,7 +66,7 @@
             sorter: true,
           },
         ],
-        tableSelectedRowKeys: [],
+        TableSelectedRowKeys: [],
         tableLoading: false,
         tablePagination: {
           defaultCurrent: 1,
@@ -85,7 +85,7 @@
     methods: {
       searchFormOnSubmit(form) {
         form.validateFieldsAndScroll((error, values) => {
-          console.log(values)
+          // console.log(values)
           if(!error) {
             let gmtCreated = values.gmtCreated;
             if(gmtCreated && gmtCreated.length > 0 ) {
@@ -98,10 +98,10 @@
               values.gmtDeletedStart = moment(gmtDeleted[0]).format('YYYY-MM-DD HH:mm:ss')
               values.gmtDeletedEnd = moment(gmtDeleted[1]).format('YYYY-MM-DD HH:mm:ss')
             }
-            console.log(values)
+            // console.log(values)
 
             this.getTableDataSource(values)
-            this.tableSelectedRowKeys = []
+            this.TableSelectedRowKeys = []
           }
         })
       },
@@ -113,14 +113,14 @@
         return {
           on: {
             click: () => {
-              this.tableSelectedRowKeys = []
-              this.tableSelectedRowKeys.push(record.id)
+              this.TableSelectedRowKeys = []
+              this.TableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
       tableOnSelectChange (selectedRowKeys) {
-        this.tableSelectedRowKeys = selectedRowKeys
+        this.TableSelectedRowKeys = selectedRowKeys
       },
       tableOnChange(pagination, filters, sorter) {
         this.tablePagination = pagination;
@@ -149,7 +149,7 @@
       },
       reloadTable() {
         this.getTableDataSource()
-        this.tableSelectedRowKeys = []
+        this.TableSelectedRowKeys = []
       },
     },
   }

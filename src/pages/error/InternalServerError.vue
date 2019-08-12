@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  import BasicPage from '../../components/BasicPage.vue'
+    import BasicPage from '../../components/BasicPage.vue'
 
-  export default {
+    export default {
     name: "InternalServerError",
     components: {BasicPage },
 

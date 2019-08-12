@@ -30,10 +30,10 @@
 </template>
 
 <script>
-  import { roleAddOne } from '../../../api/role.js'
-  import { basicNotification } from '../../../common/index.js';
+    import {roleAddOne} from '../../../api/role.js'
+    import {basicNotification} from '../../../common/index.js'
 
-  export default {
+    export default {
     name: 'AddOne',
     data() {
       return {
@@ -66,6 +66,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

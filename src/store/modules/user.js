@@ -1,8 +1,6 @@
-import {login, logout} from "../../api/user.js";
-import {getAccessToken, setAccessToken} from "../../common/token.js";
-import {viewMenuListAllAntdViewMenuByCurrentUser} from "../../api/viewMenu.js";
-import {getCurrentUser} from "../../api/user.js";
-import {removeAccessToken} from "../../common/token.js";
+import {getCurrentUser, login} from "../../api/user.js";
+import {getAccessToken, removeAccessToken, setAccessToken} from "../../common/token.js";
+import {viewMenuListAllAsAntdVueMenuByCurrentUser} from "../../api/viewMenu.js";
 
 const user = {
   namespaced: true,
@@ -49,13 +47,13 @@ const user = {
   },
   actions: {
     login({commit}, user) {
-      let username = user.username
-      let password = user.password
-      let rememberMe = user.rememberMe
+      let username = user.username;
+      let password = user.password;
+      let rememberMe = user.rememberMe;
       return new Promise((resolve, reject) => {
         login(username, password).then((data) => {
-          setAccessToken(data.access_token, rememberMe)
-          commit('SET_ACCESS_TOKEN', data.access_token)
+          setAccessToken(data.access_token, rememberMe);
+          commit('SET_ACCESS_TOKEN', data.access_token);
           resolve(data)
         }).catch((error) => {
           reject(error)
@@ -65,12 +63,11 @@ const user = {
     logout({commit}) {
       return new Promise((resolve, reject) => {
         // logout().then((response) => {
-        commit('SET_ACCESS_TOKEN', '')
-        commit('SET_LOGGED_IN', false)
-        commit('SET_AUTHORITY', [])
-        commit('SET_DEPARTMENT', [])
-
-        removeAccessToken()
+        commit('SET_ACCESS_TOKEN', '');
+        commit('SET_LOGGED_IN', false);
+        commit('SET_AUTHORITY', []);
+        commit('SET_DEPARTMENT', []);
+        removeAccessToken();
         resolve()
         // }).catch((error) => {
         //   reject(error)
@@ -101,7 +98,7 @@ const user = {
     getSiderMenu({ commit }) {
       return new Promise( (resolve, reject) => {
         if(getAccessToken()) {
-          viewMenuListAllAntdViewMenuByCurrentUser().then((data) => {
+          viewMenuListAllAsAntdVueMenuByCurrentUser().then((data) => {
             commit('SET_SIDER_MENU', data)
             resolve(data)
           }).catch((error) => {

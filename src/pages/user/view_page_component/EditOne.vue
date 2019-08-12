@@ -16,7 +16,7 @@
           </a-col>
           <a-col :md="12" :sm="24">
             <a-form-item label="组件类型" :labelCol="{span: 8}" :wrapperCol="{span: 16, offset: 0}">
-              <a-select v-decorator="['pageComponentType',{rules: [{required: true,message: '必填',}],}]" :defaultActiveFirstOption="true">
+              <a-select v-decorator="['viewPageComponentType',{rules: [{required: true,message: '必填',}],}]" :defaultActiveFirstOption="true">
                 <a-select-option v-for="item in viewPageComponentType" :key="item.value">{{item.valueName}}</a-select-option>
               </a-select>
             </a-form-item>
@@ -33,12 +33,12 @@
                 :treeData="viewPageCategory"
                 treeDefaultExpandAll
                 @change="viewPageCategoryOnChange"
-                v-decorator="['pageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
+                v-decorator="['viewPageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
             </a-form-item>
           </a-col>
           <a-col :md="12" :sm="24">
             <a-form-item label="视图页面" :labelCol="{span: 8}" :wrapperCol="{span: 16, offset: 0}">
-              <a-select v-decorator="['pageId',{rules: [{required: true,message: '必填',}],}]"
+              <a-select v-decorator="['viewPageId',{rules: [{required: true,message: '必填',}],}]"
                         :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
               >
                 <a-select-option v-for="item in viewPage" :key="item.id">{{item.name}}</a-select-option>
@@ -66,16 +66,16 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import {viewPageCategoryListAllAsAntdTreeNode, viewPageCategoryGetOneByViewPageId} from "../../../api/viewPageCategory.js";
-  import {dictionaryListAllByKey} from "../../../api/dictionary.js";
-  import {viewPageComponentGetOneByViewPageComponentId, viewPageComponentSaveOne} from "../../../api/viewPageComponent.js";
-  import {viewPageListAllByViewPageCategoryId} from "../../../api/viewPage.js";
+    import {basicNotification} from '../../../common/index.js'
+    import {viewPageCategoryGetOneByViewPageId, viewPageCategoryListAllAsAntdTreeNode} from "../../../api/viewPageCategory.js"
+    import {dictionaryListAllByKey} from "../../../api/dictionary.js"
+    import {viewPageComponentGetOneByViewPageComponentId, viewPageComponentSaveOne} from "../../../api/viewPageComponent.js"
+    import {viewPageListAllByViewPageCategoryId} from "../../../api/viewPage.js"
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -88,8 +88,8 @@
     },
     methods: {
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -103,7 +103,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.viewPageComponentGetOneByViewPageComponentId(tableSelectedRowKeys[0]);
+        this.viewPageComponentGetOneByViewPageComponentId(TableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -125,10 +125,10 @@
       },
       viewPageComponentGetOneByViewPageComponentId(id) {
         viewPageComponentGetOneByViewPageComponentId(id).then((data) => {
-          data.pageComponentType = data.pageComponentType !== undefined && data.pageComponentType !== null ? data.pageComponentType + '' : ''
-          viewPageCategoryGetOneByViewPageId(data.pageId).then((viewPageCategory) => {
-            data.pageCategoryId = data.pageCategoryId !== undefined && data.pageCategoryId !== null ? data.pageCategoryId + '' : ''
-            this.viewPageCategoryOnChange(data.pageCategoryId)
+          data.viewPageComponentType = data.viewPageComponentType !== undefined && data.viewPageComponentType !== null ? data.viewPageComponentType + '' : ''
+          viewPageCategoryGetOneByViewPageId(data.viewPageId).then((viewPageCategory) => {
+            data.viewPageCategoryId = data.viewPageCategoryId !== undefined && data.viewPageCategoryId !== null ? data.viewPageCategoryId + '' : ''
+            this.viewPageCategoryOnChange(data.viewPageCategoryId)
             this.form.setFieldsValue(data)
           })
         }).catch((error) => {
@@ -136,7 +136,7 @@
         })
       },
       viewPageCategoryOnChange(value) {
-        this.form.resetFields('pageId')
+        this.form.resetFields('viewPageId')
         viewPageListAllByViewPageCategoryId(value).then((data) => {
           this.viewPage = data
         }).catch((error) => {
@@ -147,6 +147,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

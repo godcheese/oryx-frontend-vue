@@ -1,10 +1,10 @@
 import Cookies from 'js-cookie'
 
-const accessTokenKey = process.env.ACCESS_TOKEN.KEY
+const accessTokenKey = process.env.ACCESS_TOKEN.KEY;
 
 export const getAccessToken  = (() => {
   return Cookies.get(accessTokenKey)
-})
+});
 
 export const setAccessToken = ((accessToken, rememberMe) => {
   if(rememberMe) {
@@ -12,8 +12,8 @@ export const setAccessToken = ((accessToken, rememberMe) => {
   } else {
     return Cookies.set(accessTokenKey, accessToken)
   }
-})
+});
 
 export const removeAccessToken = (() => {
   return Cookies.remove(accessTokenKey)
-})
+});

@@ -67,12 +67,15 @@
 </template>
 
 <script>
-  import {dictionaryCategoryListAllAsAntdTreeNode } from '../../../api/dictionaryCategory.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {dictionaryAddOne, dictionaryListAllByKey} from "../../../api/dictionary.js";
+    import {dictionaryCategoryListAllAsAntdTreeNode} from '../../../api/dictionaryCategory.js'
+    import {basicNotification} from '../../../common/index.js'
+    import {dictionaryAddOne, dictionaryGetOneByDictionaryId, dictionaryListAllByKey} from "../../../api/dictionary.js"
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -93,6 +96,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys;
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+          this.dictionaryGetOneByDictionaryId(TableSelectedRowKeys[0]);
+        }
         this.visible = true
       },
       onCancel() {
@@ -112,10 +119,19 @@
           }
         });
       },
+      dictionaryGetOneByDictionaryId(id) {
+        dictionaryGetOneByDictionaryId(id).then((data) => {
+          data.dictionaryCategoryId = data.dictionaryCategoryId !== undefined && data.dictionaryCategoryId !== null ? data.dictionaryCategoryId + '' : ''
+          data.enabled = data.enabled !== undefined && data.enabled !== null ? data.enabled + '' : ''
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

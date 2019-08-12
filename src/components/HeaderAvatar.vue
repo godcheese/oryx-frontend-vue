@@ -23,14 +23,12 @@
       </a-menu-item>
     </a-menu>
   </a-dropdown>
-
-
 </template>
 
 <script>
-  import {userAvatar} from "../api/user.js";
+    import {userAvatar} from "../api/user.js"
 
-  export default {
+    export default {
     name: 'HeaderAvatar',
     props: {
       currentUser: {type: Object, required: true}

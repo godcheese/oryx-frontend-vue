@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
-import {getAccessToken} from "../common/token.js";
-import {viewMenuListAllAntdViewMenuByCurrentUser} from "../api/viewMenu.js";
+import {getAccessToken} from "../common/token.js"
+import {viewMenuListAllAsAntdVueMenuByCurrentUser} from "../api/viewMenu.js"
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
   mode: 'history',
@@ -27,7 +27,7 @@ let initRoutes = [
   // },
 ];
 
-router.addRoutes(initRoutes)
+router.addRoutes(initRoutes);
 
 let tempRoutes = [
   {
@@ -47,26 +47,26 @@ let tempRoutes = [
       }
     ]
   }
-]
+];
 
-const whiteList = ['/user/login']
+const whiteList = ['/user/login'];
 
 router.beforeEach((to, from, next) => {
   if(to.meta.title || to.name) {
     let routeName = to.meta.title || to.name;
-    window.document.title = (routeName ? routeName + ' - ' : '') + 'Nimrod Frontend';
+    window.document.title = (routeName ? routeName + ' - ' : '') + 'Oryx Frontend';
   } else {
-    window.document.title = 'Nimrod Frontend'
+    window.document.title = 'Oryx Frontend'
   }
   if (getAccessToken()) {
     if (to.path === '/user/login') {
       next({path: '/'})
     } else {
       if(!store.state.user.currentUser.loggedIn) {
-        store.dispatch('user/getCurrentUser').then((data) => {
+        store.dispatch('user/getCurrentUser').then(() => {
           loadMenu(next, to)
         }).catch((error) => {
-          console.log(error)
+          console.log(error);
           store.dispatch('user/logout').then(() => {
             // 为了重新实例化vue-router对象 避免bug
             location.reload()
@@ -113,49 +113,49 @@ const errorRoutes = [
   //   name:'NotFound',
   //   redirect: '/error/404'
   // }
-]
+];
 
 export const loadMenu = ((next, to) => {
-  viewMenuListAllAntdViewMenuByCurrentUser().then((data) => {
-    let menuList = []
+  viewMenuListAllAsAntdVueMenuByCurrentUser().then((data) => {
+    let menuList = [];
     const forEachMenu = (menu, menuList) => {
-      let i = 0
+      let index = 0;
       if(menu) {
-        for (i in menu) {
-          if (menu.hasOwnProperty(i)) {
-            let m = {meta: {}}
-            if (!menu[i].isCategory) {
-              m.path = menu[i].url
-              m.name = menu[i].name
-              m.component = loadComponent(m.path)
-              m.meta.title = menu[i].name
-              menuList.push(m)
+        for (index in menu) {
+          if (menu.hasOwnProperty(index)) {
+            let tempMenu = {meta: {}};
+            if (!menu[index].isCategory) {
+              tempMenu.path = menu[index].url;
+              tempMenu.name = menu[index].name;
+              tempMenu.component = loadComponent(tempMenu.path);
+              tempMenu.meta.title = menu[index].name;
+              menuList.push(tempMenu)
             }
-          }
-          if (menu[i].children && menu[i].children.length > 0) {
-            let children = menu[i].children
+          if (menu[index].children && menu[index].children.length > 0) {
+            let children = menu[index].children;
             forEachMenu(children, menuList)
+          }
           }
         }
       }
-    }
-    forEachMenu(data, menuList)
+    };
+    forEachMenu(data, menuList);
 
     // 对比和添加来自菜单的动态路由
     if(tempRoutes[0].children.length <= 1 ) {
-      tempRoutes[0].children = tempRoutes[0].children.concat(menuList)
-      tempRoutes[0].children = tempRoutes[0].children.concat(errorRoutes)
+      tempRoutes[0].children = tempRoutes[0].children.concat(menuList);
+      tempRoutes[0].children = tempRoutes[0].children.concat(errorRoutes);
       router.addRoutes(tempRoutes)
     }
     next({...to, replace: true})
   }).catch((error) => {
-    console.log(error)
+    console.log(error);
     store.dispatch('user/logout').then(() => {
       // 为了重新实例化vue-router对象 避免bug
       location.reload()
     })
   })
-})
+});
 
 /**
  * 通过路由懒加载组件
@@ -163,24 +163,21 @@ export const loadMenu = ((next, to) => {
  * @returns {function(): (Promise<*>|*)}
  */
 export const loadComponent = (route) => {
-  console.log(route);
   let sp = route.split('/');
-  let str1 = sp[sp.length-1]
-
+  let str1 = sp[sp.length-1];
   if(str1.indexOf('_')) {
-    let str1Arr = str1.split('_')
-    let i
-    for(i in str1Arr) {
+    let str1Arr = str1.split('_');
+    for(let i in str1Arr) {
       if (str1Arr.hasOwnProperty(i)) {
         str1Arr[i] = str1Arr[i].slice(0, 1).toUpperCase() + str1Arr[i].slice(1)
       }
     }
     str1 = str1Arr.join('')
   }
-  sp[sp.length-1] = str1
+  sp[sp.length-1] = str1;
   route = sp.join('/');
 
   return () => import(`../pages${route}`)
-}
+};
 
 export default router;

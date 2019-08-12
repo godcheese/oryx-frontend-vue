@@ -1,4 +1,4 @@
-import { notification } from "ant-design-vue";
+import {notification} from "ant-design-vue"
 
 notification.config({
   placement: 'bottomRight',
@@ -6,7 +6,7 @@ notification.config({
   duration: 3,
 });
 
-export const basicNotification = notification
+export const basicNotification = notification;
 
 
 

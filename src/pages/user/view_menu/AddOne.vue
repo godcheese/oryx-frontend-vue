@@ -25,7 +25,7 @@
                 :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
                 :treeData="viewMenuCategory"
                 treeDefaultExpandAll
-                v-decorator="['menuCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
+                v-decorator="['viewMenuCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
             </a-form-item>
           </a-col>
           <a-col :md="24" :sm="24">
@@ -49,12 +49,15 @@
 </template>
 
 <script>
-  import {viewMenuCategoryListAllAsAntdTreeNode } from '../../../api/viewMenuCategory.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {viewMenuAddOne} from "../../../api/viewMenu.js";
+    import {viewMenuCategoryListAllAsAntdTreeNode} from '../../../api/viewMenuCategory.js'
+    import {basicNotification} from '../../../common/index.js'
+    import {viewMenuAddOne, viewMenuGetOneByViewMenuId} from "../../../api/viewMenu.js"
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -69,6 +72,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+          this.viewMenuGetOneByViewMenuId(TableSelectedRowKeys[0]);
+        }
         this.visible = true
       },
       onCancel() {
@@ -88,10 +95,18 @@
           }
         });
       },
+      viewMenuGetOneByViewMenuId(id) {
+        viewMenuGetOneByViewMenuId(id).then((data) => {
+          data.viewMenuCategoryId = data.viewMenuCategoryId !== undefined && data.viewMenuCategoryId !== null ? data.viewMenuCategoryId + '' : '';
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

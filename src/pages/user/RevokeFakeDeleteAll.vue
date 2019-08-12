@@ -5,18 +5,18 @@
 </template>
 
 <script>
-  import { userRevokeFakeDeleteAll } from '../../api/user.js'
-  import { basicNotification } from '../../common/index.js';
+    import {userRevokeFakeDeleteAll} from '../../api/user.js'
+    import {basicNotification} from '../../common/index.js'
 
-  export default {
+    export default {
     name: 'RevokeFakeDeleteAll',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     methods: {
       revokeFakeDeleteAll() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys.length <= 0) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys.length <= 0) {
           basicNotification.warning({message: '至少勾选一项'})
           return
         }
@@ -26,7 +26,7 @@
           okText: '确认',
           cancelText: '取消',
           onOk: () => {
-            userRevokeFakeDeleteAll(this.tableSelectedRowKeys).then((data) => {
+            userRevokeFakeDeleteAll(this.TableSelectedRowKeys).then((data) => {
               basicNotification.success({message: '操作成功'})
               this.$emit('onOk', data)
             }).catch((error) => {

@@ -8,7 +8,7 @@ module.exports = merge(prodEnv, {
   VERSION: '"0.1.0"',
 
   WEB: {
-    NAME: '"Nimrod"',
+    NAME: '"Oryx"',
     HEADER_THEME: '"light"',
     SIDER_THEME: '"dark"',
   },
@@ -16,7 +16,7 @@ module.exports = merge(prodEnv, {
   /**
    * 后端接口地址
    */
-  BACKEND_URL: '"http://127.0.0.1:8083/nimrodbackend"', // http://127.0.0.1:8083/nimrodbackend
+  BACKEND_URL: '"http://127.0.0.1:8083/oryx"', // http://127.0.0.1:8083/oryx
 
   /**
    * OAuth 2.0 接口配置信息

@@ -40,13 +40,13 @@
 </template>
 
 <script>
-  import { departmentListAllAsAntdTreeNode, departmentSaveOne, departmentGetOneByDepartmentId } from '../../../api/department.js'
-  import { basicNotification } from "../../../common/index.js";
+    import {departmentGetOneByDepartmentId, departmentListAllAsAntdTreeNode, departmentSaveOne} from '../../../api/department.js'
+    import {basicNotification} from "../../../common/index.js"
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -57,8 +57,8 @@
     },
     methods: {
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -67,7 +67,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.departmentGetOneByDepartmentId(tableSelectedRowKeys[0]);
+        this.departmentGetOneByDepartmentId(TableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -100,6 +100,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

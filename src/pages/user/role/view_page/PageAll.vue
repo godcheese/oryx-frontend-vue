@@ -11,8 +11,8 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageGrantAll :tableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageRevokeAll :tableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_GRANT_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_REVOKE_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面'" :rowKey="(record) => record.id" @change="viewPageTableOnChange" :columns="viewPageTableColumns" size="middle" :pagination="viewPageTablePagination" :dataSource="viewPageTableDataSource" :loading="viewPageTableLoading" :customRow="viewPageTableCustomRow" :rowSelection="{selectedRowKeys: viewPageTableSelectedRowKeys, onChange: viewPageTableOnSelectChange}" :scroll="{ x: 1600, y: 0}" :indentSize="5" bordered>
@@ -21,8 +21,8 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageComponentGrantAll :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentRevokeAll :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_COMPONENT_GRANT_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_COMPONENT_REVOKE_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面组件'" :rowKey="(record) => record.id" @change="viewPageComponentTableOnChange" :columns="viewPageComponentTableColumns" size="middle" :pagination="viewPageComponentTablePagination" :dataSource="viewPageComponentTableDataSource" :loading="viewPageComponentTableLoading" :customRow="viewPageComponentTableCustomRow" :rowSelection="{selectedRowKeys: viewPageComponentTableSelectedRowKeys, onChange: viewPageComponentTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" :indentSize="5" bordered>
@@ -38,23 +38,23 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../../api/dictionary.js'
-  import { basicNotification } from '../../../../common/index.js';
-  import {viewPageCategoryListAllAsAntdTableByRoleId} from '../../../../api/viewPageCategory.js';
-  import {viewPagePageAllAsAntdTableByRoleIdAndPageCategoryIdList} from '../../../../api/viewPage.js';
-  import {viewPageComponentPageAllAsAntdTableByRoleIdAndPageIdList} from '../../../../api/viewPageComponent.js';
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../../../api/dictionary.js'
+    import {basicNotification} from '../../../../common/index.js'
+    import {viewPageCategoryListAllAsAntdTableByRoleId} from '../../../../api/viewPageCategory.js'
+    import {viewPagePageAllAsAntdTableByRoleIdAndViewPageCategoryIdList} from '../../../../api/viewPage.js'
+    import {viewPageComponentPageAllAsAntdTableByRoleIdAndViewPageIdList} from '../../../../api/viewPageComponent.js'
 
-  import ViewPageGrantAll from './GrantAll.vue';
-  import ViewPageRevokeAll from './RevokeAll.vue';
+    import ViewPageGrantAll from './GrantAll.vue'
+    import ViewPageRevokeAll from './RevokeAll.vue'
 
-  import ViewPageComponentGrantAll from '../view_page_component/GrantAll.vue';
-  import ViewPageComponentRevokeAll from '../view_page_component/RevokeAll.vue';
+    import ViewPageComponentGrantAll from '../view_page_component/GrantAll.vue'
+    import ViewPageComponentRevokeAll from '../view_page_component/RevokeAll.vue'
 
-  export default {
+    export default {
     name: 'PageAll',
     components: {ViewPageGrantAll, ViewPageRevokeAll, ViewPageComponentGrantAll, ViewPageComponentRevokeAll,},
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -160,7 +160,7 @@
             customRender: (text, row, index) => dictionaryFormatter(text, this.isOrNot)
           }, {
             title: '组件类型',
-            dataIndex: 'pageComponentType',
+            dataIndex: 'viewPageComponentType',
             sorter: true,
             customRender: (text, row, index) => dictionaryFormatter(text, this.viewPageComponentType)
           }, {
@@ -221,13 +221,13 @@
     },
     methods: {
       viewPage() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.roleId = tableSelectedRowKeys[0]
+        this.roleId = TableSelectedRowKeys[0]
         this.viewPageCategoryTableDataSource = []
         this.viewPageCategoryTableSelectedRowKeys = []
         this.viewPageTableDataSource = []
@@ -273,10 +273,10 @@
         })
       },
       getViewPageCategoryTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
+        let TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
           this.viewPageCategoryTableLoading = true
-          viewPageCategoryListAllAsAntdTableByRoleId({roleId: tableSelectedRowKeys[0],...params}).then((data) => {
+          viewPageCategoryListAllAsAntdTableByRoleId({roleId: TableSelectedRowKeys[0],...params}).then((data) => {
             this.viewPageCategoryTableLoading = false
             this.viewPageCategoryTableDataSource = data
           }).catch((error) => {
@@ -309,17 +309,17 @@
         })
       },
       getViewPageTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys;
+        let TableSelectedRowKeys = this.TableSelectedRowKeys;
         let viewPageCategoryTableSelectedRowKeys = this.viewPageCategoryTableSelectedRowKeys
-        if (viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if (viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.viewPageTableLoading = true
           const pagination = {...this.viewPageTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
-          viewPagePageAllAsAntdTableByRoleIdAndPageCategoryIdList({
+          viewPagePageAllAsAntdTableByRoleIdAndViewPageCategoryIdList({
             page: page, rows: rows, ...params,
-            roleId: tableSelectedRowKeys[0],
-            pageCategoryIdList: viewPageCategoryTableSelectedRowKeys,
+            roleId: TableSelectedRowKeys[0],
+            viewPageCategoryIdList: viewPageCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.viewPageTableLoading = false
             this.viewPageTableDataSource = data.rows
@@ -364,17 +364,17 @@
         })
       },
       getViewPageComponentTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys;
+        let TableSelectedRowKeys = this.TableSelectedRowKeys;
         let viewPageTableSelectedRowKeys = this.viewPageTableSelectedRowKeys
-        if (viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if (viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.viewPageComponentTableLoading = true
           const pagination = {...this.viewPageComponentTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
-          viewPageComponentPageAllAsAntdTableByRoleIdAndPageIdList({
+          viewPageComponentPageAllAsAntdTableByRoleIdAndViewPageIdList({
             page: page, rows: rows, ...params,
-            roleId: tableSelectedRowKeys[0],
-            pageIdList: viewPageTableSelectedRowKeys,
+            roleId: TableSelectedRowKeys[0],
+            viewPageIdList: viewPageTableSelectedRowKeys,
           }).then((data) => {
             this.viewPageComponentTableLoading = false
             this.viewPageComponentTableDataSource = data.rows
@@ -401,12 +401,12 @@
     },
     watch: {
       viewPageCategoryTableSelectedRowKeys() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
         let viewPageCategoryTableSelectedRowKeys = this.viewPageCategoryTableSelectedRowKeys
-        if(viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if(viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.getViewPageTableDataSource({
-            roleId: tableSelectedRowKeys[0],
-            pageCategoryIdList: viewPageCategoryTableSelectedRowKeys
+            roleId: TableSelectedRowKeys[0],
+            viewPageCategoryIdList: viewPageCategoryTableSelectedRowKeys
           })
         } else {
           this.viewPageTableDataSource = []
@@ -414,14 +414,14 @@
         }
       },
       viewPageTableSelectedRowKeys() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
         let viewPageTableSelectedRowKeys = this.viewPageTableSelectedRowKeys
-        console.log(tableSelectedRowKeys)
+        console.log(TableSelectedRowKeys)
         console.log(viewPageTableSelectedRowKeys)
-        if(viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if(viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.getViewPageComponentTableDataSource({
-            roleId: tableSelectedRowKeys[0],
-            pageIdList: viewPageTableSelectedRowKeys
+            roleId: TableSelectedRowKeys[0],
+            viewPageIdList: viewPageTableSelectedRowKeys
           })
         } else {
           this.viewPageComponentTableDataSource = []
@@ -432,6 +432,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../../static/less/common.less";
 </style>

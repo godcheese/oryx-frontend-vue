@@ -25,7 +25,7 @@
                 :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
                 :treeData="viewPageCategory"
                 treeDefaultExpandAll
-                v-decorator="['pageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
+                v-decorator="['viewPageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
             </a-form-item>
           </a-col>
           <a-col :md="24" :sm="24">
@@ -54,16 +54,14 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import {
-    viewPageCategoryListAllAsAntdTreeNode, viewPageCategorySaveOne
-  } from "../../../api/viewPageCategory.js";
-  import {viewPageGetOneByViewPageId,viewPageSaveOne} from "../../../api/viewPage.js";
+    import {basicNotification} from '../../../common/index.js'
+    import {viewPageCategoryListAllAsAntdTreeNode} from "../../../api/viewPageCategory.js"
+    import {viewPageGetOneByViewPageId, viewPageSaveOne} from "../../../api/viewPage.js"
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -74,8 +72,8 @@
     },
     methods: {
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -84,7 +82,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.viewPageGetOneByViewPageId(tableSelectedRowKeys[0]);
+        this.viewPageGetOneByViewPageId(TableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -106,7 +104,7 @@
       },
       viewPageGetOneByViewPageId(id) {
         viewPageGetOneByViewPageId(id).then((data) => {
-          data.pageCategoryId = data.pageCategoryId !== undefined && data.pageCategoryId !== null ? data.pageCategoryId + '' : ''
+          data.viewPageCategoryId = data.viewPageCategoryId !== undefined && data.viewPageCategoryId !== null ? data.viewPageCategoryId + '' : ''
           this.form.setFieldsValue(data)
         }).catch((error) => {
           console.log(error)
@@ -116,6 +114,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

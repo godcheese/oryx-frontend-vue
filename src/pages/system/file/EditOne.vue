@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-button @click="editOne">编辑</a-button>
-    <a-modal title="编辑附件" v-model="visible" :maskClosable="false" wrapClassName="form-modal" :destroyOnClose="true">
+    <a-modal title="编辑文件" v-model="visible" :maskClosable="false" wrapClassName="form-modal" :destroyOnClose="true">
       <a-form :form="form" :hideRequiredMark="false">
         <a-row>
           <a-col>
@@ -50,13 +50,13 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import { attachmentGetOneByAttachmentId, attachmentSaveOne } from "../../../api/attachment.js";
+    import {basicNotification} from '../../../common/index.js'
+    import {fileGetOneByAttachmentId, fileSaveOne} from "../../../api/file.js"
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -68,13 +68,13 @@
     },
     methods: {
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
 
-        this.attachmentGetOneByAttachmentId(tableSelectedRowKeys[0]);
+        this.fileGetOneByAttachmentId(TableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -84,7 +84,7 @@
       onOk() {
         this.form.validateFieldsAndScroll((error, values) => {
           if (!error) {
-            attachmentSaveOne(values).then((data) => {
+            fileSaveOne(values).then((data) => {
               basicNotification.success({message: '操作成功'})
               this.visible = false
               this.$emit('onOk', data)
@@ -94,8 +94,8 @@
           }
         });
       },
-      attachmentGetOneByAttachmentId(id) {
-        attachmentGetOneByAttachmentId(id).then((data) => {
+      fileGetOneByAttachmentId(id) {
+        fileGetOneByAttachmentId(id).then((data) => {
           this.form.setFieldsValue(data)
         }).catch((error) => {
           console.log(error)
@@ -105,6 +105,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

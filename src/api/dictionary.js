@@ -1,4 +1,4 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/system/dictionary';
 
@@ -7,7 +7,7 @@ export const dictionaryListAllByKey = ((key) => {
     url: `${preUrlPath}/list_all_by_key/${key}`,
     method: 'get',
   })
-})
+});
 
 export const dictionaryFormatter = ((value, values, callback) => {
   let valueName = undefined;
@@ -19,9 +19,9 @@ export const dictionaryFormatter = ((value, values, callback) => {
     }
   }
   if (typeof values === 'object') {
-    valueName = f(value, values)
+    valueName = f(value, values);
     if (!valueName) {
-      let defaultValue = f('default', values)
+      let defaultValue = f('default', values);
       valueName = f(defaultValue, values)
     }
   }
@@ -29,7 +29,7 @@ export const dictionaryFormatter = ((value, values, callback) => {
     valueName = callback(valueName, value, values)
   }
   return valueName
-})
+});
 
 export const dictionaryPageAllByDictionaryCategoryIdList = ( (params = {}) => {
   return request({
@@ -37,14 +37,14 @@ export const dictionaryPageAllByDictionaryCategoryIdList = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const dictionaryGetOneByDictionaryId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const dictionaryAddOne = ((params = {}) => {
   return request({
@@ -52,7 +52,7 @@ export const dictionaryAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const dictionarySaveOne = ((params = {}) => {
   return request({
@@ -60,7 +60,7 @@ export const dictionarySaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const dictionaryDeleteAll = ((params = {}) => {
   return request({
@@ -68,11 +68,11 @@ export const dictionaryDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const dictionarySyncToMemory = (() => {
   return request({
     url: `${preUrlPath}/sync_to_memory`,
     method: 'post',
   })
-})
+});

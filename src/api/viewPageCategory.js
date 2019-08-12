@@ -1,4 +1,4 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/user/view_page_category';
 
@@ -8,7 +8,7 @@ export const viewPageCategoryListAllAsAntdTableByRoleId = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const viewPageCategoryListAllAsAntdTable = ( (params = {}) => {
   return request({
@@ -16,14 +16,14 @@ export const viewPageCategoryListAllAsAntdTable = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const viewPageCategoryGetOneByViewPageCategoryId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const viewPageCategoryAddOne = ((params = {}) => {
   return request({
@@ -31,7 +31,7 @@ export const viewPageCategoryAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const viewPageCategorySaveOne = ((params = {}) => {
   return request({
@@ -39,7 +39,7 @@ export const viewPageCategorySaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const viewPageCategoryDeleteAll = ((params = {}) => {
   return request({
@@ -47,14 +47,14 @@ export const viewPageCategoryDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const viewPageCategoryListAllAsAntdTreeNode = (() => {
   return request({
     url: `${preUrlPath}/list_all_as_antd_tree_node`,
     method: 'get',
   })
-})
+});
 
 
 export const viewPageCategoryGetOneByViewPageId = ((viewPageId) => {
@@ -63,4 +63,4 @@ export const viewPageCategoryGetOneByViewPageId = ((viewPageId) => {
     method: 'get',
     data: {viewPageId: viewPageId}
   })
-})
+});

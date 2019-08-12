@@ -5,10 +5,10 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import {dictionarySyncToMemory} from "../../../api/dictionary.js";
+    import {basicNotification} from '../../../common/index.js'
+    import {dictionarySyncToMemory} from "../../../api/dictionary.js"
 
-  export default {
+    export default {
     name: 'SyncToMemory',
 
     methods: {

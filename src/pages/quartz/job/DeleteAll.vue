@@ -5,19 +5,19 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import {operationLogDeleteAll} from "../../../api/operationLog.js";
+    import {jobDeleteAll} from '../../../api/quartz.js'
+    import {basicNotification} from '../../../common/index.js'
 
-  export default {
+    export default {
     name: 'DeleteAll',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRows: {type: Array, required: true}
     },
     methods: {
       deleteAll() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys.length <= 0) {
-          basicNotification.warning({message: '至少勾选一项'})
+        const tableSelectedRows = this.tableSelectedRows;
+        if(tableSelectedRows.length <= 0) {
+          basicNotification.warning({message: '至少勾选一项'});
           return
         }
         this.$confirm({
@@ -26,8 +26,8 @@
           okText: '确认',
           cancelText: '取消',
           onOk: () => {
-            operationLogDeleteAll(this.tableSelectedRowKeys).then((data) => {
-              basicNotification.success({message: '操作成功'})
+            jobDeleteAll(this.tableSelectedRows).then((data) => {
+              basicNotification.success({message: '操作成功'});
               this.$emit('onOk', data)
             }).catch((error) => {
               console.log(error)

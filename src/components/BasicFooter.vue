@@ -1,6 +1,6 @@
 <template>
   <a-layout-footer :style="{ textAlign: 'center' }">
-  Nimrod ©2019 Copyright All Right Reserved.
+  Oryx ©2019 Copyright All Right Reserved.
   </a-layout-footer>
 </template>
 

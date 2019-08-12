@@ -1,29 +1,29 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/user/view_menu_category';
 
-export const viewMenuCategoryListAllAsAntdTableByRoleId = ( (params = {}) => {
+export const viewMenuCategoryListAllAsAntdTableByRoleId = ((params = {}) => {
   return request({
     url: `${preUrlPath}/list_all_as_antd_table_by_role_id`,
     data: params,
     method: 'get'
   })
-})
+});
 
-export const viewMenuCategoryListAllAsAntdTable = ( (params = {}) => {
+export const viewMenuCategoryListAllAsAntdTable = ((params = {}) => {
   return request({
     url: `${preUrlPath}/list_all_as_antd_table`,
     data: params,
     method: 'get'
   })
-})
+});
 
 export const viewMenuCategoryGetOneByViewMenuCategoryId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const viewMenuCategoryAddOne = ((params = {}) => {
   return request({
@@ -31,7 +31,7 @@ export const viewMenuCategoryAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const viewMenuCategorySaveOne = ((params = {}) => {
   return request({
@@ -39,7 +39,7 @@ export const viewMenuCategorySaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const viewMenuCategoryDeleteAll = ((params = {}) => {
   return request({
@@ -47,14 +47,14 @@ export const viewMenuCategoryDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const viewMenuCategoryListAllAsAntdTreeNode = (() => {
   return request({
     url: `${preUrlPath}/list_all_as_antd_tree_node`,
     method: 'get',
   })
-})
+});
 
 export const viewMenuCategoryGrantAll = ((viewMenuCategoryIdList, roleId) => {
   return request({
@@ -62,7 +62,7 @@ export const viewMenuCategoryGrantAll = ((viewMenuCategoryIdList, roleId) => {
     method: 'post',
     data: {'viewMenuCategoryIdList[]': viewMenuCategoryIdList, 'roleId': roleId}
   })
-})
+});
 
 export const viewMenuCategoryRevokeAll = ((viewMenuCategoryIdList, roleId) => {
   return request({
@@ -70,5 +70,5 @@ export const viewMenuCategoryRevokeAll = ((viewMenuCategoryIdList, roleId) => {
     method: 'post',
     data: {'viewMenuCategoryIdList[]': viewMenuCategoryIdList, 'roleId': roleId}
   })
-})
+});
 

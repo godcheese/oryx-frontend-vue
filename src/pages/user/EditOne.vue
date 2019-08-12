@@ -71,17 +71,16 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey } from '../../api/dictionary.js'
-  import { departmentListAllAsAntdTreeNode } from '../../api/department.js'
-  import { userSaveOne, userGetOneByUserId } from '../../api/user.js'
-  import { basicNotification } from '../../common/index.js';
-  import { userAvatar } from '../../api/user.js';
-  import ChangeAvatar from './ChangeAvatar.vue';
+    import {dictionaryListAllByKey} from '../../api/dictionary.js'
+    import {departmentListAllAsAntdTreeNode} from '../../api/department.js'
+    import {userAvatar, userGetOneByUserId, userSaveOne} from '../../api/user.js'
+    import {basicNotification} from '../../common/index.js'
+    import ChangeAvatar from './ChangeAvatar.vue'
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     components: {ChangeAvatar},
     data() {
@@ -105,8 +104,8 @@
         this.form.setFieldsValue({'avatar': data.guid})
       },
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -120,7 +119,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.userGetOneByUserId(tableSelectedRowKeys[0]);
+        this.userGetOneByUserId(TableSelectedRowKeys[0]);
         this.avatarSrc = undefined
         this.visible = true
       },
@@ -155,6 +154,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../static/less/common.less";
 </style>

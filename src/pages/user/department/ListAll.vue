@@ -3,11 +3,11 @@
     <div slot="container">
       <div class="table-operations">
         <AddOne v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/ADD_ONE']" @onOk="reloadTable"/>
-        <EditOne v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/EDIT_ONE']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
-        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <EditOne v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/EDIT_ONE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
       </div>
       <div style="overflow: scroll;height: 300px">
-        <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="false" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: tableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
+        <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="false" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: TableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
         </a-table>
       </div>
     </div>
@@ -15,13 +15,13 @@
 </template>
 
 <script type="text/jsx">
-  import BasicPage from '../../../components/BasicPage.vue'
-  import { departmentListAllAsAntdTable } from '../../../api/department.js'
-  import AddOne from './AddOne.vue'
-  import EditOne from "./EditOne.vue";
-  import DeleteAll from "./DeleteAll.vue";
+    import BasicPage from '../../../components/BasicPage.vue'
+    import {departmentListAllAsAntdTable} from '../../../api/department.js'
+    import AddOne from './AddOne.vue'
+    import EditOne from "./EditOne.vue"
+    import DeleteAll from "./DeleteAll.vue"
 
-  export default {
+    export default {
     name: "ListAll",
     components: { BasicPage, AddOne, EditOne, DeleteAll},
     data() {
@@ -52,7 +52,7 @@
             sorter: true,
           },
         ],
-        tableSelectedRowKeys: [],
+        TableSelectedRowKeys: [],
         tableLoading: false,
       }
     },
@@ -64,14 +64,14 @@
         return {
           on: {
             click: () => {
-              this.tableSelectedRowKeys = []
-              this.tableSelectedRowKeys.push(record.id)
+              this.TableSelectedRowKeys = []
+              this.TableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
       tableOnSelectChange (selectedRowKeys) {
-        this.tableSelectedRowKeys = selectedRowKeys
+        this.TableSelectedRowKeys = selectedRowKeys
       },
       tableOnChange(pagination, filters, sorter) {
         this.getTableDataSource({
@@ -85,7 +85,7 @@
         departmentListAllAsAntdTable({...params}).then((data) => {
           this.tableLoading = false
           this.tableDataSource = data
-          console.log(data)
+          // console.log(data)
         }).catch((error) => {
           console.log(error)
           this.tableLoading = false
@@ -93,7 +93,7 @@
       },
       reloadTable() {
         this.getTableDataSource()
-        this.tableSelectedRowKeys = []
+        this.TableSelectedRowKeys = []
       },
     },
   }

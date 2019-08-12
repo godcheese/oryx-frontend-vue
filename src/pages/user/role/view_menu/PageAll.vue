@@ -5,8 +5,8 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <ViewMenuCategoryGrantAll :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="reloadTable"/>
-            <ViewMenuCategoryRevokeAll :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="reloadTable"/>
+            <ViewMenuCategoryGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_CATEGORY_GRANT_ALL']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="reloadTable"/>
+            <ViewMenuCategoryRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_CATEGORY_REVOKE_ALL']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图菜单分类'" :rowKey="(record) => record.id" @change="viewMenuCategoryTableOnChange" :columns="viewMenuCategoryTableColumns" size="middle" :pagination="false" :dataSource="viewMenuCategoryTableDataSource" :loading="viewMenuCategoryTableLoading" :customRow="viewMenuCategoryTableCustomRow" :rowSelection="{selectedRowKeys: viewMenuCategoryTableSelectedRowKeys, onChange: viewMenuCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,8 +15,8 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ViewMenuGrantAll :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
-            <ViewMenuRevokeAll :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
+            <ViewMenuGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_GRANT_ALL']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
+            <ViewMenuRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_REVOKE_ALL']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图菜单'" :rowKey="(record) => record.id" @change="viewMenuTableOnChange" :columns="viewMenuTableColumns" size="middle" :pagination="viewMenuTablePagination" :dataSource="viewMenuTableDataSource" :loading="viewMenuTableLoading" :customRow="viewMenuTableCustomRow" :rowSelection="{selectedRowKeys: viewMenuTableSelectedRowKeys, onChange: viewMenuTableOnSelectChange}" :scroll="{ x: 1200, y: 0}" :indentSize="5" bordered>
@@ -33,22 +33,22 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../../api/dictionary.js'
-  import { basicNotification } from '../../../../common/index.js';
-  import {viewMenuCategoryListAllAsAntdTableByRoleId} from '../../../../api/viewMenuCategory.js';
-  import {viewMenuPageAllAsAntdTableByRoleIdAndMenuCategoryIdList} from '../../../../api/viewMenu.js';
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../../../api/dictionary.js'
+    import {basicNotification} from '../../../../common/index.js'
+    import {viewMenuCategoryListAllAsAntdTableByRoleId} from '../../../../api/viewMenuCategory.js'
+    import {viewMenuPageAllAsAntdTableByRoleIdAndViewMenuCategoryIdList} from '../../../../api/viewMenu.js'
 
-  import ViewMenuCategoryGrantAll from '../../role/view_menu_category/GrantAll.vue';
-  import ViewMenuCategoryRevokeAll from '../../role/view_menu_category/RevokeAll.vue';
+    import ViewMenuCategoryGrantAll from '../../role/view_menu_category/GrantAll.vue'
+    import ViewMenuCategoryRevokeAll from '../../role/view_menu_category/RevokeAll.vue'
 
-  import ViewMenuGrantAll from './GrantAll.vue';
-  import ViewMenuRevokeAll from './RevokeAll.vue';
+    import ViewMenuGrantAll from './GrantAll.vue'
+    import ViewMenuRevokeAll from './RevokeAll.vue'
 
-  export default {
+    export default {
     name: 'PageAll',
     components: {ViewMenuCategoryGrantAll, ViewMenuCategoryRevokeAll, ViewMenuGrantAll, ViewMenuRevokeAll,},
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -171,13 +171,13 @@
     },
     methods: {
       viewMenu() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.roleId = tableSelectedRowKeys[0]
+        this.roleId = TableSelectedRowKeys[0]
         this.viewMenuCategoryTableDataSource = []
         this.viewMenuCategoryTableSelectedRowKeys = []
         this.viewMenuTableDataSource = []
@@ -213,10 +213,10 @@
         })
       },
       getViewMenuCategoryTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
+        let TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
           this.viewMenuCategoryTableLoading = true
-          viewMenuCategoryListAllAsAntdTableByRoleId({roleId: tableSelectedRowKeys[0],...params}).then((data) => {
+          viewMenuCategoryListAllAsAntdTableByRoleId({roleId: TableSelectedRowKeys[0],...params}).then((data) => {
             this.viewMenuCategoryTableLoading = false
             this.viewMenuCategoryTableDataSource = data
           }).catch((error) => {
@@ -249,17 +249,17 @@
           })
       },
       getViewMenuTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys;
+        let TableSelectedRowKeys = this.TableSelectedRowKeys;
         let viewMenuCategoryTableSelectedRowKeys = this.viewMenuCategoryTableSelectedRowKeys
-        if (viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if (viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.viewMenuTableLoading = true
           const pagination = {...this.viewMenuTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
-          viewMenuPageAllAsAntdTableByRoleIdAndMenuCategoryIdList({
+          viewMenuPageAllAsAntdTableByRoleIdAndViewMenuCategoryIdList({
             page: page, rows: rows, ...params,
-            roleId: tableSelectedRowKeys[0],
-            menuCategoryIdList: viewMenuCategoryTableSelectedRowKeys,
+            roleId: TableSelectedRowKeys[0],
+            viewMenuCategoryIdList: viewMenuCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.viewMenuTableLoading = false
             this.viewMenuTableDataSource = data.rows
@@ -285,12 +285,12 @@
     },
     watch: {
       viewMenuCategoryTableSelectedRowKeys() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
         let viewMenuCategoryTableSelectedRowKeys = this.viewMenuCategoryTableSelectedRowKeys
-        if(viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if(viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.getViewMenuTableDataSource({
-            roleId: tableSelectedRowKeys[0],
-            menuCategoryIdList: viewMenuCategoryTableSelectedRowKeys
+            roleId: TableSelectedRowKeys[0],
+            viewMenuCategoryIdList: viewMenuCategoryTableSelectedRowKeys
           })
         } else {
           this.viewMenuTableDataSource = []
@@ -301,6 +301,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../../static/less/common.less";
 </style>

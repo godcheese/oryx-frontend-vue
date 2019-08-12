@@ -35,10 +35,10 @@
 </template>
 
 <script>
-  import { departmentListAllAsAntdTreeNode, departmentAddOne } from '../../../api/department.js'
-  import { basicNotification } from "../../../common/index.js";
+    import {departmentAddOne, departmentListAllAsAntdTreeNode} from '../../../api/department.js'
+    import {basicNotification} from "../../../common/index.js"
 
-  export default {
+    export default {
     name: 'AddOne',
     data() {
       return {
@@ -77,6 +77,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

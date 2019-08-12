@@ -30,7 +30,7 @@
                 :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
                 :treeData="viewMenuCategory"
                 treeDefaultExpandAll
-                v-decorator="['menuCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
+                v-decorator="['viewMenuCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
             </a-form-item>
           </a-col>
           <a-col :md="24" :sm="24">
@@ -54,14 +54,14 @@
 </template>
 
 <script>
-  import { basicNotification } from '../../../common/index.js';
-  import { viewMenuCategoryListAllAsAntdTreeNode } from "../../../api/viewMenuCategory.js";
-  import {viewMenuGetOneByViewMenuId,viewMenuSaveOne} from "../../../api/viewMenu.js";
+    import {basicNotification} from '../../../common/index.js'
+    import {viewMenuCategoryListAllAsAntdTreeNode} from "../../../api/viewMenuCategory.js"
+    import {viewMenuGetOneByViewMenuId, viewMenuSaveOne} from "../../../api/viewMenu.js"
 
-  export default {
+    export default {
     name: 'EditOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -70,13 +70,10 @@
         viewMenuCategory: [],
       }
     },
-    created() {
-
-    },
     methods: {
       editOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -85,7 +82,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.viewMenuGetOneByViewMenuId(tableSelectedRowKeys[0]);
+        this.viewMenuGetOneByViewMenuId(TableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -107,7 +104,7 @@
       },
       viewMenuGetOneByViewMenuId(id) {
         viewMenuGetOneByViewMenuId(id).then((data) => {
-          data.menuCategoryId = data.menuCategoryId !== undefined && data.menuCategoryId !== null ? data.menuCategoryId + '' : ''
+          data.viewMenuCategoryId = data.viewMenuCategoryId !== undefined && data.viewMenuCategoryId !== null ? data.viewMenuCategoryId + '' : ''
           this.form.setFieldsValue(data)
         }).catch((error) => {
           console.log(error)
@@ -117,6 +114,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

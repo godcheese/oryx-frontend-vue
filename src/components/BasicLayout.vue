@@ -14,11 +14,11 @@
 </template>
 <!---->
 <script>
-  import BasicHeader from '../components/BasicHeader.vue'
-  import SiderMenu from '../components/SiderMenu.vue'
-  import BasicFooter from '../components/BasicFooter.vue'
+    import BasicHeader from '../components/BasicHeader.vue'
+    import SiderMenu from '../components/SiderMenu.vue'
+    import BasicFooter from '../components/BasicFooter.vue'
 
-  const minHeight = window.innerHeight - 64 - 24 - 122
+    const minHeight = window.innerHeight - 64 - 24 - 122;
 
   export default {
     name: 'BasicLayout',

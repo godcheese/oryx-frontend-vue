@@ -2,9 +2,9 @@
   <BasicPage>
     <div slot="container">
           <div class="table-operations">
-            <SendOne :tableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
-            <DeleteAll :tableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
-            <a-button @click="() => {this.reloadTable()}">刷新队列</a-button>
+            <SendOne v-has-any-authority="['/COMPONENT/MAIL/SEND_ONE']" :TableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+            <DeleteAll v-has-any-authority="['/COMPONENT/MAIL/DELETE_ALL']" :TableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+            <a-button v-has-any-authority="['/COMPONENT/MAIL/REFRESH']" @click="() => {this.reloadTable()}">刷新</a-button>
           </div>
           <div style="overflow: scroll;height: 450px">
             <a-table :rowKey="(record) => record.id" @change="mailTableOnChange" :columns="mailTableColumns" size="middle" :pagination="mailTablePagination" :dataSource="mailTableDataSource" :loading="mailTableLoading" :customRow="mailTableCustomRow" :rowSelection="{selectedRowKeys: mailTableSelectedRowKeys, onChange: mailTableOnSelectChange}" :scroll="{ x: 3000, y: 0}" bordered>
@@ -15,15 +15,14 @@
 </template>
 
 <script>
-  import BasicPage from '../../components/BasicPage.vue'
-  import { basicNotification } from '../../common/index.js';
-  import {mailPageAll} from '../../api/mail.js';
+    import BasicPage from '../../components/BasicPage.vue'
+    import {mailPageAll} from '../../api/mail.js'
 
-  import SendOne from './SendOne.vue';
-  import DeleteAll from './DeleteAll.vue';
-  import {dictionaryFormatter, dictionaryListAllByKey} from "../../api/dictionary.js";
+    import SendOne from './SendOne.vue'
+    import DeleteAll from './DeleteAll.vue'
+    import {dictionaryFormatter, dictionaryListAllByKey} from "../../api/dictionary.js"
 
-  export default {
+    export default {
     name: 'PageAll',
     components: {BasicPage, SendOne, DeleteAll},
     data() {
@@ -168,7 +167,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../static/less/common.less";
   @import "../../../static/less/page.less";
 </style>

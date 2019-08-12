@@ -5,12 +5,12 @@
     </div>
     <div slot="container">
       <div class="table-operations">
-        <UploadOne :tableSelectedRowKeys="attachmentTableSelectedRowKeys" @onCancel="onCancel"/>
-        <EditOne :tableSelectedRowKeys="attachmentTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
-        <DeleteAll :tableSelectedRowKeys="attachmentTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+        <UploadOne v-has-any-authority="['/COMPONENT/SYSTEM/FILE/UPLOAD_ONE']" :TableSelectedRowKeys="fileTableSelectedRowKeys" @onCancel="onCancel"/>
+        <EditOne v-has-any-authority="['/COMPONENT/SYSTEM/FILE/EDIT_ONE']" :TableSelectedRowKeys="fileTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+        <DeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/FILE/DELETE_ALL']" :TableSelectedRowKeys="fileTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
       </div>
       <div style="overflow: scroll;height: 450px">
-        <a-table :rowKey="(record) => record.id" @change="attachmentTableOnChange" :columns="attachmentTableColumns" size="middle" :pagination="attachmentTablePagination" :dataSource="attachmentTableDataSource" :loading="attachmentTableLoading" :customRow="attachmentTableCustomRow" :rowSelection="{selectedRowKeys: attachmentTableSelectedRowKeys, onChange: attachmentTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
+        <a-table :rowKey="(record) => record.id" @change="fileTableOnChange" :columns="fileTableColumns" size="middle" :pagination="fileTablePagination" :dataSource="fileTableDataSource" :loading="fileTableLoading" :customRow="fileTableCustomRow" :rowSelection="{selectedRowKeys: fileTableSelectedRowKeys, onChange: fileTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
         </a-table>
       </div>
     </div>
@@ -18,21 +18,19 @@
 </template>
 
 <script type="text/jsx">
-  import BasicPage from "../../../components/BasicPage";
-  import { basicNotification } from '../../../common/index.js'
-  import {attachmentPageAll, downloadUrlFormatter} from '../../../api/attachment.js'
+    import BasicPage from "../../../components/BasicPage"
+    import {filePageAll, downloadUrlFormatter} from '../../../api/file.js'
+    import DeleteAll from './DeleteAll.vue'
+    import EditOne from './EditOne.vue'
+    import UploadOne from './UploadOne.vue'
 
-  import DeleteAll from './DeleteAll.vue'
-  import EditOne from './EditOne.vue'
-  import UploadOne from './UploadOne.vue'
-
-  export default {
+    export default {
     name: 'PageAll',
     components: {BasicPage, DeleteAll, EditOne, UploadOne},
     data() {
       return {
-        attachmentTableDataSource: [],
-        attachmentTableColumns: [
+        fileTableDataSource: [],
+        fileTableColumns: [
           {
             title: 'ID',
             dataIndex: 'id',
@@ -76,9 +74,9 @@
             sorter: true,
           },
         ],
-        attachmentTableSelectedRowKeys: [],
-        attachmentTableLoading: false,
-        attachmentTablePagination: {
+        fileTableSelectedRowKeys: [],
+        fileTableLoading: false,
+        fileTablePagination: {
           defaultCurrent: 1,
           defaultPageSize: 10,
           pageSizeOptions: ['10', '20', '30', '40'],
@@ -98,21 +96,21 @@
         this.$emit('onCancel', this.visible)
         this.reloadTable()
       },
-      attachmentTableCustomRow(record, index) {
+      fileTableCustomRow(record, index) {
         return {
           on: {
             click: () => {
-              this.attachmentTableSelectedRowKeys = []
-              this.attachmentTableSelectedRowKeys.push(record.id)
+              this.fileTableSelectedRowKeys = []
+              this.fileTableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
-      attachmentTableOnSelectChange (selectedRowKeys) {
-        this.attachmentTableSelectedRowKeys = selectedRowKeys
+      fileTableOnSelectChange (selectedRowKeys) {
+        this.fileTableSelectedRowKeys = selectedRowKeys
       },
-      attachmentTableOnChange(pagination, filters, sorter) {
-        this.attachmentTablePagination = pagination;
+      fileTableOnChange(pagination, filters, sorter) {
+        this.fileTablePagination = pagination;
         this.getAttachmentTableDataSource({
           page: pagination.current,
           rows: pagination.pageSize,
@@ -122,31 +120,31 @@
         })
       },
       getAttachmentTableDataSource(params = {}) {
-          this.attachmentTableLoading = true
-          const pagination = {...this.attachmentTablePagination}
+          this.fileTableLoading = true
+          const pagination = {...this.fileTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
-          attachmentPageAll({
+          filePageAll({
             page: page, rows: rows, ...params,
           }).then((data) => {
-            this.attachmentTableLoading = false
-            this.attachmentTableDataSource = data.rows
+            this.fileTableLoading = false
+            this.fileTableDataSource = data.rows
             pagination.total = data.total
-            this.attachmentTablePagination = pagination
+            this.fileTablePagination = pagination
           }).catch((error) => {
             console.log(error)
-            this.attachmentTableLoading = false
+            this.fileTableLoading = false
           })
       },
       reloadTable() {
-        this.attachmentTableSelectedRowKeys = []
-        this.attachmentTableDataSource = []
+        this.fileTableSelectedRowKeys = []
+        this.fileTableDataSource = []
         this.getAttachmentTableDataSource()
       }
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

@@ -12,7 +12,6 @@
     render(h, context) {
       const {menuData} = context.props;
       const nodes = [];
-
       const getSubMenu = item => {
         if (item.children && item.children.some(child => child.name)) {
           const children = getMenu(item.children); // eslint-disable-line

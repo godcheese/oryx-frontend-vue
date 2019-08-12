@@ -15,19 +15,15 @@
 </template>
 
 <script>
-  import {dictionaryCategoryListAllAsAntdTreeNode } from '../../api/dictionaryCategory.js'
-  import { basicNotification } from '../../common/index.js';
-  import {dictionaryAddOne, dictionaryListAllByKey} from "../../api/dictionary.js";
-  import {getAccessToken} from "../../common/token.js";
-  import {attachmentUploadOneUrlFormatter} from "../../api/attachment.js";
+    import {fileUploadOneUrlFormatter} from "../../api/file.js"
 
-  export default {
+    export default {
     name: 'UploadAll',
     data() {
       return {
         visible: false,
         form: this.$form.createForm(this),
-        action: attachmentUploadOneUrlFormatter()
+        action: fileUploadOneUrlFormatter()
       }
     },
     methods: {
@@ -52,6 +48,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../static/less/common.less";
 </style>

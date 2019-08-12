@@ -7,9 +7,10 @@
 </template>
 
 <script>
-  import BasicPage from '../components/BasicPage.vue'
-  import Iframe from '../components/Iframe.vue'
-  export default {
+    import BasicPage from '../components/BasicPage.vue'
+    import Iframe from '../components/Iframe.vue'
+
+    export default {
     name: "Druid",
     components: {BasicPage, Iframe },
     data() {

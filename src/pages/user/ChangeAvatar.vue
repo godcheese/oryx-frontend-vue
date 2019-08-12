@@ -7,7 +7,7 @@
         <UploadAvatar @onCancel="uploadAvatarOnCancel"/>
       </div>
       <div style="overflow: scroll;height: 350px">
-        <a-table :rowKey="(record) => record.id" @change="attachmentTableOnChange" :columns="attachmentTableColumns" size="middle" :pagination="attachmentTablePagination" :dataSource="attachmentTableDataSource" :loading="attachmentTableLoading" :customRow="attachmentTableCustomRow" :rowSelection="{selectedRowKeys: attachmentTableSelectedRowKeys, onChange: attachmentTableOnSelectChange}" :scroll="{ x: 2500, y: 0}" bordered>
+        <a-table :rowKey="(record) => record.id" @change="fileTableOnChange" :columns="fileTableColumns" size="middle" :pagination="fileTablePagination" :dataSource="fileTableDataSource" :loading="fileTableLoading" :customRow="fileTableCustomRow" :rowSelection="{selectedRowKeys: fileTableSelectedRowKeys, onChange: fileTableOnSelectChange}" :scroll="{ x: 2500, y: 0}" bordered>
         </a-table>
       </div>
       <template slot="footer">
@@ -19,18 +19,17 @@
 </template>
 
 <script type="text/jsx">
-  import { basicNotification } from '../../common/index.js';
-  import { attachmentPageAllImage } from '../../api/attachment.js';
-  import {downloadUrlFormatter} from '../../api/attachment.js';
-  import UploadAvatar from './UploadAvatar.vue'
+    import {basicNotification} from '../../common/index.js'
+    import {filePageAllImage, downloadUrlFormatter} from '../../api/file.js'
+    import UploadAvatar from './UploadAvatar.vue'
 
-  export default {
+    export default {
     name: 'ChangeAvatar',
     components: {UploadAvatar},
     data() {
       return {
-        attachmentTableDataSource: [],
-        attachmentTableColumns: [
+        fileTableDataSource: [],
+        fileTableColumns: [
           {
             title: 'ID',
             dataIndex: 'id',
@@ -81,10 +80,10 @@
             sorter: true,
           },
         ],
-        attachmentTableSelectedRowKeys: [],
-        attachmentTableSelectedRows: [],
-        attachmentTableLoading: false,
-        attachmentTablePagination: {
+        fileTableSelectedRowKeys: [],
+        fileTableSelectedRowKeys: [],
+        fileTableLoading: false,
+        fileTablePagination: {
           defaultCurrent: 1,
           defaultPageSize: 10,
           pageSizeOptions: ['10', '20', '30', '40'],
@@ -104,43 +103,43 @@
       },
       changeAvatar() {
         this.visible = true
-        this.attachmentTableSelectedRowKeys = []
-        this.attachmentTableSelectedRows = []
+        this.fileTableSelectedRowKeys = []
+        this.fileTableSelectedRowKeys = []
       },
       onCancel() {
         this.visible = false
         this.$emit('onCancel', this.visible)
       },
       onOk() {
-        const tableSelectedRowKeys = this.attachmentTableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        const TableSelectedRowKeys = this.fileTableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.onCancel()
-          console.log(this.attachmentTableSelectedRows)
-          this.$emit('onOk', this.attachmentTableSelectedRows[0])
+          // console.log(this.fileTableSelectedRowKeys)
+          this.$emit('onOk', this.fileTableSelectedRowKeys[0])
         } else {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
       },
-      attachmentTableCustomRow(record, index) {
+      fileTableCustomRow(record, index) {
         return {
           on: {
             click: () => {
-              this.attachmentTableSelectedRowKeys = []
-              this.attachmentTableSelectedRowKeys.push(record.id)
-              this.attachmentTableSelectedRows = []
-              this.attachmentTableSelectedRows.push(record)
+              this.fileTableSelectedRowKeys = []
+              this.fileTableSelectedRowKeys.push(record.id)
+              this.fileTableSelectedRowKeys = []
+              this.fileTableSelectedRowKeys.push(record)
             },
           },
         };
       },
-      attachmentTableOnSelectChange (selectedRowKeys, selectedRows) {
-        this.attachmentTableSelectedRowKeys = selectedRowKeys
-        this.attachmentTableSelectedRows = selectedRows;
-        console.log(this.attachmentTableSelectedRows);
+      fileTableOnSelectChange (selectedRowKeys, selectedRows) {
+        this.fileTableSelectedRowKeys = selectedRowKeys
+        this.fileTableSelectedRowKeys = selectedRows;
+        console.log(this.fileTableSelectedRowKeys);
       },
-      attachmentTableOnChange(pagination, filters, sorter) {
-        this.attachmentTablePagination = pagination;
+      fileTableOnChange(pagination, filters, sorter) {
+        this.fileTablePagination = pagination;
         this.getAttachmentTableDataSource({
           page: pagination.current,
           rows: pagination.pageSize,
@@ -150,32 +149,32 @@
         })
       },
       getAttachmentTableDataSource(params = {}) {
-        this.attachmentTableLoading = true
-        const pagination = {...this.attachmentTablePagination}
+        this.fileTableLoading = true
+        const pagination = {...this.fileTablePagination}
         let page = pagination.current || pagination.defaultCurrent
         let rows = pagination.pageSize || pagination.defaultPageSize
-        attachmentPageAllImage({
+        filePageAllImage({
           page: page, rows: rows, ...params,
         }).then((data) => {
-          this.attachmentTableLoading = false
-          this.attachmentTableDataSource = data.rows
+          this.fileTableLoading = false
+          this.fileTableDataSource = data.rows
           pagination.total = data.total
-          this.attachmentTablePagination = pagination
+          this.fileTablePagination = pagination
         }).catch((error) => {
           console.log(error)
-          this.attachmentTableLoading = false
+          this.fileTableLoading = false
         })
       },
       reloadTable() {
-        this.attachmentTableSelectedRowKeys = []
-        this.attachmentTableSelectedRows = []
-        this.attachmentTableDataSource = []
+        this.fileTableSelectedRowKeys = []
+        this.fileTableSelectedRowKeys = []
+        this.fileTableDataSource = []
         this.getAttachmentTableDataSource()
       }
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../static/less/common.less";
 </style>

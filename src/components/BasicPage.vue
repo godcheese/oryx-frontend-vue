@@ -24,7 +24,7 @@
     mounted: function() {
       setTimeout(() => {
         this.loading = false
-      }, 230)
+      }, 230);
       // const that = this
       // window.onresize = function temp() {
       //   that.height = document.documentElement.clientHeight - 94.5 + 'px;'

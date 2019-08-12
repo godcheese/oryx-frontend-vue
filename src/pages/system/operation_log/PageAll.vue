@@ -2,28 +2,27 @@
   <BasicPage>
     <div slot="container">
           <div class="table-operations">
-            <OperationLogDeleteAll :tableSelectedRowKeys="operationLogTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+            <ClearAll v-has-any-authority="['/COMPONENT/SYSTEM/OPERATION_LOG/CLEAR_ALL']" @onOk="() => {this.reloadTable()}"/>
+            <a-button v-has-any-authority="['/COMPONENT/SYSTEM/OPERATION_LOG/REFRESH']" @click="() => {this.reloadTable()}">刷新</a-button>
           </div>
           <div style="overflow: scroll;height: 450px">
-            <a-table :rowKey="(record) => record.id" @change="operationLogTableOnChange" :columns="operationLogTableColumns" size="middle" :pagination="operationLogTablePagination" :dataSource="operationLogTableDataSource" :loading="operationLogTableLoading" :customRow="operationLogTableCustomRow" :rowSelection="{selectedRowKeys: operationLogTableSelectedRowKeys, onChange: operationLogTableOnSelectChange}" :scroll="{ x: 6000, y: 0}" bordered>
+            <a-table :rowKey="(record) => record.id" @change="operationLogTableOnChange" :columns="operationLogTableColumns" size="middle" :pagination="operationLogTablePagination" :dataSource="operationLogTableDataSource" :loading="operationLogTableLoading" :customRow="operationLogTableCustomRow" :rowSelection="{selectedRowKeys: operationLogTableSelectedRowKeys, onChange: operationLogTableOnSelectChange}" :scroll="{ x: 10000, y: 0}" bordered>
             </a-table>
           </div>
   </div>
   </BasicPage>
 </template>
 
-<script>
-  import BasicPage from '../../../components/BasicPage.vue'
-  import { dictionaryListAllByKey } from '../../../api/dictionary.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {operationLogPageAll} from '../../../api/operationLog.js';
+<script type="text/jsx">
+    import BasicPage from '../../../components/BasicPage.vue'
+    import {dictionaryListAllByKey} from '../../../api/dictionary.js'
+    import {operationLogPageAll} from '../../../api/operationLog.js'
+    import ClearAll from './ClearAll.vue'
+    import {dictionaryFormatter} from "../../../api/dictionary"
 
-  import OperationLogDeleteAll from './DeleteAll.vue';
-  import {dictionaryFormatter} from "../../../api/dictionary";
-
-  export default {
+    export default {
     name: 'PageAll',
-    components: {BasicPage, OperationLogDeleteAll},
+    components: {BasicPage, ClearAll},
     data() {
       return {
         operationType: [],
@@ -85,16 +84,19 @@
             dataIndex:'handler',
             sorter: true,
           }, {
+            title: '异常堆栈',
+            dataIndex:'stackTrace',
+            sorter: true,
+            customRender: (text, row, index) => {
+            return <a-textarea defaultValue={text} rows="2" compact="true" disabled={true}/>
+            }
+          }, {
             title: 'Session ID',
             dataIndex:'sessionId',
             sorter: true,
           }, {
             title: 'Cookie',
             dataIndex:'cookie',
-            sorter: true,
-          }, {
-            title: '响应文本类型',
-            dataIndex:'contentType',
             sorter: true,
           }, {
             title: '响应状态码',
@@ -142,7 +144,7 @@
         return {
           on: {
             click: () => {
-              this.operationLogTableSelectedRowKeys = []
+              this.operationLogTableSelectedRowKeys = [];
               this.operationLogTableSelectedRowKeys.push(record.id)
             },
           },
@@ -187,6 +189,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

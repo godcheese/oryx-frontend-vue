@@ -11,8 +11,8 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <AssociateAll :tableSelectedRowKeys="apiTableSelectedRowKeys" :pageComponentId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
-            <RevokeAssociateAll :tableSelectedRowKeys="apiTableSelectedRowKeys" :pageComponentId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <AssociateAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API/ASSOCIATE_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" :viewPageComponentId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <RevokeAssociateAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API/REVOKE_ASSOCIATE_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" :viewPageComponentId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API'" :rowKey="(record) => record.id" @change="apiTableOnChange" :columns="apiTableColumns" size="middle" :pagination="apiTablePagination" :dataSource="apiTableDataSource" :loading="apiTableLoading" :customRow="apiTableCustomRow" :rowSelection="{selectedRowKeys: apiTableSelectedRowKeys, onChange: apiTableOnSelectChange}" :scroll="{ x: 1200, y: 0}" :indentSize="5" bordered>
@@ -28,19 +28,18 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../../api/dictionary.js'
-  import { basicNotification } from '../../../../common/index.js';
-  import {apiCategoryListAllAsAntdTable} from '../../../../api/apiCategory.js';
-  import {apiPageAllAsAntdTableByPageComponentIdAndApiCategoryIdList} from '../../../../api/api.js';
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../../../api/dictionary.js'
+    import {basicNotification} from '../../../../common/index.js'
+    import {apiCategoryListAllAsAntdTable} from '../../../../api/apiCategory.js'
+    import {apiPageAllAsAntdTableByPageComponentIdAndApiCategoryIdList} from '../../../../api/api.js'
+    import AssociateAll from './AssociateAll.vue'
+    import RevokeAssociateAll from './RevokeAssociateAll.vue'
 
-  import AssociateAll from './AssociateAll.vue';
-  import RevokeAssociateAll from './RevokeAssociateAll.vue';
-
-  export default {
+    export default {
     name: 'PageAll',
     components: {AssociateAll, RevokeAssociateAll},
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+        tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -139,7 +138,7 @@
           showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
         },
         visible: false,
-        pageComponentId: undefined,
+        viewPageComponentId: undefined,
       }
     },
     created() {
@@ -154,13 +153,13 @@
     },
     methods: {
       api() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.pageComponentId = tableSelectedRowKeys[0]
+        this.viewPageCategoryId = TableSelectedRowKeys[0]
         this.apiCategoryTableDataSource = []
         this.apiCategoryTableSelectedRowKeys = []
         this.apiTableDataSource = []
@@ -179,6 +178,8 @@
         return {
           on: {
             click: () => {
+              this.apiTableSelectedRowKeys = []
+              this.apiTableDataSource = []
               this.apiCategoryTableSelectedRowKeys = []
               this.apiCategoryTableSelectedRowKeys.push(record.id)
             },
@@ -196,10 +197,10 @@
         })
       },
       getApiCategoryTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
+        let TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
           this.apiCategoryTableLoading = true
-          apiCategoryListAllAsAntdTable({pageComponentId: tableSelectedRowKeys[0],...params}).then((data) => {
+          apiCategoryListAllAsAntdTable({viewPageComponentId: TableSelectedRowKeys[0],...params}).then((data) => {
             this.apiCategoryTableLoading = false
             this.apiCategoryTableDataSource = data
           }).catch((error) => {
@@ -232,16 +233,16 @@
         })
       },
       getApiTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys;
+        let TableSelectedRowKeys = this.TableSelectedRowKeys;
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.apiTableLoading = true
           const pagination = {...this.apiTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           apiPageAllAsAntdTableByPageComponentIdAndApiCategoryIdList({
             page: page, rows: rows, ...params,
-            pageComponentId: tableSelectedRowKeys[0],
+            viewPageComponentId: TableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.apiTableLoading = false
@@ -268,11 +269,11 @@
     },
     watch: {
       apiCategoryTableSelectedRowKeys() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.getApiTableDataSource({
-            pageComponentId: tableSelectedRowKeys[0],
+            viewPageComponentId: TableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys
           })
         } else {
@@ -284,6 +285,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../../static/less/common.less";
 </style>

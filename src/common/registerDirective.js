@@ -4,21 +4,22 @@ const hasAnyAuthority = {
   install(Vue) {
     Vue.directive('hasAnyAuthority', {
       bind(el, binding, vnode) {
-        const authority = vnode.context.$store.state.user.currentUser.authority
+        const authority = vnode.context.$store.state.user.currentUser.authority;
         const value = binding.value || []
-        let display = false
+        let display = false;
         value.map((v) => {
           if(authority.includes(v.toUpperCase())) {
-            display = true
+            display = true;
+            return display
           }
-        })
-        const systemAdminRole = vnode.context.$store.state.user.systemAdminRole
-        const rolePrefix = vnode.context.$store.state.user.rolePrefix
+        });
+        const systemAdminRole = vnode.context.$store.state.user.systemAdminRole;
+        const rolePrefix = vnode.context.$store.state.user.rolePrefix;
         systemAdminRole.map((v) => {
           if(authority.includes(rolePrefix + v.toUpperCase())) {
             display = true
           }
-        })
+        });
         if (!display) {
           if (!el.parentNode) {
             el.style.display = 'none'
@@ -29,25 +30,25 @@ const hasAnyAuthority = {
       }
     })
   }
-}
+};
 
 const hasAuthority = {
   install(Vue) {
     Vue.directive('hasAuthority', {
       bind(el, binding, vnode) {
-        let authority = vnode.context.$store.state.user.currentUser.authority
-        let value = binding.value || ''
-        let display = false
+        let authority = vnode.context.$store.state.user.currentUser.authority;
+        let value = binding.value || '';
+        let display = false;
         if(authority.includes(value.toUpperCase())) {
           display = true
         }
-        const systemAdminRole = vnode.context.$store.state.user.systemAdminRole
-        const rolePrefix = vnode.context.$store.state.user.rolePrefix
+        const systemAdminRole = vnode.context.$store.state.user.systemAdminRole;
+        const rolePrefix = vnode.context.$store.state.user.rolePrefix;
         systemAdminRole.map((v) => {
           if(authority.includes(rolePrefix + v.toUpperCase())) {
             display = true
           }
-        })
+        });
         if (!display) {
           if (!el.parentNode) {
             el.style.display = 'none'
@@ -58,7 +59,7 @@ const hasAuthority = {
       }
     })
   }
-}
+};
 
 // const hasRole = {
 //   install(Vue) {
@@ -95,13 +96,13 @@ const hasAuthority = {
 const plugins = [
   hasAnyAuthority,
   hasAuthority
-]
+];
 
 /**
  * 注册自定义指令
  */
 plugins.map((plugin) => {
   Vue.use(plugin)
-})
+});
 
 export default Vue

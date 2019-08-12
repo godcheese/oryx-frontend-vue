@@ -17,9 +17,9 @@
 </template>
 
 <script>
-  import HeaderAvatar from '../components/HeaderAvatar.vue'
+    import HeaderAvatar from '../components/HeaderAvatar.vue'
 
-  export default {
+    export default {
     name: 'BasicHeader',
     components: { HeaderAvatar },
     props: {

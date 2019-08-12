@@ -11,8 +11,8 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ApiGrantAll :tableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
-            <ApiRevokeAll :tableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/API/API_GRANT_ALL']" :TableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/API/API_REVOKE_ALL']" :TableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API'" :rowKey="(record) => record.id" @change="apiTableOnChange" :columns="apiTableColumns" size="middle" :pagination="apiTablePagination" :dataSource="apiTableDataSource" :loading="apiTableLoading" :customRow="apiTableCustomRow" :rowSelection="{selectedRowKeys: apiTableSelectedRowKeys, onChange: apiTableOnSelectChange}" :scroll="{ x: 2000, y: 0}" :indentSize="5" bordered>
@@ -28,19 +28,19 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../../api/dictionary.js'
-  import { basicNotification } from '../../../../common/index.js';
-  import {apiCategoryListAllAsAntdTableByRoleId} from '../../../../api/apiCategory.js';
-  import {apiPageAllAsAntdTableByRoleIdAndApiCategoryIdList} from '../../../../api/api.js';
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../../../api/dictionary.js'
+    import {basicNotification} from '../../../../common/index.js'
+    import {apiCategoryListAllAsAntdTableByRoleId} from '../../../../api/apiCategory.js'
+    import {apiPageAllAsAntdTableByRoleIdAndApiCategoryIdList} from '../../../../api/api.js'
 
-  import ApiGrantAll from './GrantAll.vue';
-  import ApiRevokeAll from './RevokeAll.vue';
+    import ApiGrantAll from './GrantAll.vue'
+    import ApiRevokeAll from './RevokeAll.vue'
 
-  export default {
+    export default {
     name: 'PageAll',
     components: {ApiGrantAll, ApiRevokeAll,},
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -154,13 +154,13 @@
     },
     methods: {
       api() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.roleId = tableSelectedRowKeys[0]
+        this.roleId = TableSelectedRowKeys[0]
         this.apiCategoryTableDataSource = []
         this.apiCategoryTableSelectedRowKeys = []
         this.apiTableDataSource = []
@@ -196,10 +196,10 @@
         })
       },
       getApiCategoryTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
+        let TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
           this.apiCategoryTableLoading = true
-          apiCategoryListAllAsAntdTableByRoleId({roleId: tableSelectedRowKeys[0],...params}).then((data) => {
+          apiCategoryListAllAsAntdTableByRoleId({roleId: TableSelectedRowKeys[0],...params}).then((data) => {
             this.apiCategoryTableLoading = false
             this.apiCategoryTableDataSource = data
           }).catch((error) => {
@@ -232,16 +232,16 @@
           })
       },
       getApiTableDataSource(params = {}) {
-        let tableSelectedRowKeys = this.tableSelectedRowKeys;
+        let TableSelectedRowKeys = this.TableSelectedRowKeys;
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.apiTableLoading = true
           const pagination = {...this.apiTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           apiPageAllAsAntdTableByRoleIdAndApiCategoryIdList({
             page: page, rows: rows, ...params,
-            roleId: tableSelectedRowKeys[0],
+            roleId: TableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.apiTableLoading = false
@@ -268,11 +268,11 @@
     },
     watch: {
       apiCategoryTableSelectedRowKeys() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
+        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
           this.getApiTableDataSource({
-            roleId: tableSelectedRowKeys[0],
+            roleId: TableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys
           })
         } else {
@@ -284,6 +284,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../../static/less/common.less";
 </style>

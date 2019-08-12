@@ -1,4 +1,5 @@
 import request from '../api/index.js'
+
 const preUrlPath = '/api/user/role';
 
 export const rolePageAll = ((params = {}) => {
@@ -7,14 +8,14 @@ export const rolePageAll = ((params = {}) => {
     method: 'get',
     data: params
   })
-})
+});
 
 export const roleGetOneByRoleId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const roleAddOne = ((params = {}) => {
   return request({
@@ -22,7 +23,7 @@ export const roleAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const roleSaveOne = ((params = {}) => {
   return request({
@@ -30,7 +31,7 @@ export const roleSaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const roleDeleteAll = ((params = {}) => {
   return request({
@@ -38,7 +39,7 @@ export const roleDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const roleGrantAllByUserIdAndRoleIdList = ((roleIdList, userId) => {
   return request({
@@ -46,7 +47,7 @@ export const roleGrantAllByUserIdAndRoleIdList = ((roleIdList, userId) => {
     method: 'post',
     data: {'roleIdList[]': roleIdList, 'userId': userId}
   })
-})
+});
 
 export const roleRevokeAllByUserIdAndRoleIdList = ((roleIdList, userId) => {
   return request({
@@ -54,7 +55,7 @@ export const roleRevokeAllByUserIdAndRoleIdList = ((roleIdList, userId) => {
     method: 'post',
     data: {'roleIdList[]': roleIdList, 'userId': userId}
   })
-})
+});
 
 
 export const rolePageAllAsAntdTableByUserId = ((params = {}) => {
@@ -63,4 +64,4 @@ export const rolePageAllAsAntdTableByUserId = ((params = {}) => {
     method: 'get',
     data: params
   })
-})
+});

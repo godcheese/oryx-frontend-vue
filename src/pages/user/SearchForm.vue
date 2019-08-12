@@ -59,10 +59,10 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey } from '../../api/dictionary.js'
-  import { departmentListAllAsAntdTreeNode } from '../../api/department.js'
+    import {dictionaryListAllByKey} from '../../api/dictionary.js'
+    import {departmentListAllAsAntdTreeNode} from '../../api/department.js'
 
-  export default {
+    export default {
     name: 'SearchForm',
     data() {
       return {

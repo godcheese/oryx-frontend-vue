@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <ApiCategoryAddOne @onOk="reloadTable"/>
-            <ApiCategoryEditOne :tableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ApiCategoryDeleteAll :tableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ApiCategoryAddOne v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ApiCategoryEditOne v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ApiCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API 分类'" :rowKey="(record) => record.id" @change="apiCategoryTableOnChange" :columns="apiCategoryTableColumns" size="middle" :pagination="false" :dataSource="apiCategoryTableDataSource" :loading="apiCategoryTableLoading" :customRow="apiCategoryTableCustomRow" :rowSelection="{selectedRowKeys: apiCategoryTableSelectedRowKeys, onChange: apiCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,9 +15,9 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ApiAddOne @onOk="() => {this.getApiTableDataSource()}"/>
-            <ApiEditOne :tableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
-            <ApiDeleteAll :tableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiAddOne v-has-any-authority="['/COMPONENT/USER/API_ADD_ONE']" :TableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.getApiTableDataSource()}"/>
+            <ApiEditOne v-has-any-authority="['/COMPONENT/USER/API_EDIT_ONE']" :TableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiDeleteAll v-has-any-authority="['/COMPONENT/USER/API_DELETE_ALL']" :TableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API'" :rowKey="(record) => record.id" @change="apiTableOnChange" :columns="apiTableColumns" size="middle" :pagination="apiTablePagination" :dataSource="apiTableDataSource" :loading="apiTableLoading" :customRow="apiTableCustomRow" :rowSelection="{selectedRowKeys: apiTableSelectedRowKeys, onChange: apiTableOnSelectChange}" :scroll="{ x: 2000, y: 0}" :indentSize="5" bordered>
@@ -30,21 +30,17 @@
 </template>
 
 <script>
-  import BasicPage from '../../../components/BasicPage.vue'
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../api/dictionary.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {apiCategoryListAllAsAntdTable} from '../../../api/apiCategory.js';
-  import {apiPageAllAsAntdTableByApiCategoryIdList} from '../../../api/api.js';
+    import BasicPage from '../../../components/BasicPage.vue'
+    import {apiCategoryListAllAsAntdTable} from '../../../api/apiCategory.js'
+    import {apiPageAllAsAntdTableByApiCategoryIdList} from '../../../api/api.js'
+    import ApiCategoryAddOne from '../api_category/AddOne.vue'
+    import ApiCategoryEditOne from '../api_category/EditOne.vue'
+    import ApiCategoryDeleteAll from '../api_category/DeleteAll.vue'
+    import ApiAddOne from './AddOne.vue'
+    import ApiEditOne from './EditOne.vue'
+    import ApiDeleteAll from './DeleteAll.vue'
 
-  import ApiCategoryAddOne from '../api_category/AddOne.vue';
-  import ApiCategoryEditOne from '../api_category/EditOne.vue';
-  import ApiCategoryDeleteAll from '../api_category/DeleteAll.vue';
-
-  import ApiAddOne from './AddOne.vue';
-  import ApiEditOne from './EditOne.vue';
-  import ApiDeleteAll from './DeleteAll.vue';
-
-  export default {
+    export default {
     name: 'PageAll',
     components: {BasicPage, ApiCategoryAddOne, ApiCategoryEditOne, ApiCategoryDeleteAll, ApiAddOne, ApiEditOne, ApiDeleteAll},
     data() {
@@ -156,6 +152,8 @@
         return {
           on: {
             click: () => {
+              this.apiTableSelectedRowKeys = []
+              this.apiTableDataSource = []
               this.apiCategoryTableSelectedRowKeys = []
               this.apiCategoryTableSelectedRowKeys.push(record.id)
             },
@@ -254,6 +252,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

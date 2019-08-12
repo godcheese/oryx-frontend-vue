@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageCategoryAddOne @onOk="reloadTable"/>
-            <ViewPageCategoryEditOne :tableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ViewPageCategoryDeleteAll :tableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewPageCategoryAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewPageCategoryEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewPageCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面分类'" :rowKey="(record) => record.id" @change="viewPageCategoryTableOnChange" :columns="viewPageCategoryTableColumns" size="middle" :pagination="false" :dataSource="viewPageCategoryTableDataSource" :loading="viewPageCategoryTableLoading" :customRow="viewPageCategoryTableCustomRow" :rowSelection="{selectedRowKeys: viewPageCategoryTableSelectedRowKeys, onChange: viewPageCategoryTableOnSelectChange}" :scroll="{ x: 800, y: 0}" :indentSize="5" bordered>
@@ -15,11 +15,10 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageAddOne @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageEditOne :tableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageDeleteAll :tableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageDeleteAll :tableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageApi :tableSelectedRowKeys="viewPageTableSelectedRowKeys"/>
+            <ViewPageAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_ADD_ONE']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_EDIT_ONE']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_DELETE_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageApiPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_API_PAGE_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面'" :rowKey="(record) => record.id" @change="viewPageTableOnChange" :columns="viewPageTableColumns" size="middle" :pagination="viewPageTablePagination" :dataSource="viewPageTableDataSource" :loading="viewPageTableLoading" :customRow="viewPageTableCustomRow" :rowSelection="{selectedRowKeys: viewPageTableSelectedRowKeys, onChange: viewPageTableOnSelectChange}" :scroll="{ x: 1600, y: 0}" :indentSize="5" bordered>
@@ -28,10 +27,10 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageComponentAddOne @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentEditOne :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentDeleteAll :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentApi :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys"/>
+            <ViewPageComponentAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_ADD_ONE']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_EDIT_ONE']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_DELETE_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentApiPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API_PAGE_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面组件'" :rowKey="(record) => record.id" @change="viewPageComponentTableOnChange" :columns="viewPageComponentTableColumns" size="middle" :pagination="viewPageComponentTablePagination" :dataSource="viewPageComponentTableDataSource" :loading="viewPageComponentTableLoading" :customRow="viewPageComponentTableCustomRow" :rowSelection="{selectedRowKeys: viewPageComponentTableSelectedRowKeys, onChange: viewPageComponentTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" :indentSize="5" bordered>
@@ -44,30 +43,27 @@
 </template>
 
 <script>
-  import BasicPage from '../../../components/BasicPage.vue'
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../api/dictionary.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {viewPageCategoryListAllAsAntdTable} from '../../../api/viewPageCategory.js';
-  import {viewPagePageAllAsAntdTableByPageCategoryIdList} from '../../../api/viewPage.js';
-  import {viewPageComponentPageAllAsAntdTableByPageIdList} from '../../../api/viewPageComponent.js';
+    import BasicPage from '../../../components/BasicPage.vue'
+    import {dictionaryFormatter, dictionaryListAllByKey} from '../../../api/dictionary.js'
+    import {viewPageCategoryListAllAsAntdTable} from '../../../api/viewPageCategory.js'
+    import {viewPagePageAllAsAntdTableByViewPageCategoryIdList} from '../../../api/viewPage.js'
+    import {viewPageComponentPageAllAsAntdTableByViewPageIdList} from '../../../api/viewPageComponent.js'
+    import ViewPageCategoryAddOne from '../view_page_category/AddOne.vue'
+    import ViewPageCategoryEditOne from '../view_page_category/EditOne.vue'
+    import ViewPageCategoryDeleteAll from '../view_page_category/DeleteAll.vue'
+    import ViewPageAddOne from './AddOne.vue'
+    import ViewPageEditOne from './EditOne.vue'
+    import ViewPageDeleteAll from './DeleteAll.vue'
+    import ViewPageApiPageAll from './view_page_api/PageAll.vue'
 
-  import ViewPageCategoryAddOne from '../view_page_category/AddOne.vue';
-  import ViewPageCategoryEditOne from '../view_page_category/EditOne.vue';
-  import ViewPageCategoryDeleteAll from '../view_page_category/DeleteAll.vue';
+    import ViewPageComponentAddOne from '../view_page_component/AddOne.vue'
+    import ViewPageComponentEditOne from '../view_page_component/EditOne.vue'
+    import ViewPageComponentDeleteAll from '../view_page_component/DeleteAll.vue'
+    import ViewPageComponentApiPageAll from './view_page_component_api/PageAll.vue'
 
-  import ViewPageAddOne from './AddOne.vue';
-  import ViewPageEditOne from './EditOne.vue';
-  import ViewPageDeleteAll from './DeleteAll.vue';
-  import ViewPageApi from './view_page_api/PageAll.vue';
-
-  import ViewPageComponentAddOne from '../view_page_component/AddOne.vue';
-  import ViewPageComponentEditOne from '../view_page_component/EditOne.vue';
-  import ViewPageComponentDeleteAll from '../view_page_component/DeleteAll.vue';
-  import ViewPageComponentApi from './view_page_component_api/PageAll.vue';
-
-  export default {
+    export default {
     name: 'PageAll',
-    components: {BasicPage, ViewPageCategoryAddOne, ViewPageCategoryEditOne, ViewPageCategoryDeleteAll, ViewPageAddOne, ViewPageEditOne, ViewPageDeleteAll, ViewPageComponentAddOne, ViewPageComponentEditOne, ViewPageComponentDeleteAll,ViewPageApi, ViewPageComponentApi},
+    components: {BasicPage, ViewPageCategoryAddOne, ViewPageCategoryEditOne, ViewPageCategoryDeleteAll, ViewPageAddOne, ViewPageEditOne, ViewPageDeleteAll, ViewPageComponentAddOne, ViewPageComponentEditOne, ViewPageComponentDeleteAll,ViewPageApiPageAll, ViewPageComponentApiPageAll},
     data() {
       return {
         isOrNot: [],
@@ -162,7 +158,7 @@
             width: 50
           }, {
             title: '组件类型',
-            dataIndex: 'pageComponentType',
+            dataIndex: 'viewPageComponentType',
             sorter: true,
             customRender: (text, row, index) => dictionaryFormatter(text, this.viewPageComponentType)
           }, {
@@ -233,6 +229,8 @@
         return {
           on: {
             click: () => {
+              this.viewPageTableSelectedRowKeys = []
+              this.viewPageTableDataSource = []
               this.viewPageCategoryTableSelectedRowKeys = []
               this.viewPageCategoryTableSelectedRowKeys.push(record.id)
             },
@@ -289,9 +287,9 @@
           const pagination = {...this.viewPageTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
-          viewPagePageAllAsAntdTableByPageCategoryIdList({
+          viewPagePageAllAsAntdTableByViewPageCategoryIdList({
             page: page, rows: rows, ...params,
-            pageCategoryIdList: viewPageCategoryTableSelectedRowKeys,
+            viewPageCategoryIdList: viewPageCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.viewPageTableLoading = false
             this.viewPageTableDataSource = data.rows
@@ -342,9 +340,9 @@
           const pagination = {...this.viewPageComponentTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
-          viewPageComponentPageAllAsAntdTableByPageIdList({
+          viewPageComponentPageAllAsAntdTableByViewPageIdList({
             page: page, rows: rows, ...params,
-            pageIdList: viewPageTableSelectedRowKeys,
+            viewPageIdList: viewPageTableSelectedRowKeys,
           }).then((data) => {
             this.viewPageComponentTableLoading = false
             this.viewPageComponentTableDataSource = data.rows
@@ -374,7 +372,7 @@
         let viewPageCategoryTableSelectedRowKeys = this.viewPageCategoryTableSelectedRowKeys
         if(viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0) {
           this.getViewPageTableDataSource({
-            pageCategoryIdList: viewPageCategoryTableSelectedRowKeys
+            viewPageCategoryIdList: viewPageCategoryTableSelectedRowKeys
           })
         } else {
           this.viewPageTableDataSource = []
@@ -386,7 +384,7 @@
         console.log(viewPageTableSelectedRowKeys)
         if(viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0) {
           this.getViewPageComponentTableDataSource({
-            pageIdList: viewPageTableSelectedRowKeys
+            viewPageIdList: viewPageTableSelectedRowKeys
           })
         } else {
           this.viewPageComponentTableDataSource = []
@@ -397,6 +395,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

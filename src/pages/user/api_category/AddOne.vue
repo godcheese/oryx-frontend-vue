@@ -40,11 +40,14 @@
 </template>
 
 <script>
-  import { apiCategoryAddOne, apiCategoryListAllAsAntdTreeNode } from '../../../api/apiCategory.js'
-  import { basicNotification } from '../../../common/index.js';
+    import {apiCategoryAddOne, apiCategoryGetOneByApiCategoryId, apiCategoryListAllAsAntdTreeNode} from '../../../api/apiCategory.js'
+    import {basicNotification} from '../../../common/index.js'
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -59,6 +62,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+          this.apiCategoryGetOneByApiCategoryId(TableSelectedRowKeys[0]);
+        }
         this.visible = true
       },
       onCancel() {
@@ -78,10 +85,18 @@
           }
         });
       },
+      apiCategoryGetOneByApiCategoryId(id) {
+        apiCategoryGetOneByApiCategoryId(id).then((data) => {
+          data.parentId = data.parentId !== undefined && data.parentId !== null ? data.parentId + '' : ''
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

@@ -1,4 +1,4 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/user/api';
 
@@ -8,7 +8,7 @@ export const apiPageAllAsAntdTableByRoleIdAndApiCategoryIdList = ( (params = {})
     data: params,
     method: 'get'
   })
-})
+});
 
 export const apiPageAllAsAntdTableByApiCategoryIdList = ( (params = {}) => {
   return request({
@@ -16,14 +16,14 @@ export const apiPageAllAsAntdTableByApiCategoryIdList = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const apiGetOneByApiId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const apiAddOne = ((params = {}) => {
   return request({
@@ -31,7 +31,7 @@ export const apiAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const apiSaveOne = ((params = {}) => {
   return request({
@@ -39,7 +39,7 @@ export const apiSaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const apiDeleteAll = ((params = {}) => {
   return request({
@@ -47,7 +47,7 @@ export const apiDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const apiGrantAll = ((apiIdList, roleId) => {
   return request({
@@ -55,7 +55,7 @@ export const apiGrantAll = ((apiIdList, roleId) => {
     method: 'post',
     data: {'apiIdList[]': apiIdList, 'roleId': roleId}
   })
-})
+});
 
 export const apiRevokeAll = ((apiIdList, roleId) => {
   return request({
@@ -63,22 +63,22 @@ export const apiRevokeAll = ((apiIdList, roleId) => {
     method: 'post',
     data: {'apiIdList[]': apiIdList, 'roleId': roleId}
   })
-})
+});
 
-export const apiPageAllAsAntdTableByPageIdAndApiCategoryIdList = ( (params = {}) => {
+export const apiPageAllAsAntdTableByViewPageIdAndApiCategoryIdList = ( (params = {}) => {
   return request({
-    url: `${preUrlPath}/page_all_as_antd_table_by_page_id_and_api_category_id_list`,
+    url: `${preUrlPath}/page_all_as_antd_table_by_view_page_id_and_api_category_id_list`,
     data: params,
     method: 'get'
   })
-})
+});
 
 export const apiPageAllAsAntdTableByPageComponentIdAndApiCategoryIdList = ( (params = {}) => {
   return request({
-    url: `${preUrlPath}/page_all_as_antd_table_by_page_component_id_and_api_category_id_list`,
+    url: `${preUrlPath}/page_all_as_antd_table_by_view_page_component_id_and_api_category_id_list`,
     data: params,
     method: 'get'
   })
-})
+});
 
 

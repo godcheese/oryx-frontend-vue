@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <DictionaryCategoryAddOne @onOk="reloadTable"/>
-            <DictionaryCategoryEditOne :tableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <DictionaryCategoryDeleteAll :tableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <DictionaryCategoryAddOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
+            <DictionaryCategoryEditOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
+            <DictionaryCategoryDeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '数据字典分类'" :rowKey="(record) => record.id" @change="dictionaryCategoryTableOnChange" :columns="dictionaryCategoryTableColumns" size="middle" :pagination="false" :dataSource="dictionaryCategoryTableDataSource" :loading="dictionaryCategoryTableLoading" :customRow="dictionaryCategoryTableCustomRow" :rowSelection="{selectedRowKeys: dictionaryCategoryTableSelectedRowKeys, onChange: dictionaryCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,10 +15,10 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <DictionaryAddOne @onOk="() => {this.getDictionaryTableDataSource()}"/>
-            <DictionaryEditOne :tableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
-            <DictionaryDeleteAll :tableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
-            <DictionarySyncToMemory @onOk="() => {this.reloadDictionaryTable()}"/>
+            <DictionaryAddOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_ADD_ONE']" :TableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.getDictionaryTableDataSource()}"/>
+            <DictionaryEditOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_EDIT_ONE']" :TableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
+            <DictionaryDeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_DELETE_ALL']" :TableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
+            <DictionarySyncToMemory v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_SYNC_TO_MEMORY']" @onOk="() => {this.reloadDictionaryTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '数据字典'" :rowKey="(record) => record.id" @change="dictionaryTableOnChange" :columns="dictionaryTableColumns" size="middle" :pagination="dictionaryTablePagination" :dataSource="dictionaryTableDataSource" :loading="dictionaryTableLoading" :customRow="dictionaryTableCustomRow" :rowSelection="{selectedRowKeys: dictionaryTableSelectedRowKeys, onChange: dictionaryTableOnSelectChange}" :scroll="{ x: 2000, y: 0}" :indentSize="5" bordered>
@@ -31,22 +31,20 @@
 </template>
 
 <script>
-  import BasicPage from '../../../components/BasicPage.vue'
-  import { dictionaryListAllByKey, dictionaryFormatter } from '../../../api/dictionary.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {dictionaryCategoryListAllAsAntdTable} from '../../../api/dictionaryCategory.js';
-  import {dictionaryPageAllByDictionaryCategoryIdList} from '../../../api/dictionary.js';
+    import BasicPage from '../../../components/BasicPage.vue'
+    import {dictionaryFormatter, dictionaryListAllByKey, dictionaryPageAllByDictionaryCategoryIdList} from '../../../api/dictionary.js'
+    import {dictionaryCategoryListAllAsAntdTable} from '../../../api/dictionaryCategory.js'
 
-  import DictionaryCategoryAddOne from '../dictionary_category/AddOne.vue';
-  import DictionaryCategoryEditOne from '../dictionary_category/EditOne.vue';
-  import DictionaryCategoryDeleteAll from '../dictionary_category/DeleteAll.vue';
+    import DictionaryCategoryAddOne from '../dictionary_category/AddOne.vue'
+    import DictionaryCategoryEditOne from '../dictionary_category/EditOne.vue'
+    import DictionaryCategoryDeleteAll from '../dictionary_category/DeleteAll.vue'
 
-  import DictionaryAddOne from './AddOne.vue';
-  import DictionaryEditOne from './EditOne.vue';
-  import DictionaryDeleteAll from './DeleteAll.vue';
-  import DictionarySyncToMemory from './SyncToMemory.vue';
+    import DictionaryAddOne from './AddOne.vue'
+    import DictionaryEditOne from './EditOne.vue'
+    import DictionaryDeleteAll from './DeleteAll.vue'
+    import DictionarySyncToMemory from './SyncToMemory.vue'
 
-  export default {
+    export default {
     name: 'PageAll',
     components: {BasicPage, DictionaryCategoryAddOne, DictionaryCategoryEditOne, DictionaryCategoryDeleteAll, DictionaryAddOne, DictionaryEditOne, DictionaryDeleteAll, DictionarySyncToMemory},
     data() {
@@ -84,14 +82,6 @@
         ],
         dictionaryCategoryTableSelectedRowKeys: [],
         dictionaryCategoryTableLoading: false,
-        dictionaryCategoryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
         dictionaryTableDataSource: [],
         dictionaryTableColumns: [
           {
@@ -168,18 +158,20 @@
     },
     methods: {
       onCancel() {
-        this.visible = false
+        this.visible = false;
         this.$emit('onCancel', this.visible)
       },
       onOk() {
-        this.visible = false
+        this.visible = false;
         this.$emit('onOk')
       },
       dictionaryCategoryTableCustomRow(record, index) {
         return {
           on: {
             click: () => {
-              this.dictionaryCategoryTableSelectedRowKeys = []
+              this.dictionaryTableSelectedRowKeys = [];
+              this.dictionaryTableDataSource = [];
+              this.dictionaryCategoryTableSelectedRowKeys = [];
               this.dictionaryCategoryTableSelectedRowKeys.push(record.id)
             },
           },
@@ -196,26 +188,26 @@
         })
       },
       getDictionaryCategoryTableDataSource(params = {}) {
-          this.dictionaryCategoryTableLoading = true
+          this.dictionaryCategoryTableLoading = true;
           dictionaryCategoryListAllAsAntdTable({...params}).then((data) => {
-            this.dictionaryCategoryTableLoading = false
+            this.dictionaryCategoryTableLoading = false;
             this.dictionaryCategoryTableDataSource = data
           }).catch((error) => {
-            console.log(error)
-            this.dictionaryCategoryTableLoading = false
+              this.dictionaryCategoryTableLoading = false;
+              console.log(error)
           })
       },
       dictionaryTableCustomRow(record, index) {
         return {
           on: {
             click: () => {
-              this.dictionaryTableSelectedRowKeys = []
+              this.dictionaryTableSelectedRowKeys = [];
               this.dictionaryTableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
-      dictionaryTableOnSelectChange (selectedRowKeys) {
+      dictionaryTableOnSelectChange (selectedRowKeys, selectedRows) {
         this.dictionaryTableSelectedRowKeys = selectedRowKeys
       },
       dictionaryTableOnChange(pagination, filters, sorter) {
@@ -229,19 +221,19 @@
         })
       },
       getDictionaryTableDataSource(params = {}) {
-        let dictionaryCategoryTableSelectedRowKeys = this.dictionaryCategoryTableSelectedRowKeys
+        let dictionaryCategoryTableSelectedRowKeys = this.dictionaryCategoryTableSelectedRowKeys;
         if (dictionaryCategoryTableSelectedRowKeys && dictionaryCategoryTableSelectedRowKeys.length > 0) {
-          this.dictionaryTableLoading = true
-          const pagination = {...this.dictionaryTablePagination}
-          let page = pagination.current || pagination.defaultCurrent
-          let rows = pagination.pageSize || pagination.defaultPageSize
+          this.dictionaryTableLoading = true;
+          const pagination = {...this.dictionaryTablePagination};
+          let page = pagination.current || pagination.defaultCurrent;
+          let rows = pagination.pageSize || pagination.defaultPageSize;
           dictionaryPageAllByDictionaryCategoryIdList({
             page: page, rows: rows, ...params,
             dictionaryCategoryIdList: dictionaryCategoryTableSelectedRowKeys,
           }).then((data) => {
-            this.dictionaryTableLoading = false
-            this.dictionaryTableDataSource = data.rows
-            pagination.total = data.total
+            this.dictionaryTableLoading = false;
+            this.dictionaryTableDataSource = data.rows;
+            pagination.total = data.total;
             this.dictionaryTablePagination = pagination
           }).catch((error) => {
             console.log(error)
@@ -249,27 +241,28 @@
           })
         }
       },
-      reloadTable() {
-        this.getDictionaryCategoryTableDataSource()
-        this.dictionaryCategoryTableSelectedRowKeys = []
-        this.dictionaryTableDataSource = []
+      reloadDictionaryCategoryTable() {
+        this.getDictionaryCategoryTableDataSource();
+        this.dictionaryCategoryTableSelectedRowKeys = [];
+        this.dictionaryTableDataSource = [];
         this.dictionaryTableSelectedRowKeys = []
       },
       reloadDictionaryTable() {
-        this.dictionaryTableSelectedRowKeys = []
-        this.dictionaryTableDataSource = []
+        this.dictionaryTableSelectedRowKeys = [];
+        this.dictionaryTableDataSource = [];
         this.getDictionaryTableDataSource()
       }
     },
     watch: {
       dictionaryCategoryTableSelectedRowKeys() {
-        let dictionaryCategoryTableSelectedRowKeys = this.dictionaryCategoryTableSelectedRowKeys
+        let dictionaryCategoryTableSelectedRowKeys = this.dictionaryCategoryTableSelectedRowKeys;
+          // console.log(dictionaryCategoryTableSelectedRowKeys);
         if(dictionaryCategoryTableSelectedRowKeys && dictionaryCategoryTableSelectedRowKeys.length > 0) {
           this.getDictionaryTableDataSource({
             dictionaryCategoryIdList: dictionaryCategoryTableSelectedRowKeys
           })
         } else {
-          this.dictionaryTableDataSource = []
+          this.dictionaryTableDataSource = [];
           this.dictionaryTableSelectedRowKeys = []
         }
       }
@@ -277,6 +270,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

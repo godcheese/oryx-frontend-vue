@@ -7,17 +7,18 @@ import store from './store'
 import './common/index.js'
 import './common/registerDirective.js'
 
-import AntDesignVue from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';  // or 'ant-design-vue/dist/antd.less'
-Vue.use(AntDesignVue)
-
+import AntDesignVue from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css' // or 'ant-design-vue/dist/antd.less'
 // mavon editor markdown editor
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-Vue.use(mavonEditor)
 
-Vue.config.productionTip = false
-Vue.config.devtools = true
+Vue.use(AntDesignVue);
+
+Vue.use(mavonEditor);
+
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -25,4 +26,4 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
-})
+});

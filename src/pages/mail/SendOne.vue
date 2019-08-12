@@ -47,15 +47,15 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey } from '../../api/dictionary.js'
-  import { basicNotification } from '../../common/index.js';
-  import {mailGetOneByMailId} from '../../api/mail.js';
-  import {mailAddOne} from "../../api/mail";
+    import {dictionaryListAllByKey} from '../../api/dictionary.js'
+    import {basicNotification} from '../../common/index.js'
+    import {mailGetOneByMailId} from '../../api/mail.js'
+    import {mailAddOne} from "../../api/mail"
 
-  export default {
+    export default {
     name: 'SendOne',
     props: {
-      tableSelectedRowKeys: {type: Array, required: true}
+      TableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -66,15 +66,15 @@
     },
     methods: {
        copyAndSendOne() {
-        const tableSelectedRowKeys = this.tableSelectedRowKeys
-        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
-          this.mailGetOneByMailId(tableSelectedRowKeys[0]);
-        }
          dictionaryListAllByKey('IS_OR_NOT').then((data) => {
            this.isOrNot = data;
          }).catch((error) => {
            console.log(error)
          })
+         const TableSelectedRowKeys = this.TableSelectedRowKeys
+         if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+           this.mailGetOneByMailId(TableSelectedRowKeys[0])
+         }
         this.visible = true
       },
       onCancel() {
@@ -106,6 +106,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../static/less/common.less";
 </style>

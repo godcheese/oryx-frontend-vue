@@ -2,7 +2,7 @@
   <a-layout-sider :class="[siderTheme, 'sider', 'fixed-sider', 'shadow']" width="256px" :collapsible="collapsible" v-model="collapsed" :trigger="null">
     <div :class="['logo', siderTheme]">
       <router-link to="/">
-        <img src="../../static/img/nimrod_logo.png" >
+        <img src="../../static/img/oryx_logo.png">
         <h1>{{webName}}</h1>
       </router-link>
     </div>
@@ -12,86 +12,85 @@
   </a-layout-sider>
 </template>
 <script>
-  import Menu from '../components/Menu.vue'
+    import Menu from '../components/Menu.vue'
 
-  export default {
-    name: "SiderMenu",
-    components: { Menu },
-    props: {
-      collapsible: {
-        type: Boolean,
-        required: false,
-        default: false
-      },
-      collapsed: {
-        type: Boolean,
-        required: false,
-        default: false
-      },
-      siderMenuData: {
-        type: Array,
-        required: true
-      },
-      siderTheme: {
-        type: String,
-        required: false,
-        default: 'dark'
-      },
-      webName: {
-        type: String,
-      },
-      isMobile: {
-        type:Boolean
-      }
-    },
-    data () {
-      return {
-        currentPath: [],
-        openKeys: [],
-        selectedKeys: [],
-      }
-    },
-    computed: {
-    },
-    methods: {
-      onClick (e) {
-        console.log('click ', e)
-        this.currentPath = e.key
-      },
-      // handleOpenChange(openKeys) {
-      // },
-      // collapsedChange(val, oldVal) {
-      // },
-      // selected({ item, key, selectedKeys }) {
-      //   this.selectedKeys = selectedKeys
-      //   console.log(item)
-      // },
-      // onSelect(obj) {
-      //   this.$emit('siderMenuSelect', obj)
-      // }
-    },
-    watch: {
-      openKeys (val) {
-        console.log('openKeys', val)
-      },
-      currentPath(val) {
-        console.log(val);
-        this.$router.push(val)
-      },
-      collapsed(val) {
-        console.log('val:' + val)
-      }
-    },
+    export default {
+        name: "SiderMenu",
+        components: { Menu },
+        props: {
+            collapsible: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            collapsed: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            siderMenuData: {
+                type: Array,
+                required: true
+            },
+            siderTheme: {
+                type: String,
+                required: false,
+                default: 'dark'
+            },
+            webName: {
+                type: String,
+            },
+            isMobile: {
+                type:Boolean
+            }
+        },
+        data () {
+            return {
+                currentPath: [],
+                openKeys: [],
+                selectedKeys: [],
+            }
+        },
+        computed: {
+        },
+        methods: {
+            onClick (e) {
+                // console.log('click ', e)
+                this.currentPath = e.key
+            },
+            // handleOpenChange(openKeys) {
+            // },
+            // collapsedChange(val, oldVal) {
+            // },
+            // selected({ item, key, selectedKeys }) {
+            //   this.selectedKeys = selectedKeys
+            //   console.log(item)
+            // },
+            // onSelect(obj) {
+            //   this.$emit('siderMenuSelect', obj)
+            // }
+        },
+        watch: {
+            openKeys (val) {
+                // console.log('openKeys', val)
+            },
+            currentPath(val) {
+                // console.log(val);
+                this.$router.push(val)
+            },
+            collapsed(val) {
+                // console.log('val:' + val)
+            }
+        },
+    }
 
-  }
-
-  // /userinfo/2144/id => ['/userinfo','/useinfo/2144,'/userindo/2144/id']
-  function urlToList(url) {
-    const urllist = url.split("/").filter(i => i);
-    return urllist.map((urlItem, index) => {
-      return `/${urllist.slice(0, index + 1).join("/")}`;
-    });
-  }
+    // /userinfo/2144/id => ['/userinfo','/useinfo/2144,'/userindo/2144/id']
+    function urlToList(url) {
+        const urllist = url.split("/").filter(i => i);
+        return urllist.map((urlItem, index) => {
+            return `/${urllist.slice(0, index + 1).join("/")}`;
+        });
+    }
 
 </script>
 

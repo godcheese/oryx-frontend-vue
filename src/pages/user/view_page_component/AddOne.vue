@@ -11,7 +11,7 @@
           </a-col>
           <a-col :md="12" :sm="24">
             <a-form-item label="组件类型" :labelCol="{span: 8}" :wrapperCol="{span: 16, offset: 0}">
-              <a-select v-decorator="['pageComponentType',{rules: [{required: true,message: '必填',}],}]" :defaultActiveFirstOption="true">
+              <a-select v-decorator="['viewPageComponentType',{rules: [{required: true,message: '必填',}],}]" :defaultActiveFirstOption="true">
                 <a-select-option v-for="item in viewPageComponentType" :key="item.value">{{item.valueName}}</a-select-option>
               </a-select>
             </a-form-item>
@@ -28,12 +28,12 @@
                 :treeData="viewPageCategory"
                 treeDefaultExpandAll
                 @change="viewPageCategoryOnChange"
-                v-decorator="['pageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
+                v-decorator="['viewPageCategoryId',{rules: [{required: true,message: '必填',}],}]"/>
             </a-form-item>
           </a-col>
           <a-col :md="12" :sm="24">
             <a-form-item label="视图页面" :labelCol="{span: 8}" :wrapperCol="{span: 16, offset: 0}">
-              <a-select v-decorator="['pageId',{rules: [{required: true,message: '必填',}],}]"
+              <a-select v-decorator="['viewPageId',{rules: [{required: true,message: '必填',}],}]"
                         :dropdownStyle="{ maxHeight: '200px', overflow: 'auto' }"
               >
                 <a-select-option v-for="item in viewPage" :key="item.id">{{item.name}}</a-select-option>
@@ -61,14 +61,17 @@
 </template>
 
 <script>
-  import {viewPageCategoryListAllAsAntdTreeNode } from '../../../api/viewPageCategory.js'
-  import { basicNotification } from '../../../common/index.js';
-  import {viewPageComponentAddOne} from "../../../api/viewPageComponent.js";
-  import {viewPageListAllByViewPageCategoryId} from "../../../api/viewPage.js";
-  import {dictionaryListAllByKey} from "../../../api/dictionary.js";
+    import {viewPageCategoryListAllAsAntdTreeNode} from '../../../api/viewPageCategory.js'
+    import {basicNotification} from '../../../common/index.js'
+    import {viewPageComponentAddOne} from "../../../api/viewPageComponent.js"
+    import {viewPageListAllByViewPageCategoryId} from "../../../api/viewPage.js"
+    import {dictionaryListAllByKey} from "../../../api/dictionary.js"
 
-  export default {
+    export default {
     name: 'AddOne',
+    props: {
+      TableSelectedRowKeys: {type: Array, required: true}
+    },
     data() {
       return {
         visible: false,
@@ -90,6 +93,10 @@
         }).catch((error) => {
           console.log(error)
         })
+        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
+          this.viewPageComponentGetOneByViewPageComponentId(TableSelectedRowKeys[0]);
+        }
         this.visible = true
       },
       onCancel() {
@@ -110,7 +117,7 @@
         });
       },
       viewPageCategoryOnChange(value) {
-        this.form.resetFields('pageId')
+        this.form.resetFields('viewPageId')
         viewPageListAllByViewPageCategoryId(value).then((data) => {
           this.viewPage = data
         }).catch((error) => {
@@ -121,6 +128,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../../static/less/common.less";
 </style>

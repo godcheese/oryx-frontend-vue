@@ -66,13 +66,13 @@
 </template>
 
 <script>
-  import { dictionaryListAllByKey } from '../../api/dictionary.js'
-  import { departmentListAllAsAntdTreeNode } from '../../api/department.js'
-  import { userAddOne, userAvatar } from '../../api/user.js'
-  import { basicNotification } from '../../common/index.js';
-  import ChangeAvatar from './ChangeAvatar.vue';
+    import {dictionaryListAllByKey} from '../../api/dictionary.js'
+    import {departmentListAllAsAntdTreeNode} from '../../api/department.js'
+    import {userAddOne, userAvatar} from '../../api/user.js'
+    import {basicNotification} from '../../common/index.js'
+    import ChangeAvatar from './ChangeAvatar.vue'
 
-  export default {
+    export default {
     name: 'AddOne',
     components: {ChangeAvatar},
     data() {
@@ -130,6 +130,6 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import "../../../static/less/common.less";
 </style>

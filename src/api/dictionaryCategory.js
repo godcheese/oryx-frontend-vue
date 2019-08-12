@@ -1,4 +1,4 @@
-import request from "./index.js";
+import request from "./index.js"
 
 const preUrlPath = '/api/system/dictionary_category';
 
@@ -8,7 +8,7 @@ export const dictionaryCategoryListAllAsAntdTableByRoleId = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const dictionaryCategoryListAllAsAntdTable = ( (params = {}) => {
   return request({
@@ -16,14 +16,14 @@ export const dictionaryCategoryListAllAsAntdTable = ( (params = {}) => {
     data: params,
     method: 'get'
   })
-})
+});
 
 export const dictionaryCategoryGetOneByDictionaryCategoryId = ((id) => {
   return request({
     url: `${preUrlPath}/one/${id}`,
     method: 'get',
   })
-})
+});
 
 export const dictionaryCategoryAddOne = ((params = {}) => {
   return request({
@@ -31,7 +31,7 @@ export const dictionaryCategoryAddOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const dictionaryCategorySaveOne = ((params = {}) => {
   return request({
@@ -39,7 +39,7 @@ export const dictionaryCategorySaveOne = ((params = {}) => {
     method: 'post',
     data: params
   })
-})
+});
 
 export const dictionaryCategoryDeleteAll = ((params = {}) => {
   return request({
@@ -47,12 +47,12 @@ export const dictionaryCategoryDeleteAll = ((params = {}) => {
     method: 'post',
     data: {'id[]': params}
   })
-})
+});
 
 export const dictionaryCategoryListAllAsAntdTreeNode = (() => {
   return request({
     url: `${preUrlPath}/list_all_as_antd_tree_node`,
     method: 'get',
   })
-})
+});
 

@@ -1,28 +1,25 @@
 <p align="center">
-  <img width="320" src="https://github.com/godcheese/oryx-backend/blob/master/oryx_banner.png?raw=true">
+  <img width="320" src="https://github.com/godcheese/oryx/blob/master/oryx_banner.png?raw=true">
 </p>
 <p align="center">
-  <a href="https://github.com/godcheese/oryx-backend">
-    <img src="https://img.shields.io/github/last-commit/godcheese/oryx-backend.svg" alt="GitHub Last Commit">
+  <a href="https://github.com/godcheese/oryx-frontend-vue">
+    <img src="https://img.shields.io/github/last-commit/godcheese/oryx-frontend-vue.svg" alt="GitHub Last Commit">
   </a>
-  <a href="https://github.com/godcheese/oryx-backend/releases">
-    <img src="https://img.shields.io/github/release/godcheese/oryx-backend.svg" alt="GitHub release">
+  <a href="https://github.com/godcheese/oryx/releases">
+    <img src="https://img.shields.io/github/release/godcheese/ory.svg" alt="GitHub release">
   </a>
-  <a href="https://travis-ci.org/godcheese/oryx-backend" rel="nofollow">
-    <img src="https://travis-ci.org/godcheese/oryx-backend.svg?branch=master" alt="Build Status">
+  <a href="https://travis-ci.org/godcheese/oryx-frontend-vue" rel="nofollow">
+    <img src="https://travis-ci.org/godcheese/oryx-frontend-vue.svg?branch=master" alt="Build Status">
   </a>
   <a href="https://sonarcloud.io/dashboard?id=godcheese_oryx-frontend-vue" rel="nofollow">
      <img src="https://sonarcloud.io/api/project_badges/measure?project=godcheese_oryx-frontend-vue&metric=alert_status" alt="Quality Gate Status">
    </a>
  <a href="https://www.codacy.com/app/godcheese/oryx-frontend-vue?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=godcheese/oryx-frontend-vue&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/e64226d583a14fd9b9c5fd51fe323a94" alt="Codacy Badge"/></a>
-  <a href="https://github.com/godcheese/nirmod-backend/blob/master/LICENSE">
+  <a href="https://github.com/godcheese/oryx-frontend-vue/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
 <!--   <a href="https://gitter.im/repo-name/discuss">
     <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
-  </a> -->
-<!--   <a href="https://godcheese.github.io/oryx-backend/donate">
-    <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg" alt="donate">
   </a> -->
 </p>
 
@@ -36,10 +33,10 @@
 
 #### 截图 Screenshots
 
-![1.png](https://github.com/godcheese/oryx-backend/blob/master/screenshots/1.png)
-![2.png](https://github.com/godcheese/oryx-backend/blob/master/screenshots/2.png)
-![3.png](https://github.com/godcheese/oryx-backend/blob/master/screenshots/3.png)
-![4.png](https://github.com/godcheese/oryx-backend/blob/master/screenshots/4.png)
+![1.png](https://github.com/godcheese/oryx/blob/master/screenshots/1.png)
+![2.png](https://github.com/godcheese/oryx/blob/master/screenshots/2.png)
+![3.png](https://github.com/godcheese/oryx/blob/master/screenshots/3.png)
+![4.png](https://github.com/godcheese/oryx/blob/master/screenshots/4.png)
 
 ## 捐赠 Donation
 

@@ -26,7 +26,7 @@
       collapsed: {
         type: Boolean
       },
-      webName: {
+      appTitle: {
         type: String
       },
       headerTheme: {
@@ -79,8 +79,8 @@
     }
     .basic-header-wide{
       &.head{
-        max-width: 1400px;
-        margin: auto;
+        /*max-width: 1400px;*/
+        /*margin: auto;*/
       }
       /*&.side{*/
       /*}*/

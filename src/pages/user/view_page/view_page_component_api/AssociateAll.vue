@@ -11,13 +11,12 @@
     export default {
     name: 'AssociateAll',
     props: {
-      TableSelectedRowKeys: {type: Array, required: true},
-      viewPageComponentId: {type: Number, required: true}
+      tableSelectedRows: {type: Array, required: true},
     },
     methods: {
       associateAll() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys.length <= 0) {
+        const tableSelectedRows = this.tableSelectedRows
+        if(tableSelectedRows.length <= 0) {
           basicNotification.warning({message: '至少勾选一项'})
           return
         }
@@ -27,7 +26,7 @@
           okText: '确认',
           cancelText: '取消',
           onOk: () => {
-            viewPageComponentApiAssociateAllByPageComponentIdAndApiIdList(this.TableSelectedRowKeys, this.viewPageComponentId).then((data) => {
+            viewPageComponentApiAssociateAllByPageComponentIdAndApiIdList(this.tableSelectedRows[0].id, this.tableSelectedRows[0].viewPageComponentId).then((data) => {
               basicNotification.success({message: '操作成功'})
               this.$emit('onOk', data)
             }).catch((error) => {

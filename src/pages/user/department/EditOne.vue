@@ -46,7 +46,7 @@
     export default {
     name: 'EditOne',
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -57,8 +57,8 @@
     },
     methods: {
       editOne() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
@@ -67,7 +67,7 @@
         }).catch((error) => {
           console.log(error)
         })
-        this.departmentGetOneByDepartmentId(TableSelectedRowKeys[0]);
+        this.departmentGetOneByDepartmentId(tableSelectedRowKeys[0]);
         this.visible = true
       },
       onCancel() {
@@ -101,5 +101,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

@@ -40,13 +40,13 @@
 </template>
 
 <script>
-    import {dictionaryCategoryAddOne, dictionaryCategoryListAllAsAntdTreeNode} from '../../../api/dictionaryCategory.js'
+    import {dictionaryCategoryAddOne, dictionaryCategoryListAllAsAntdTreeNode, dictionaryCategoryGetOneByDictionaryCategoryId} from '../../../api/dictionaryCategory.js'
     import {basicNotification} from '../../../common/index.js'
 
     export default {
     name: 'AddOne',
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -62,9 +62,9 @@
         }).catch((error) => {
           console.log(error)
         })
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
-          this.dictionaryCategoryGetOneByDictionaryCategoryId(TableSelectedRowKeys[0])
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0) {
+          this.dictionaryCategoryGetOneByDictionaryCategoryId(tableSelectedRowKeys[0])
         }
         this.visible = true
       },
@@ -85,10 +85,18 @@
           }
         });
       },
+      dictionaryCategoryGetOneByDictionaryCategoryId(id) {
+        dictionaryCategoryGetOneByDictionaryCategoryId(id).then((data) => {
+          data.parentId = data.parentId !== undefined && data.parentId !== null ? data.parentId + '' : ''
+          this.form.setFieldsValue(data)
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
   }
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

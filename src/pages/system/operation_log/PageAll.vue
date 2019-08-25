@@ -110,14 +110,7 @@
         ],
         operationLogTableSelectedRowKeys: [],
         operationLogTableLoading: false,
-        operationLogTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        operationLogTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
       }
     },
@@ -190,5 +183,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

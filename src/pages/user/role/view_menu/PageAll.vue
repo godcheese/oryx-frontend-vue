@@ -5,8 +5,8 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <ViewMenuCategoryGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_CATEGORY_GRANT_ALL']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="reloadTable"/>
-            <ViewMenuCategoryRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_CATEGORY_REVOKE_ALL']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="reloadTable"/>
+            <ViewMenuCategoryGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_CATEGORY_GRANT_ALL']" :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="reloadTable"/>
+            <ViewMenuCategoryRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_CATEGORY_REVOKE_ALL']" :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图菜单分类'" :rowKey="(record) => record.id" @change="viewMenuCategoryTableOnChange" :columns="viewMenuCategoryTableColumns" size="middle" :pagination="false" :dataSource="viewMenuCategoryTableDataSource" :loading="viewMenuCategoryTableLoading" :customRow="viewMenuCategoryTableCustomRow" :rowSelection="{selectedRowKeys: viewMenuCategoryTableSelectedRowKeys, onChange: viewMenuCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,8 +15,8 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ViewMenuGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_GRANT_ALL']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
-            <ViewMenuRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_REVOKE_ALL']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
+            <ViewMenuGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_GRANT_ALL']" :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
+            <ViewMenuRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_MENU/VIEW_MENU_REVOKE_ALL']" :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewMenuTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图菜单'" :rowKey="(record) => record.id" @change="viewMenuTableOnChange" :columns="viewMenuTableColumns" size="middle" :pagination="viewMenuTablePagination" :dataSource="viewMenuTableDataSource" :loading="viewMenuTableLoading" :customRow="viewMenuTableCustomRow" :rowSelection="{selectedRowKeys: viewMenuTableSelectedRowKeys, onChange: viewMenuTableOnSelectChange}" :scroll="{ x: 1200, y: 0}" :indentSize="5" bordered>
@@ -48,7 +48,7 @@
     name: 'PageAll',
     components: {ViewMenuCategoryGrantAll, ViewMenuCategoryRevokeAll, ViewMenuGrantAll, ViewMenuRevokeAll,},
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -94,14 +94,7 @@
         ],
         viewMenuCategoryTableSelectedRowKeys: [],
         viewMenuCategoryTableLoading: false,
-        viewMenuCategoryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        viewMenuCategoryTablePagination: this.$store.state.antd.table.pagination,
         viewMenuTableDataSource: [],
         viewMenuTableColumns: [
           {
@@ -147,14 +140,7 @@
         ],
         viewMenuTableSelectedRowKeys: [],
         viewMenuTableLoading: false,
-        viewMenuTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        viewMenuTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
         roleId: undefined,
       }
@@ -171,17 +157,17 @@
     },
     methods: {
       viewMenu() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.roleId = TableSelectedRowKeys[0]
+        this.roleId = tableSelectedRowKeys[0]
         this.viewMenuCategoryTableDataSource = []
         this.viewMenuCategoryTableSelectedRowKeys = []
         this.viewMenuTableDataSource = []
-        this.viewMenuTableSelectedRowKeys = []
+        this.viewMenutableSelectedRowKeys = []
         this.getViewMenuCategoryTableDataSource()
       },
       onCancel() {
@@ -213,10 +199,10 @@
         })
       },
       getViewMenuCategoryTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
+        let tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
           this.viewMenuCategoryTableLoading = true
-          viewMenuCategoryListAllAsAntdTableByRoleId({roleId: TableSelectedRowKeys[0],...params}).then((data) => {
+          viewMenuCategoryListAllAsAntdTableByRoleId({roleId: tableSelectedRowKeys[0],...params}).then((data) => {
             this.viewMenuCategoryTableLoading = false
             this.viewMenuCategoryTableDataSource = data
           }).catch((error) => {
@@ -249,16 +235,16 @@
           })
       },
       getViewMenuTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys;
+        let tableSelectedRowKeys = this.tableSelectedRowKeys;
         let viewMenuCategoryTableSelectedRowKeys = this.viewMenuCategoryTableSelectedRowKeys
-        if (viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if (viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.viewMenuTableLoading = true
           const pagination = {...this.viewMenuTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           viewMenuPageAllAsAntdTableByRoleIdAndViewMenuCategoryIdList({
             page: page, rows: rows, ...params,
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             viewMenuCategoryIdList: viewMenuCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.viewMenuTableLoading = false
@@ -285,11 +271,11 @@
     },
     watch: {
       viewMenuCategoryTableSelectedRowKeys() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
         let viewMenuCategoryTableSelectedRowKeys = this.viewMenuCategoryTableSelectedRowKeys
-        if(viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if(viewMenuCategoryTableSelectedRowKeys && viewMenuCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.getViewMenuTableDataSource({
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             viewMenuCategoryIdList: viewMenuCategoryTableSelectedRowKeys
           })
         } else {
@@ -302,5 +288,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../../static/less/common.less";
+  @import "../../../../assets/styles/common.less";
 </style>

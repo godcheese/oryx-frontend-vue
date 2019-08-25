@@ -3,11 +3,11 @@
     <div slot="container">
       <div class="table-operations">
         <AddOne v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/ADD_ONE']" @onOk="reloadTable"/>
-        <EditOne v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/EDIT_ONE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
-        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <EditOne v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/EDIT_ONE']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DEPARTMENT/DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
       </div>
       <div style="overflow: scroll;height: 300px">
-        <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="false" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: TableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
+        <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="false" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: tableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
         </a-table>
       </div>
     </div>
@@ -52,7 +52,7 @@
             sorter: true,
           },
         ],
-        TableSelectedRowKeys: [],
+        tableSelectedRowKeys: [],
         tableLoading: false,
       }
     },
@@ -64,14 +64,14 @@
         return {
           on: {
             click: () => {
-              this.TableSelectedRowKeys = []
-              this.TableSelectedRowKeys.push(record.id)
+              this.tableSelectedRowKeys = []
+              this.tableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
       tableOnSelectChange (selectedRowKeys) {
-        this.TableSelectedRowKeys = selectedRowKeys
+        this.tableSelectedRowKeys = selectedRowKeys
       },
       tableOnChange(pagination, filters, sorter) {
         this.getTableDataSource({
@@ -93,7 +93,7 @@
       },
       reloadTable() {
         this.getTableDataSource()
-        this.TableSelectedRowKeys = []
+        this.tableSelectedRowKeys = []
       },
     },
   }

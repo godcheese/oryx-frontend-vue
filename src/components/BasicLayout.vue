@@ -1,8 +1,8 @@
 <template>
   <a-layout>
-    <SiderMenu :siderTheme="siderTheme" :siderMenuData="siderMenuData" :collapsed="collapsed" :collapsible="true" :webName="webName"/>
+    <SideMenu :siderTheme="siderTheme" :sideMenuData="sideMenuData" :collapsed="collapsed" :collapsible="true" :appTitle="appTitle"/>
     <a-layout :style="{ paddingLeft: paddingLeft }">
-      <BasicHeader :collapsed="collapsed" @toggleCollapsed="toggleCollapsed" :headerTheme="headerTheme" :webName="webName" :currentUser="currentUser"/>
+      <BasicHeader :collapsed="collapsed" @toggleCollapsed="toggleCollapsed" :headerTheme="headerTheme" :appTitle="appTitle" :currentUser="currentUser"/>
       <a-layout-content :style="{minHeight: minHeight, margin: '14px 14px 0', padding: 0}">
         <router-view></router-view>
       </a-layout-content>
@@ -14,15 +14,14 @@
 </template>
 <!---->
 <script>
-    import BasicHeader from '../components/BasicHeader.vue'
-    import SiderMenu from '../components/SiderMenu.vue'
-    import BasicFooter from '../components/BasicFooter.vue'
+  import BasicHeader from '../components/BasicHeader.vue'
+  import SideMenu from '../components/SideMenu.vue'
+  import BasicFooter from '../components/BasicFooter.vue'
 
-    const minHeight = window.innerHeight - 64 - 24 - 122;
-
+  const minHeight = window.innerHeight - 64 - 24 - 122;
   export default {
     name: 'BasicLayout',
-    components: { BasicHeader, BasicFooter, SiderMenu },
+    components: { BasicHeader, BasicFooter, SideMenu },
     data() {
       return {
         minHeight: minHeight + 'px',
@@ -30,15 +29,15 @@
       }
     },
     created() {
-      this.getSiderMenu()
+      // this.getSideMenu()
     },
     computed: {
       paddingLeft () {
         return `${this.siderOpened ? 256 : 80}px`
         // return this.fixedSider ? `${this.siderOpened ? 256 : 80}px` : '0'
       },
-      siderMenuData(){
-        return this.$store.state.user.siderMenu
+      sideMenuData(){
+        return this.$store.state.user.currentUser.sideMenu
       },
       currentUser() {
         return this.$store.state.user.currentUser;
@@ -47,22 +46,22 @@
         return !this.collapsed
       },
       headerTheme() {
-        return process.env.WEB.HEADER_THEME
+        return process.env.VUE_APP_ANTD.HEADER_THEME
       },
       siderTheme() {
-        return process.env.WEB.SIDER_THEME
+        return process.env.VUE_APP_ANTD.SIDER_THEME
       },
-      webName() {
-        return process.env.WEB.NAME
+      appTitle() {
+        return process.env.VUE_APP_APP.TITLE
       },
     },
     methods: {
-      getSiderMenu() {
-        this.$store.dispatch('user/getSiderMenu').then((data) => {
-        }).catch((error) => {
-          console.log(error)
-        })
-      },
+      // getSideMenu() {
+      //   this.$store.dispatch('user/getSideMenu').then(() => {
+      //   }).catch((error) => {
+      //     console.log(error)
+      //   })
+      // },
       toggleCollapsed() {
         this.collapsed = !this.collapsed
       },
@@ -71,16 +70,16 @@
 </script>
 
 <style lang="less" scoped>
-  .setting{
-    background-color: #1890ff;
-    color: #fff;
-    border-radius: 5px 0 0 5px;
-    line-height: 40px;
-    font-size: 22px;
-    width: 40px;
-    height: 40px;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-  }
+  /*.setting{*/
+  /*  background-color: #1890ff;*/
+  /*  color: #fff;*/
+  /*  border-radius: 5px 0 0 5px;*/
+  /*  line-height: 40px;*/
+  /*  font-size: 22px;*/
+  /*  width: 40px;*/
+  /*  height: 40px;*/
+  /*  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);*/
+  /*}*/
 </style>
 
 <style>

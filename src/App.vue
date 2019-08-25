@@ -1,17 +1,17 @@
 <template>
   <a-locale-provider :locale="locale">
-  <div id="app">
-    <router-view/>
-  </div>
+    <div id="app">
+      <router-view/>
+    </div>
   </a-locale-provider>
 </template>
 
 <script>
-    import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
-    import moment from 'moment'
-    import 'moment/locale/zh-cn'
+  import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+  import moment from 'moment'
+  import 'moment/locale/zh-cn'
 
-    moment.locale('zh_cn');
+  moment.locale('zh_cn');
 
   export default {
     name: 'App',
@@ -21,7 +21,18 @@
       }
     }
   }
+
 </script>
+
+<style>
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
+</style>
 
 <style>
   #app {

@@ -11,8 +11,8 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_GRANT_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_REVOKE_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_GRANT_ALL']" :tableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_REVOKE_ALL']" :tableSelectedRowKeys="viewPageTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面'" :rowKey="(record) => record.id" @change="viewPageTableOnChange" :columns="viewPageTableColumns" size="middle" :pagination="viewPageTablePagination" :dataSource="viewPageTableDataSource" :loading="viewPageTableLoading" :customRow="viewPageTableCustomRow" :rowSelection="{selectedRowKeys: viewPageTableSelectedRowKeys, onChange: viewPageTableOnSelectChange}" :scroll="{ x: 1600, y: 0}" :indentSize="5" bordered>
@@ -21,8 +21,8 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageComponentGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_COMPONENT_GRANT_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_COMPONENT_REVOKE_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_COMPONENT_GRANT_ALL']" :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/VIEW_PAGE/VIEW_PAGE_COMPONENT_REVOKE_ALL']" :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadViewPageComponentTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面组件'" :rowKey="(record) => record.id" @change="viewPageComponentTableOnChange" :columns="viewPageComponentTableColumns" size="middle" :pagination="viewPageComponentTablePagination" :dataSource="viewPageComponentTableDataSource" :loading="viewPageComponentTableLoading" :customRow="viewPageComponentTableCustomRow" :rowSelection="{selectedRowKeys: viewPageComponentTableSelectedRowKeys, onChange: viewPageComponentTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" :indentSize="5" bordered>
@@ -54,7 +54,7 @@
     name: 'PageAll',
     components: {ViewPageGrantAll, ViewPageRevokeAll, ViewPageComponentGrantAll, ViewPageComponentRevokeAll,},
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -136,15 +136,7 @@
         ],
         viewPageTableSelectedRowKeys: [],
         viewPageTableLoading: false,
-        viewPageTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
-
+        viewPageTablePagination: this.$store.state.antd.table.pagination,
         viewPageComponentTableDataSource: [],
         viewPageComponentTableColumns: [
           {
@@ -191,14 +183,7 @@
         ],
         viewPageComponentTableSelectedRowKeys: [],
         viewPageComponentTableLoading: false,
-        viewPageComponentTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        viewPageComponentTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
         roleId: undefined,
         viewPageComponentType: []
@@ -221,13 +206,13 @@
     },
     methods: {
       viewPage() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.roleId = TableSelectedRowKeys[0]
+        this.roleId = tableSelectedRowKeys[0]
         this.viewPageCategoryTableDataSource = []
         this.viewPageCategoryTableSelectedRowKeys = []
         this.viewPageTableDataSource = []
@@ -273,10 +258,10 @@
         })
       },
       getViewPageCategoryTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
+        let tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
           this.viewPageCategoryTableLoading = true
-          viewPageCategoryListAllAsAntdTableByRoleId({roleId: TableSelectedRowKeys[0],...params}).then((data) => {
+          viewPageCategoryListAllAsAntdTableByRoleId({roleId: tableSelectedRowKeys[0],...params}).then((data) => {
             this.viewPageCategoryTableLoading = false
             this.viewPageCategoryTableDataSource = data
           }).catch((error) => {
@@ -309,16 +294,16 @@
         })
       },
       getViewPageTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys;
+        let tableSelectedRowKeys = this.tableSelectedRowKeys;
         let viewPageCategoryTableSelectedRowKeys = this.viewPageCategoryTableSelectedRowKeys
-        if (viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if (viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.viewPageTableLoading = true
           const pagination = {...this.viewPageTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           viewPagePageAllAsAntdTableByRoleIdAndViewPageCategoryIdList({
             page: page, rows: rows, ...params,
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             viewPageCategoryIdList: viewPageCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.viewPageTableLoading = false
@@ -364,16 +349,16 @@
         })
       },
       getViewPageComponentTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys;
+        let tableSelectedRowKeys = this.tableSelectedRowKeys;
         let viewPageTableSelectedRowKeys = this.viewPageTableSelectedRowKeys
-        if (viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if (viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.viewPageComponentTableLoading = true
           const pagination = {...this.viewPageComponentTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           viewPageComponentPageAllAsAntdTableByRoleIdAndViewPageIdList({
             page: page, rows: rows, ...params,
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             viewPageIdList: viewPageTableSelectedRowKeys,
           }).then((data) => {
             this.viewPageComponentTableLoading = false
@@ -401,11 +386,11 @@
     },
     watch: {
       viewPageCategoryTableSelectedRowKeys() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
         let viewPageCategoryTableSelectedRowKeys = this.viewPageCategoryTableSelectedRowKeys
-        if(viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if(viewPageCategoryTableSelectedRowKeys && viewPageCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.getViewPageTableDataSource({
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             viewPageCategoryIdList: viewPageCategoryTableSelectedRowKeys
           })
         } else {
@@ -414,13 +399,13 @@
         }
       },
       viewPageTableSelectedRowKeys() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
         let viewPageTableSelectedRowKeys = this.viewPageTableSelectedRowKeys
-        console.log(TableSelectedRowKeys)
+        console.log(tableSelectedRowKeys)
         console.log(viewPageTableSelectedRowKeys)
-        if(viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if(viewPageTableSelectedRowKeys && viewPageTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.getViewPageComponentTableDataSource({
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             viewPageIdList: viewPageTableSelectedRowKeys
           })
         } else {
@@ -433,5 +418,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../../static/less/common.less";
+  @import "../../../../assets/styles/common.less";
 </style>

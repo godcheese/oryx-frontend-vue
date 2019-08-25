@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <ApiCategoryAddOne v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ApiCategoryEditOne v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ApiCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ApiCategoryAddOne v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_ADD_ONE']" :tableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ApiCategoryEditOne v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_EDIT_ONE']" :tableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ApiCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/API_CATEGORY_DELETE_ALL']" :tableSelectedRowKeys="apiCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API 分类'" :rowKey="(record) => record.id" @change="apiCategoryTableOnChange" :columns="apiCategoryTableColumns" size="middle" :pagination="false" :dataSource="apiCategoryTableDataSource" :loading="apiCategoryTableLoading" :customRow="apiCategoryTableCustomRow" :rowSelection="{selectedRowKeys: apiCategoryTableSelectedRowKeys, onChange: apiCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,9 +15,9 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ApiAddOne v-has-any-authority="['/COMPONENT/USER/API_ADD_ONE']" :TableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.getApiTableDataSource()}"/>
-            <ApiEditOne v-has-any-authority="['/COMPONENT/USER/API_EDIT_ONE']" :TableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
-            <ApiDeleteAll v-has-any-authority="['/COMPONENT/USER/API_DELETE_ALL']" :TableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiAddOne v-has-any-authority="['/COMPONENT/USER/API_ADD_ONE']" :tableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.getApiTableDataSource()}"/>
+            <ApiEditOne v-has-any-authority="['/COMPONENT/USER/API_EDIT_ONE']" :tableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiDeleteAll v-has-any-authority="['/COMPONENT/USER/API_DELETE_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" @onOk="() => {this.reloadApiTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API'" :rowKey="(record) => record.id" @change="apiTableOnChange" :columns="apiTableColumns" size="middle" :pagination="apiTablePagination" :dataSource="apiTableDataSource" :loading="apiTableLoading" :customRow="apiTableCustomRow" :rowSelection="{selectedRowKeys: apiTableSelectedRowKeys, onChange: apiTableOnSelectChange}" :scroll="{ x: 2000, y: 0}" :indentSize="5" bordered>
@@ -77,14 +77,7 @@
         ],
         apiCategoryTableSelectedRowKeys: [],
         apiCategoryTableLoading: false,
-        apiCategoryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        apiCategoryTablePagination: this.$store.state.antd.table.pagination,
         apiTableDataSource: [],
         apiTableColumns: [
           {
@@ -152,7 +145,7 @@
         return {
           on: {
             click: () => {
-              this.apiTableSelectedRowKeys = []
+              this.apitableSelectedRowKeys = []
               this.apiTableDataSource = []
               this.apiCategoryTableSelectedRowKeys = []
               this.apiCategoryTableSelectedRowKeys.push(record.id)
@@ -253,5 +246,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

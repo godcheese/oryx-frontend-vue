@@ -5,9 +5,9 @@
     </div>
     <div slot="container">
       <div class="table-operations">
-        <UploadOne v-has-any-authority="['/COMPONENT/SYSTEM/FILE/UPLOAD_ONE']" :TableSelectedRowKeys="fileTableSelectedRowKeys" @onCancel="onCancel"/>
-        <EditOne v-has-any-authority="['/COMPONENT/SYSTEM/FILE/EDIT_ONE']" :TableSelectedRowKeys="fileTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
-        <DeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/FILE/DELETE_ALL']" :TableSelectedRowKeys="fileTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+        <UploadOne v-has-any-authority="['/COMPONENT/SYSTEM/FILE/UPLOAD_ONE']" :tableSelectedRowKeys="fileTableSelectedRowKeys" @onCancel="onCancel"/>
+        <EditOne v-has-any-authority="['/COMPONENT/SYSTEM/FILE/EDIT_ONE']" :tableSelectedRowKeys="fileTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+        <DeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/FILE/DELETE_ALL']" :tableSelectedRowKeys="fileTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
       </div>
       <div style="overflow: scroll;height: 450px">
         <a-table :rowKey="(record) => record.id" @change="fileTableOnChange" :columns="fileTableColumns" size="middle" :pagination="fileTablePagination" :dataSource="fileTableDataSource" :loading="fileTableLoading" :customRow="fileTableCustomRow" :rowSelection="{selectedRowKeys: fileTableSelectedRowKeys, onChange: fileTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
@@ -76,14 +76,7 @@
         ],
         fileTableSelectedRowKeys: [],
         fileTableLoading: false,
-        fileTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        fileTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
       }
     },
@@ -146,5 +139,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

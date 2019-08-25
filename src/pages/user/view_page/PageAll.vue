@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageCategoryAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ViewPageCategoryEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ViewPageCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewPageCategoryAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_ADD_ONE']" :tableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewPageCategoryEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_EDIT_ONE']" :tableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewPageCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_CATEGORY_DELETE_ALL']" :tableSelectedRowKeys="viewPageCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面分类'" :rowKey="(record) => record.id" @change="viewPageCategoryTableOnChange" :columns="viewPageCategoryTableColumns" size="middle" :pagination="false" :dataSource="viewPageCategoryTableDataSource" :loading="viewPageCategoryTableLoading" :customRow="viewPageCategoryTableCustomRow" :rowSelection="{selectedRowKeys: viewPageCategoryTableSelectedRowKeys, onChange: viewPageCategoryTableOnSelectChange}" :scroll="{ x: 800, y: 0}" :indentSize="5" bordered>
@@ -15,10 +15,10 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_ADD_ONE']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_EDIT_ONE']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_DELETE_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
-            <ViewPageApiPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_API_PAGE_ALL']" :TableSelectedRowKeys="viewPageTableSelectedRowKeys"/>
+            <ViewPageAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_ADD_ONE']" :tableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_EDIT_ONE']" :tableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_DELETE_ALL']" :tableSelectedRowKeys="viewPageTableSelectedRowKeys" @onOk="() => {this.reloadViewPageTable()}"/>
+            <ViewPageApiPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_API_PAGE_ALL']" :tableSelectedRowKeys="viewPageTableSelectedRowKeys"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面'" :rowKey="(record) => record.id" @change="viewPageTableOnChange" :columns="viewPageTableColumns" size="middle" :pagination="viewPageTablePagination" :dataSource="viewPageTableDataSource" :loading="viewPageTableLoading" :customRow="viewPageTableCustomRow" :rowSelection="{selectedRowKeys: viewPageTableSelectedRowKeys, onChange: viewPageTableOnSelectChange}" :scroll="{ x: 1600, y: 0}" :indentSize="5" bordered>
@@ -27,10 +27,10 @@
         </a-col>
         <a-col :span="8">
           <div class="table-operations">
-            <ViewPageComponentAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_ADD_ONE']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_EDIT_ONE']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_DELETE_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
-            <ViewPageComponentApiPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API_PAGE_ALL']" :TableSelectedRowKeys="viewPageComponentTableSelectedRowKeys"/>
+            <ViewPageComponentAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_ADD_ONE']" :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_EDIT_ONE']" :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_DELETE_ALL']" :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys" @onOk="() => {this.reloadViewPageComponentTable()}"/>
+            <ViewPageComponentApiPageAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API_PAGE_ALL']" :tableSelectedRowKeys="viewPageComponentTableSelectedRowKeys"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图页面组件'" :rowKey="(record) => record.id" @change="viewPageComponentTableOnChange" :columns="viewPageComponentTableColumns" size="middle" :pagination="viewPageComponentTablePagination" :dataSource="viewPageComponentTableDataSource" :loading="viewPageComponentTableLoading" :customRow="viewPageComponentTableCustomRow" :rowSelection="{selectedRowKeys: viewPageComponentTableSelectedRowKeys, onChange: viewPageComponentTableOnSelectChange}" :scroll="{ x: 1800, y: 0}" :indentSize="5" bordered>
@@ -139,15 +139,7 @@
         ],
         viewPageTableSelectedRowKeys: [],
         viewPageTableLoading: false,
-        viewPageTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
-
+        viewPageTablePagination: this.$store.state.antd.table.pagination,
         viewPageComponentTableDataSource: [],
         viewPageComponentTableColumns: [
           {
@@ -189,14 +181,7 @@
         ],
         viewPageComponentTableSelectedRowKeys: [],
         viewPageComponentTableLoading: false,
-        viewPageComponentTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        viewPageComponentTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
         viewPageComponentType: []
       }
@@ -396,5 +381,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

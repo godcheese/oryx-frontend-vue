@@ -2,8 +2,8 @@
   <BasicPage>
     <div slot="container">
           <div class="table-operations">
-            <SendOne v-has-any-authority="['/COMPONENT/MAIL/SEND_ONE']" :TableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
-            <DeleteAll v-has-any-authority="['/COMPONENT/MAIL/DELETE_ALL']" :TableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+            <SendOne v-has-any-authority="['/COMPONENT/MAIL/SEND_ONE']" :tableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+            <DeleteAll v-has-any-authority="['/COMPONENT/MAIL/DELETE_ALL']" :tableSelectedRowKeys="mailTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
             <a-button v-has-any-authority="['/COMPONENT/MAIL/REFRESH']" @click="() => {this.reloadTable()}">刷新</a-button>
           </div>
           <div style="overflow: scroll;height: 450px">
@@ -83,14 +83,7 @@
         ],
         mailTableSelectedRowKeys: [],
         mailTableLoading: false,
-        mailTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        mailTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
       }
     },
@@ -168,6 +161,6 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../static/less/common.less";
-  @import "../../../static/less/page.less";
+  @import "../../assets/styles/common.less";
+  @import "../../assets/styles/page.less";
 </style>

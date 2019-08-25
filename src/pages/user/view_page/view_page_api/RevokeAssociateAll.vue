@@ -11,14 +11,13 @@
     export default {
     name: 'RevokeAssociateAll',
     props: {
-      TableSelectedRowKeys: {type: Array, required: true},
-      viewPageId: {type: Number, required: true}
+      tableSelectedRows: {type: Array, required: true},
     },
     methods: {
       revokeAssociateAll() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys.length <= 0) {
-          basicNotification.warning({message: '至少勾选一项'})
+        const tableSelectedRows = this.tableSelectedRows;
+        if(tableSelectedRows.length <= 0) {
+          basicNotification.warning({message: '至少勾选一项'});
           return
         }
         this.$confirm({
@@ -27,8 +26,8 @@
           okText: '确认',
           cancelText: '取消',
           onOk: () => {
-            viewPageApiRevokeAssociateAllByPageIdAndApiIdList(this.TableSelectedRowKeys, this.viewPageId).then((data) => {
-              basicNotification.success({message: '操作成功'})
+            viewPageApiRevokeAssociateAllByPageIdAndApiIdList(this.tableSelectedRows[0].id, this.tableSelectedRows[0].viewPageId).then((data) => {
+              basicNotification.success({message: '操作成功'});
               this.$emit('onOk', data)
             }).catch((error) => {
               console.log(error)

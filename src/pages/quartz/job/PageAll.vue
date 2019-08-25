@@ -66,14 +66,7 @@
                 jobTableSelectedRowKeys: [],
                 jobTableSelectedRows: [],
                 jobTableLoading: false,
-                jobTablePagination: {
-                    defaultCurrent: 1,
-                    defaultPageSize: 10,
-                    pageSizeOptions: ['10', '20', '30', '40'],
-                    showQuickJumper: true,
-                    showSizeChanger: true,
-                    showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-                },
+                jobTablePagination: this.$store.state.antd.table.pagination,
                 visible: false,
             }
         },
@@ -149,6 +142,6 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
-  @import "../../../../static/less/page.less";
+  @import "../../../assets/styles/common.less";
+  @import "../../../assets/styles/page.less";
 </style>

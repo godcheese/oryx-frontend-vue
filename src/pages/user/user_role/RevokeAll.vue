@@ -11,13 +11,13 @@
     export default {
     name: 'RevokeAll',
     props: {
-      TableSelectedRowKeys: {type: Array, required: true},
+      tableSelectedRowKeys: {type: Array, required: true},
       userId: {type: Number, required: true}
     },
     methods: {
       revokeAll() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys.length <= 0) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys.length <= 0) {
           basicNotification.warning({message: '至少勾选一项'})
           return
         }
@@ -27,7 +27,7 @@
           okText: '确认',
           cancelText: '取消',
           onOk: () => {
-            roleRevokeAllByUserIdAndRoleIdList(this.TableSelectedRowKeys, this.userId).then((data) => {
+            roleRevokeAllByUserIdAndRoleIdList(this.tableSelectedRowKeys, this.userId).then((data) => {
               basicNotification.success({message: '操作成功'})
               this.$emit('onOk', data)
             }).catch((error) => {

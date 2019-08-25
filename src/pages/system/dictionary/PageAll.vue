@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <DictionaryCategoryAddOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
-            <DictionaryCategoryEditOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
-            <DictionaryCategoryDeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
+            <DictionaryCategoryAddOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_ADD_ONE']" :tableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
+            <DictionaryCategoryEditOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_EDIT_ONE']" :tableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
+            <DictionaryCategoryDeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_CATEGORY_DELETE_ALL']" :tableSelectedRowKeys="dictionaryCategoryTableSelectedRowKeys" @onOk="reloadDictionaryCategoryTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '数据字典分类'" :rowKey="(record) => record.id" @change="dictionaryCategoryTableOnChange" :columns="dictionaryCategoryTableColumns" size="middle" :pagination="false" :dataSource="dictionaryCategoryTableDataSource" :loading="dictionaryCategoryTableLoading" :customRow="dictionaryCategoryTableCustomRow" :rowSelection="{selectedRowKeys: dictionaryCategoryTableSelectedRowKeys, onChange: dictionaryCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,9 +15,9 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <DictionaryAddOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_ADD_ONE']" :TableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.getDictionaryTableDataSource()}"/>
-            <DictionaryEditOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_EDIT_ONE']" :TableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
-            <DictionaryDeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_DELETE_ALL']" :TableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
+            <DictionaryAddOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_ADD_ONE']" :tableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.getDictionaryTableDataSource()}"/>
+            <DictionaryEditOne v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_EDIT_ONE']" :tableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
+            <DictionaryDeleteAll v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_DELETE_ALL']" :tableSelectedRowKeys="dictionaryTableSelectedRowKeys" @onOk="() => {this.reloadDictionaryTable()}"/>
             <DictionarySyncToMemory v-has-any-authority="['/COMPONENT/SYSTEM/DICTIONARY/DICTIONARY_SYNC_TO_MEMORY']" @onOk="() => {this.reloadDictionaryTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
@@ -135,14 +135,7 @@
         ],
         dictionaryTableSelectedRowKeys: [],
         dictionaryTableLoading: false,
-        dictionaryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        dictionaryTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
       }
     },
@@ -271,5 +264,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

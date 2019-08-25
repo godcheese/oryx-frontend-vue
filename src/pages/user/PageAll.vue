@@ -6,13 +6,13 @@
       </div>
       <div class="table-operations">
         <AddOne v-has-any-authority="['/COMPONENT/USER/ADD_ONE']" @onOk="reloadTable"/>
-        <EditOne v-has-any-authority="['/COMPONENT/USER/EDIT_ONE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
-        <FakeDeleteAll v-has-any-authority="['/COMPONENT/USER/FAKE_DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
-        <RevokeFakeDeleteAll v-has-any-authority="['/COMPONENT/USER/REVOKE_FAKE_DELETE_ALL']"  :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
-        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DELETE_ALL']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
-        <UserRolePageAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE']" :TableSelectedRowKeys="TableSelectedRowKeys" @onOk="reloadTable"/>
+        <EditOne v-has-any-authority="['/COMPONENT/USER/EDIT_ONE']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <FakeDeleteAll v-has-any-authority="['/COMPONENT/USER/FAKE_DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <RevokeFakeDeleteAll v-has-any-authority="['/COMPONENT/USER/REVOKE_FAKE_DELETE_ALL']"  :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <DeleteAll v-has-any-authority="['/COMPONENT/USER/DELETE_ALL']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
+        <UserRolePageAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE']" :tableSelectedRowKeys="tableSelectedRowKeys" @onOk="reloadTable"/>
       </div>
-      <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="tablePagination" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: TableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
+      <a-table :rowKey="(record) => record.id" @change="tableOnChange" :columns="tableColumns" size="middle" :pagination="tablePagination" :dataSource="tableDataSource" :loading="tableLoading" :customRow="tableCustomRow" :rowSelection="{selectedRowKeys: tableSelectedRowKeys, onChange: tableOnSelectChange}" :scroll="{ x: 1800, y: 0}" bordered>
       </a-table>
     </div>
   </BasicPage>
@@ -99,16 +99,9 @@
             sorter: true,
           },
         ],
-        TableSelectedRowKeys: [],
+        tableSelectedRowKeys: [],
         tableLoading: false,
-        tablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        tablePagination: this.$store.state.antd.table.pagination,
         isOrNot: [],
       }
     },
@@ -141,7 +134,7 @@
             console.log(values)
 
             this.getTableDataSource(values)
-            this.TableSelectedRowKeys = []
+            this.tableSelectedRowKeys = []
           }
         })
       },
@@ -153,14 +146,14 @@
         return {
           on: {
             click: () => {
-              this.TableSelectedRowKeys = []
-              this.TableSelectedRowKeys.push(record.id)
+              this.tableSelectedRowKeys = []
+              this.tableSelectedRowKeys.push(record.id)
             },
           },
         };
       },
       tableOnSelectChange (selectedRowKeys) {
-        this.TableSelectedRowKeys = selectedRowKeys
+        this.tableSelectedRowKeys = selectedRowKeys
       },
       tableOnChange(pagination, filters, sorter) {
         this.tablePagination = pagination;
@@ -190,7 +183,7 @@
       },
       reloadTable() {
         this.getTableDataSource()
-        this.TableSelectedRowKeys = []
+        this.tableSelectedRowKeys = []
       },
     },
   }

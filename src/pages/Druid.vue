@@ -15,7 +15,7 @@
     components: {BasicPage, Iframe },
     data() {
       return {
-        src: process.env.BACKEND_URL + '/druid/index.html'
+        src: process.env.VUE_APP_APP.BACKEND_URL + '/druid/index.html'
       }
     }
   }

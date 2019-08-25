@@ -11,8 +11,8 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ApiGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/API/API_GRANT_ALL']" :TableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
-            <ApiRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/API/API_REVOKE_ALL']" :TableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiGrantAll v-has-any-authority="['/COMPONENT/USER/ROLE/API/API_GRANT_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <ApiRevokeAll v-has-any-authority="['/COMPONENT/USER/ROLE/API/API_REVOKE_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" :roleId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API'" :rowKey="(record) => record.id" @change="apiTableOnChange" :columns="apiTableColumns" size="middle" :pagination="apiTablePagination" :dataSource="apiTableDataSource" :loading="apiTableLoading" :customRow="apiTableCustomRow" :rowSelection="{selectedRowKeys: apiTableSelectedRowKeys, onChange: apiTableOnSelectChange}" :scroll="{ x: 2000, y: 0}" :indentSize="5" bordered>
@@ -40,7 +40,7 @@
     name: 'PageAll',
     components: {ApiGrantAll, ApiRevokeAll,},
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -77,14 +77,7 @@
         ],
         apiCategoryTableSelectedRowKeys: [],
         apiCategoryTableLoading: false,
-        apiCategoryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        apiCategoryTablePagination: this.$store.state.antd.table.pagination,
         apiTableDataSource: [],
         apiTableColumns: [
           {
@@ -130,14 +123,7 @@
         ],
         apiTableSelectedRowKeys: [],
         apiTableLoading: false,
-        apiTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        apiTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
         roleId: undefined,
       }
@@ -154,13 +140,13 @@
     },
     methods: {
       api() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.roleId = TableSelectedRowKeys[0]
+        this.roleId = tableSelectedRowKeys[0]
         this.apiCategoryTableDataSource = []
         this.apiCategoryTableSelectedRowKeys = []
         this.apiTableDataSource = []
@@ -196,10 +182,10 @@
         })
       },
       getApiCategoryTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
+        let tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
           this.apiCategoryTableLoading = true
-          apiCategoryListAllAsAntdTableByRoleId({roleId: TableSelectedRowKeys[0],...params}).then((data) => {
+          apiCategoryListAllAsAntdTableByRoleId({roleId: tableSelectedRowKeys[0],...params}).then((data) => {
             this.apiCategoryTableLoading = false
             this.apiCategoryTableDataSource = data
           }).catch((error) => {
@@ -232,16 +218,16 @@
           })
       },
       getApiTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys;
+        let tableSelectedRowKeys = this.tableSelectedRowKeys;
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.apiTableLoading = true
           const pagination = {...this.apiTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           apiPageAllAsAntdTableByRoleIdAndApiCategoryIdList({
             page: page, rows: rows, ...params,
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.apiTableLoading = false
@@ -268,11 +254,11 @@
     },
     watch: {
       apiCategoryTableSelectedRowKeys() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.getApiTableDataSource({
-            roleId: TableSelectedRowKeys[0],
+            roleId: tableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys
           })
         } else {
@@ -285,5 +271,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../../static/less/common.less";
+  @import "../../../../assets/styles/common.less";
 </style>

@@ -2,12 +2,12 @@
   <a-layout-sider :class="[siderTheme, 'sider', 'fixed-sider', 'shadow']" width="256px" :collapsible="collapsible" v-model="collapsed" :trigger="null">
     <div :class="['logo', siderTheme]">
       <router-link to="/">
-        <img src="../../static/img/oryx_logo.png">
-        <h1>{{webName}}</h1>
+        <img src="../../public/static/images/oryx_logo.png">
+        <h1>{{appTitle}}</h1>
       </router-link>
     </div>
     <a-menu key="Menu" mode="inline" :openKeys.sync="openKeys" :theme="siderTheme" :inlineCollapsed="collapsed" @click="onClick">
-      <Menu :menuData="siderMenuData"/>
+      <Menu :menuData="sideMenuData"/>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -15,7 +15,7 @@
     import Menu from '../components/Menu.vue'
 
     export default {
-        name: "SiderMenu",
+        name: "SideMenu",
         components: { Menu },
         props: {
             collapsible: {
@@ -28,7 +28,7 @@
                 required: false,
                 default: false
             },
-            siderMenuData: {
+            sideMenuData: {
                 type: Array,
                 required: true
             },
@@ -37,7 +37,7 @@
                 required: false,
                 default: 'dark'
             },
-            webName: {
+          appTitle: {
                 type: String,
             },
             isMobile: {
@@ -67,7 +67,7 @@
             //   console.log(item)
             // },
             // onSelect(obj) {
-            //   this.$emit('siderMenuSelect', obj)
+            //   this.$emit('sideMenuSelect', obj)
             // }
         },
         watch: {
@@ -99,6 +99,7 @@
     box-shadow: 2px 0 6px rgba(0,21,41,.35);
   }
   .sider{
+    overflow-x: auto;
     z-index: 10;
     &.light{
       background-color: #fff;
@@ -116,6 +117,7 @@
       position: relative;
       line-height: 64px;
       padding-left: 24px;
+      /*padding-left: 50px;*/
       -webkit-transition: all .3s;
       transition: all .3s;
       overflow: hidden;

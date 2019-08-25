@@ -35,7 +35,7 @@ export const fileDeleteAll = ((params = {}) => {
 });
 
 export const downloadUrlFormatter = ((guid) => {
- return process.env.BACKEND_URL + '/api/system/file/download/' + guid + '?access_token=' + getAccessToken()
+ return process.env.VUE_APP_APP.BACKEND_URL + '/api/system/file/download/' + guid + '?access_token=' + getAccessToken()
 });
 
 export const filePageAllImage = ( (params = {}) => {
@@ -47,5 +47,5 @@ export const filePageAllImage = ( (params = {}) => {
 });
 
 export const fileUploadOneUrlFormatter = (() =>  {
-  return process.env.BACKEND_URL + '/api/system/file/upload_one?access_token=' + getAccessToken()
+  return process.env.VUE_APP_APP.BACKEND_URL + '/api/system/file/upload_one?access_token=' + getAccessToken()
 });

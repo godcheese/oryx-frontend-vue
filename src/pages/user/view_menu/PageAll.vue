@@ -4,9 +4,9 @@
       <a-row>
         <a-col :span="12">
           <div class="table-operations">
-            <ViewMenuCategoryAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_CATEGORY_ADD_ONE']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ViewMenuCategoryEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_CATEGORY_EDIT_ONE']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
-            <ViewMenuCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_CATEGORY_DELETE_ALL']" :TableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewMenuCategoryAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_CATEGORY_ADD_ONE']" :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewMenuCategoryEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_CATEGORY_EDIT_ONE']" :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
+            <ViewMenuCategoryDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_CATEGORY_DELETE_ALL']" :tableSelectedRowKeys="viewMenuCategoryTableSelectedRowKeys" @onOk="reloadTable"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图菜单分类'" :rowKey="(record) => record.id" @change="viewMenuCategoryTableOnChange" :columns="viewMenuCategoryTableColumns" size="middle" :pagination="false" :dataSource="viewMenuCategoryTableDataSource" :loading="viewMenuCategoryTableLoading" :customRow="viewMenuCategoryTableCustomRow" :rowSelection="{selectedRowKeys: viewMenuCategoryTableSelectedRowKeys, onChange: viewMenuCategoryTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" :indentSize="5" bordered>
@@ -15,12 +15,12 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <ViewMenuAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_ADD_ONE']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" @onOk="() => {
+            <ViewMenuAddOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_ADD_ONE']" :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" @onOk="() => {
             this.viewMenuTableSelectedRowKeys = []
             this.viewMenuTableDataSource = []
             this.getViewMenuTableDataSource()}"/>
-            <ViewMenuEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_EDIT_ONE']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" @onOk="() => {this.reloadViewMenuTable()}"/>
-            <ViewMenuDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_DELETE_ALL']" :TableSelectedRowKeys="viewMenuTableSelectedRowKeys" @onOk="() => {this.reloadViewMenuTable()}"/>
+            <ViewMenuEditOne v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_EDIT_ONE']" :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" @onOk="() => {this.reloadViewMenuTable()}"/>
+            <ViewMenuDeleteAll v-has-any-authority="['/COMPONENT/USER/VIEW_MENU/VIEW_MENU_DELETE_ALL']" :tableSelectedRowKeys="viewMenuTableSelectedRowKeys" @onOk="() => {this.reloadViewMenuTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => '视图菜单'" :rowKey="(record) => record.id" @change="viewMenuTableOnChange" :columns="viewMenuTableColumns" size="middle" :pagination="viewMenuTablePagination" :dataSource="viewMenuTableDataSource" :loading="viewMenuTableLoading" :customRow="viewMenuTableCustomRow" :rowSelection="{selectedRowKeys: viewMenuTableSelectedRowKeys, onChange: viewMenuTableOnSelectChange}" :scroll="{ x: 1200, y: 0}" :indentSize="5" bordered>
@@ -86,14 +86,7 @@
         ],
         viewMenuCategoryTableSelectedRowKeys: [],
         viewMenuCategoryTableLoading: false,
-        viewMenuCategoryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        viewMenuCategoryTablePagination: this.$store.state.antd.table.pagination,
         viewMenuTableDataSource: [],
         viewMenuTableColumns: [
           {
@@ -134,14 +127,7 @@
         ],
         viewMenuTableSelectedRowKeys: [],
         viewMenuTableLoading: false,
-        viewMenuTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        viewMenuTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
       }
     },
@@ -269,5 +255,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

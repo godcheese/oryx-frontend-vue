@@ -1,9 +1,9 @@
 import request from '../api/index.js'
 import {getAccessToken} from "../common/token.js"
 
-const grantType = process.env.OAUTH2.GRANT_TYPE;
-const clientId = process.env.OAUTH2.CLIENT_ID;
-const clientSecret = process.env.OAUTH2.CLIENT_SECRET;
+const grantType = process.env.VUE_APP_OAUTH2.GRANT_TYPE;
+const clientId = process.env.VUE_APP_OAUTH2.CLIENT_ID;
+const clientSecret = process.env.VUE_APP_OAUTH2.CLIENT_SECRET;
 
 const preUrlPath = '/api/user';
 
@@ -96,12 +96,12 @@ export const userDeleteAll = ((params = {}) => {
 export const userAvatar = (avatar) => {
   if(avatar && (avatar.indexOf('https://') === -1 || avatar.indexOf('http://') === -1)) {
     if(typeof avatar === 'string' && avatar === 'undefined') {
-        avatar = '../../static/img/avatar.png'
+        avatar = '../../static/images/avatar.png'
     } else {
-      avatar = process.env.BACKEND_URL + '/api/system/file/download/' + avatar + '?access_token=' + getAccessToken()
+      avatar = process.env.VUE_APP_APP.BACKEND_URL + '/api/system/file/download/' + avatar + '?access_token=' + getAccessToken()
     }
   } else {
-    avatar = '../../static/img/avatar.png'
+    avatar = '../../static/images/avatar.png'
   }
   return avatar
 };

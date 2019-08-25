@@ -35,6 +35,6 @@
     },
   }
 </script>
-<style type="less">
-  @import "../../static/less/page.less";
+<style type="less" scoped>
+  @import "../assets/styles/page.less";
 </style>

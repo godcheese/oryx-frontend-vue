@@ -3,8 +3,8 @@
     <a-button @click="userRole">角色分配</a-button>
     <a-modal title="角色分配" v-model="visible" :maskClosable="false" wrapClassName="form-modal" :destroyOnClose="true" :width="1200" style="height: 300px">
       <div class="table-operations">
-        <GrantAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE/GRANT_ALL']" :TableSelectedRowKeys="roleTableSelectedRowKeys" :userId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
-        <RevokeAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE/REVOKE_ALL']" :TableSelectedRowKeys="roleTableSelectedRowKeys" :userId="TableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
+        <GrantAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE/GRANT_ALL']" :tableSelectedRowKeys="roleTableSelectedRowKeys" :userId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
+        <RevokeAll v-has-any-authority="['/COMPONENT/USER/USER_ROLE/REVOKE_ALL']" :tableSelectedRowKeys="roleTableSelectedRowKeys" :userId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadRoleTable()}"/>
       </div>
       <a-table :rowKey="(record) => record.id" @change="roleTableOnChange" :columns="roleTableColumns" size="middle" :pagination="roleTablePagination" :dataSource="roleTableDataSource" :loading="roleTableLoading" :customRow="roleTableCustomRow" :rowSelection="{selectedRowKeys: roleTableSelectedRowKeys, onChange: roleTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" bordered>
       </a-table>
@@ -26,7 +26,7 @@
     name: 'PageAll',
     components: {GrantAll, RevokeAll,},
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -67,14 +67,7 @@
         ],
         roleTableSelectedRowKeys: [],
         roleTableLoading: false,
-        roleTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        roleTablePagination: this.$store.state.antd.table.pagination,
         isOrNot: [],
         userId: undefined,
         visible: false,
@@ -92,13 +85,13 @@
     },
     methods: {
       userRole() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.userId = TableSelectedRowKeys[0]
+        this.userId = tableSelectedRowKeys[0]
         this.roleTableDataSource = []
         this.roleTableSelectedRowKeys = []
         this.getRoleTableDataSource()
@@ -135,13 +128,13 @@
         })
       },
       getRoleTableDataSource(params = {}) {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
         this.roleTableLoading = true
         const pagination = {...this.roleTablePagination}
         let page = pagination.current || pagination.defaultCurrent
         let rows = pagination.pageSize || pagination.defaultPageSize
-          params.userId = TableSelectedRowKeys[0]
+          params.userId = tableSelectedRowKeys[0]
           rolePageAllAsAntdTableByUserId({page: page, rows: rows, ...params}).then((data) => {
           this.roleTableLoading = false
           this.roleTableDataSource = data.rows
@@ -162,5 +155,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

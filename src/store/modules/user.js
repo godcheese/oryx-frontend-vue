@@ -1,12 +1,10 @@
 import {getCurrentUser, login} from "../../api/user.js";
 import {getAccessToken, removeAccessToken, setAccessToken} from "../../common/token.js";
-import {viewMenuListAllAsAntdVueMenuByCurrentUser} from "../../api/viewMenu.js";
 
 const user = {
   namespaced: true,
   state: {
     accessToken: getAccessToken(),
-    siderMenu: [],
     currentUser: {
       loggedIn: false,
       username: '',
@@ -14,6 +12,7 @@ const user = {
       avatar: '',
       authority: [],
       department: [],
+      sideMenu: [],
     },
     systemAdminRole: ['SYSTEM_ADMIN'],
     rolePrefix: ['ROLE_']
@@ -22,11 +21,11 @@ const user = {
     SET_ACCESS_TOKEN: (state, accessToken) => {
       state.accessToken = accessToken
     },
-    SET_SIDER_MENU: (state, siderMenu) => {
-      state.siderMenu = siderMenu;
-    },
     SET_LOGGED_IN: (state, loggedIn) => {
       state.currentUser.loggedIn = loggedIn
+    },
+    SET_SIDE_MENU: (state, sideMenu) => {
+      state.currentUser.sideMenu = sideMenu;
     },
     SET_USERNAME: (state, username) => {
       state.currentUser.username = username
@@ -43,7 +42,6 @@ const user = {
     SET_DEPARTMENT: (state, department) => {
       state.currentUser.department = department
     },
-
   },
   actions: {
     login({commit}, user) {
@@ -65,6 +63,7 @@ const user = {
         // logout().then((response) => {
         commit('SET_ACCESS_TOKEN', '');
         commit('SET_LOGGED_IN', false);
+        commit('SET_SIDE_MENU', []);
         commit('SET_AUTHORITY', []);
         commit('SET_DEPARTMENT', []);
         removeAccessToken();
@@ -82,32 +81,34 @@ const user = {
     getCurrentUser({commit}) {
       return new Promise((resolve, reject) => {
         getCurrentUser().then((data) => {
-          commit('SET_USERNAME', data.username)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_EMAIL', data.email)
-          commit('SET_AUTHORITY', data.authority)
-          commit('SET_DEPARTMENT', data.department)
-          commit('SET_LOGGED_IN', true)
+          commit('SET_LOGGED_IN', true);
+          commit('SET_SIDE_MENU', data.sideMenu);
+          commit('SET_USERNAME', data.username);
+          commit('SET_AVATAR', data.avatar);
+          commit('SET_EMAIL', data.email);
+          commit('SET_AUTHORITY', data.authority);
+          commit('SET_DEPARTMENT', data.department);
           resolve(data)
-        }).catch((error) => {
-          console.log(error)
-          reject(error)
+        }).catch((e) => {
+          console.log(e);
+          reject(e)
         })
       })
     },
-    getSiderMenu({ commit }) {
-      return new Promise( (resolve, reject) => {
-        if(getAccessToken()) {
-          viewMenuListAllAsAntdVueMenuByCurrentUser().then((data) => {
-            commit('SET_SIDER_MENU', data)
-            resolve(data)
-          }).catch((error) => {
-            reject(error)
-          })
-        }
-      })
-    },
+    // getSideMenu({ commit }) {
+    //   return new Promise( (resolve, reject) => {
+    //     if(getAccessToken()) {
+    //       viewMenuListAllAsAntdVueMenuByCurrentUser().then((data) => {
+    //         console.log(data)
+    //         commit('SET_SIDER_MENU', data);
+    //         resolve(data)
+    //       }).catch((error) => {
+    //         reject(error)
+    //       })
+    //     }
+    //   })
+    // },
   }
-}
+};
 
 export default user

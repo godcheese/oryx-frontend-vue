@@ -51,7 +51,7 @@
     export default {
     name: 'AddOne',
     props: {
-      TableSelectedRowKeys: {type: Array, required: true}
+      tableSelectedRowKeys: {type: Array, required: true}
     },
     data() {
       return {
@@ -67,9 +67,9 @@
         }).catch((error) => {
           console.log(error)
         })
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-       if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0) {
-         this.viewMenuCategoryGetOneByViewMenuCategoryId(TableSelectedRowKeys[0])
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+       if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0) {
+         this.viewMenuCategoryGetOneByViewMenuCategoryId(tableSelectedRowKeys[0])
        }
         this.visible = true
       },
@@ -103,5 +103,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../static/less/common.less";
+  @import "../../../assets/styles/common.less";
 </style>

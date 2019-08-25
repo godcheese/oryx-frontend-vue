@@ -3,8 +3,8 @@ import {getAccessToken} from '../common/token.js'
 import {basicNotification} from '../common/index.js'
 
 const request = axios.create({
-  baseURL: process.env.BACKEND_URL,
-  timeout: process.env.AXIOS.REQUEST_TIMEOUT,
+  baseURL: process.env.VUE_APP_APP.BACKEND_URL,
+  timeout: process.env.VUE_APP_AXIOS.REQUEST_TIMEOUT,
 });
 
 request.interceptors.request.use( (config) => {
@@ -59,9 +59,9 @@ request.interceptors.request.use( (config) => {
     }
     return config
   },
-  (error) => {
-    console.log(error);
-    Promise.reject(error)
+  (e) => {
+    console.log(e);
+    Promise.reject(e)
   }
 );
 
@@ -90,9 +90,6 @@ request.interceptors.response.use(
           case 'Bad credentials':
             error.message = '登录失败，帐号或密码错误！'
         }
-
-
-
       } else {
         switch (error.response.status) {
           case 400:

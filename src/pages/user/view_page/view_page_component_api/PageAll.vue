@@ -11,8 +11,8 @@
         </a-col>
         <a-col :span="12">
           <div class="table-operations">
-            <AssociateAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API/ASSOCIATE_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" :viewPageComponentId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
-            <RevokeAssociateAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API/REVOKE_ASSOCIATE_ALL']" :tableSelectedRowKeys="apiTableSelectedRowKeys" :viewPageComponentId="tableSelectedRowKeys[0]" @onOk="() => {this.reloadApiTable()}"/>
+            <AssociateAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API/ASSOCIATE_ALL']" :tableSelectedRows="apiTableSelectedRows" @onOk="() => {this.reloadApiTable()}"/>
+            <RevokeAssociateAll v-has-any-authority="['/COMPONENT/USER/VIEW_PAGE/VIEW_PAGE_COMPONENT_API/REVOKE_ASSOCIATE_ALL']" :tableSelectedRows="apiTableSelectedRows" @onOk="() => {this.reloadApiTable()}"/>
           </div>
           <div style="overflow: scroll;height: 300px">
             <a-table :title="() => 'API'" :rowKey="(record) => record.id" @change="apiTableOnChange" :columns="apiTableColumns" size="middle" :pagination="apiTablePagination" :dataSource="apiTableDataSource" :loading="apiTableLoading" :customRow="apiTableCustomRow" :rowSelection="{selectedRowKeys: apiTableSelectedRowKeys, onChange: apiTableOnSelectChange}" :scroll="{ x: 1200, y: 0}" :indentSize="5" bordered>
@@ -76,14 +76,7 @@
         ],
         apiCategoryTableSelectedRowKeys: [],
         apiCategoryTableLoading: false,
-        apiCategoryCategoryTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        apiCategoryCategoryTablePagination: this.$store.state.antd.table.pagination,
         apiTableDataSource: [],
         apiTableColumns: [
           {
@@ -128,15 +121,9 @@
           },
         ],
         apiTableSelectedRowKeys: [],
+        apiTableSelectedRows: [],
         apiTableLoading: false,
-        apiTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        apiTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
         viewPageComponentId: undefined,
       }
@@ -153,17 +140,18 @@
     },
     methods: {
       api() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length !== 1) {
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length !== 1) {
           basicNotification.warning({message: '必须勾选一项'})
           return
         }
         this.visible = true
-        this.viewPageCategoryId = TableSelectedRowKeys[0]
+        this.viewPageCategoryId = tableSelectedRowKeys[0]
         this.apiCategoryTableDataSource = []
         this.apiCategoryTableSelectedRowKeys = []
         this.apiTableDataSource = []
         this.apiTableSelectedRowKeys = []
+        this.apiTableSelectedRows = []
         this.getApiCategoryTableDataSource()
       },
       onCancel() {
@@ -179,6 +167,7 @@
           on: {
             click: () => {
               this.apiTableSelectedRowKeys = []
+              this.apiTableSelectedRows = []
               this.apiTableDataSource = []
               this.apiCategoryTableSelectedRowKeys = []
               this.apiCategoryTableSelectedRowKeys.push(record.id)
@@ -197,10 +186,10 @@
         })
       },
       getApiCategoryTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length > 0 && this.visible) {
+        let tableSelectedRowKeys = this.tableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length > 0 && this.visible) {
           this.apiCategoryTableLoading = true
-          apiCategoryListAllAsAntdTable({viewPageComponentId: TableSelectedRowKeys[0],...params}).then((data) => {
+          apiCategoryListAllAsAntdTable({viewPageComponentId: tableSelectedRowKeys[0],...params}).then((data) => {
             this.apiCategoryTableLoading = false
             this.apiCategoryTableDataSource = data
           }).catch((error) => {
@@ -214,13 +203,16 @@
           on: {
             click: () => {
               this.apiTableSelectedRowKeys = []
+              this.apiTableSelectedRows = []
               this.apiTableSelectedRowKeys.push(record.id)
+              this.apiTableSelectedRows.push(record)
             },
           },
         };
       },
-      apiTableOnSelectChange (selectedRowKeys) {
-        this.apiTableSelectedRowKeys = selectedRowKeys
+      apiTableOnSelectChange (selectedRowKeys, selectedRows) {
+        this.apiTableSelectedRowKeys = selectedRowKeys;
+        this.apiTableSelectedRows = selectedRows;
       },
       apiTableOnChange(pagination, filters, sorter) {
         this.apiTablePagination = pagination;
@@ -233,16 +225,16 @@
         })
       },
       getApiTableDataSource(params = {}) {
-        let TableSelectedRowKeys = this.TableSelectedRowKeys;
+        let tableSelectedRowKeys = this.tableSelectedRowKeys;
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if (apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.apiTableLoading = true
           const pagination = {...this.apiTablePagination}
           let page = pagination.current || pagination.defaultCurrent
           let rows = pagination.pageSize || pagination.defaultPageSize
           apiPageAllAsAntdTableByPageComponentIdAndApiCategoryIdList({
             page: page, rows: rows, ...params,
-            viewPageComponentId: TableSelectedRowKeys[0],
+            viewPageComponentId: tableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys,
           }).then((data) => {
             this.apiTableLoading = false
@@ -260,25 +252,28 @@
         this.apiCategoryTableSelectedRowKeys = []
         this.apiTableDataSource = []
         this.apiTableSelectedRowKeys = []
+        this.apiTableSelectedRows = []
       },
       reloadApiTable() {
         this.apiTableSelectedRowKeys = []
+        this.apiTableSelectedRows = []
         this.apiTableDataSource = []
         this.getApiTableDataSource()
       }
     },
     watch: {
       apiCategoryTableSelectedRowKeys() {
-        const TableSelectedRowKeys = this.TableSelectedRowKeys
+        const tableSelectedRowKeys = this.tableSelectedRowKeys
         let apiCategoryTableSelectedRowKeys = this.apiCategoryTableSelectedRowKeys
-        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        if(apiCategoryTableSelectedRowKeys && apiCategoryTableSelectedRowKeys.length > 0 && tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.getApiTableDataSource({
-            viewPageComponentId: TableSelectedRowKeys[0],
+            viewPageComponentId: tableSelectedRowKeys[0],
             apiCategoryIdList: apiCategoryTableSelectedRowKeys
           })
         } else {
           this.apiTableDataSource = []
           this.apiTableSelectedRowKeys = []
+          this.apiTableSelectedRows = []
         }
       }
     }
@@ -286,5 +281,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../../../static/less/common.less";
+  @import "../../../../assets/styles/common.less";
 </style>

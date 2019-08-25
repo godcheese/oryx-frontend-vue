@@ -3,7 +3,7 @@
     <div class="content">
       <div class="top">
         <div class="header">
-          <img alt="logo" class="logo" src="../../../static/img/oryx_banner.png" />
+          <img alt="logo" class="logo" src="../../../public/static/images/oryx_banner.png" />
           <!--          <span class="title">{{systemName}}</span>-->
         </div>
         <div class="description">
@@ -11,7 +11,6 @@
       </div>
       <div class="login">
         <a-form :form="form" @submit="onSubmit">
-
           <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;">
             <a-tab-pane tab="用户登录" key="1">
               <a-alert type="error" :closable="true" v-show="errorMessage" :message="errorMessage" showIcon style="margin-bottom: 24px;" />
@@ -49,9 +48,6 @@
 </template>
 
 <script>
-  // import GlobalFooter from '../../layouts/GlobalFooter'
-  // import Cookies from 'js-cookie'
-  // import request from '../../api/index.js';
   export default {
     name: 'Login',
     data () {
@@ -65,8 +61,8 @@
       this.form = this.$form.createForm(this);
     },
     computed: {
-      webName () {
-        return process.env.WEB.NAME
+      appTitle () {
+        return process.env.VUE_APP_APP.TITLE
       },
       copyright () {
         return '@2019 Oryx'
@@ -85,19 +81,18 @@
           this.redirect = route.query && route.query.redirect
         },
         immediate: true
-      }
+      },
     },
     methods: {
       onSubmit (e) {
         e.preventDefault();
         this.form.validateFieldsAndScroll((error, values) => {
           if (!error) {
-            this.logging = true
-            this.$store.dispatch('user/login', values).then((data) => {
-              this.$router.push({path: this.redirect || '/'})
-              this.logging = false
-              }).catch((error) => {
-              console.log(error)
+            this.logging = true;
+            this.$store.dispatch('user/login', values).then(() => {
+              this.$router.push({path: this.redirect || '/'});
+              }).catch((e) => {
+              console.log(e);
               this.logging = false
             })
           }
@@ -175,7 +170,6 @@
       }
     }
   }
-
   .footer{
     padding: 0 16px;
     margin: 20px 0 24px;

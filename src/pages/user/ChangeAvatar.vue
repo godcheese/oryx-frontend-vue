@@ -81,16 +81,8 @@
           },
         ],
         fileTableSelectedRowKeys: [],
-        fileTableSelectedRowKeys: [],
         fileTableLoading: false,
-        fileTablePagination: {
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          pageSizeOptions: ['10', '20', '30', '40'],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          showTotal: (total, range) => `当前显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-        },
+        fileTablePagination: this.$store.state.antd.table.pagination,
         visible: false,
       }
     },
@@ -111,8 +103,8 @@
         this.$emit('onCancel', this.visible)
       },
       onOk() {
-        const TableSelectedRowKeys = this.fileTableSelectedRowKeys
-        if(TableSelectedRowKeys && TableSelectedRowKeys.length === 1) {
+        const tableSelectedRowKeys = this.fileTableSelectedRowKeys
+        if(tableSelectedRowKeys && tableSelectedRowKeys.length === 1) {
           this.onCancel()
           // console.log(this.fileTableSelectedRowKeys)
           this.$emit('onOk', this.fileTableSelectedRowKeys[0])
@@ -176,5 +168,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../static/less/common.less";
+  @import "../../assets/styles/common.less";
 </style>

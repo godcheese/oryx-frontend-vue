@@ -27,7 +27,7 @@
 - [后端项目地址](https://github.com/godcheese/oryx)
 - Oryx 开发交流群：[547252502](https://jq.qq.com/?_wv=1027&k=5yxyg73)（QQ 群）
 
-## [在线演示 Online Demo](http://demo.godcheese.com:9090)
+## [在线演示 Online Demo](https://oryx-frontend-vue.netlify.com)
 
 登录用户名密码加QQ群547252502获取。
 

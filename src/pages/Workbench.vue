@@ -1,48 +1,49 @@
 <template>
-   <BasicPage>
-     <div slot="container">
-       <a-row>
-         <a-col :span="24" style="padding-bottom:0">
-            <a-row :gutter="16">
-               <a-col :span="8">
-                 <a-card title="Card title" :bordered=false>
-                   <p>card content</p>
-                 </a-card>
-               </a-col>
-               <a-col :span="8">
-                 <a-card title="Card title" :bordered=false>
-                   <p>card content</p>
-                 </a-card>
-               </a-col>
-               <a-col :span="8">
-                 <a-card title="Card title" :bordered=false>
-                   <p>card content</p>
-                 </a-card>
-               </a-col>
-             </a-row>
-         </a-col>
-         <a-col :span="12" style="padding-bottom:0;padding-right:0">
-           <a-card title="Card Title">
-             <a href="#" slot="extra">more</a>
-             <p>card content</p>
-             <p>card content</p>
-             <p>card content</p>
-           </a-card>
-         </a-col>
-         <a-col :span="12" style="padding-bottom:0">
-           <a-card title="Card Title">
-             <a href="#" slot="extra">more</a>
-             <p>card content</p>
-             <p>card content</p>
-             <p>card content</p>
-           </a-card>
-         </a-col>
-         <a-col :span="24">
-           <mavon-editor v-model="markdownValue" :toolbars="toolbars" :toolbarsFlag="false" @keydown="" :editable="false" :subfield="false" :defaultOpen="'preview'"/>
-         </a-col>
-       </a-row>
-     </div>
-   </BasicPage>
+    <BasicPage>
+        <div slot="container">
+            <a-row>
+                <a-col :span="24" style="padding-bottom:0">
+                    <a-row :gutter="16">
+                        <a-col :span="8">
+                            <a-card title="Card title" :bordered=false>
+                                <p>card content</p>
+                            </a-card>
+                        </a-col>
+                        <a-col :span="8">
+                            <a-card title="Card title" :bordered=false>
+                                <p>card content</p>
+                            </a-card>
+                        </a-col>
+                        <a-col :span="8">
+                            <a-card title="Card title" :bordered=false>
+                                <p>card content</p>
+                            </a-card>
+                        </a-col>
+                    </a-row>
+                </a-col>
+                <a-col :span="12" style="padding-bottom:0;padding-right:0">
+                    <a-card title="Card Title">
+                        <a href="#" slot="extra">more</a>
+                        <p>card content</p>
+                        <p>card content</p>
+                        <p>card content</p>
+                    </a-card>
+                </a-col>
+                <a-col :span="12" style="padding-bottom:0">
+                    <a-card title="Card Title">
+                        <a href="#" slot="extra">more</a>
+                        <p>card content</p>
+                        <p>card content</p>
+                        <p>card content</p>
+                    </a-card>
+                </a-col>
+                <a-col :span="24">
+                    <mavon-editor v-model="markdownValue" :toolbars="toolbars" :toolbarsFlag="false" @keydown=""
+                                  :editable="false" :subfield="false" :defaultOpen="'preview'"/>
+                </a-col>
+            </a-row>
+        </div>
+    </BasicPage>
 </template>
 
 <script type="text/jsx">
@@ -50,11 +51,11 @@
     import BasicPage from "../components/BasicPage"
 
     export default {
-    name: "Workbench",
-    components: {BasicPage},
-    data(){
-      return {
-        markdownValue: `
+        name: "Workbench",
+        components: {BasicPage},
+        data() {
+            return {
+                markdownValue: `
 
 <p align="center">
   <img width="320" src="https://github.com/godcheese/oryx/blob/master/oryx_banner.png?raw=true">
@@ -196,39 +197,40 @@ Modern browsers and Internet Explorer 9+.
 
 
         `,//输入的数据
-        toolbars: {
-          bold: true, // 粗体
-          italic: true, // 斜体
-          header: true, // 标题
-          underline: true, // 下划线
-          mark: true, // 标记
-          superscript: true, // 上角标
-          quote: true, // 引用
-          ol: true, // 有序列表
-          link: true, // 链接
-          imagelink: true, // 图片链接
-          help: true, // 帮助
-          code: true, // code
-          subfield: true, // 是否需要分栏
-          fullscreen: true, // 全屏编辑
-          readmodel: true, // 沉浸式阅读
-          /* 1.3.5 */
-          undo: true, // 上一步
-          trash: true, // 清空
-          save: true, // 保存（触发events中的save事件）
-          /* 1.4.2 */
-          navigation: true // 导航目录
+                toolbars: {
+                    bold: true, // 粗体
+                    italic: true, // 斜体
+                    header: true, // 标题
+                    underline: true, // 下划线
+                    mark: true, // 标记
+                    superscript: true, // 上角标
+                    quote: true, // 引用
+                    ol: true, // 有序列表
+                    link: true, // 链接
+                    imagelink: true, // 图片链接
+                    help: true, // 帮助
+                    code: true, // code
+                    subfield: true, // 是否需要分栏
+                    fullscreen: true, // 全屏编辑
+                    readmodel: true, // 沉浸式阅读
+                    /* 1.3.5 */
+                    undo: true, // 上一步
+                    trash: true, // 清空
+                    save: true, // 保存（触发events中的save事件）
+                    /* 1.4.2 */
+                    navigation: true // 导航目录
+                }
+            }
         }
-      }
     }
-  }
 
 </script>
 
 <style type="less" scoped>
-  .ant-col-24, .ant-col-12 {
-  background-color: #ececec; padding: 20px;
-  }
+    .ant-col-24, .ant-col-12 {
+        background-color: #ececec;
+        padding: 20px;
+    }
 </style>
 
 <!--<template>-->

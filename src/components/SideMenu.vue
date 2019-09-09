@@ -1,22 +1,24 @@
 <template>
-  <a-layout-sider :class="[siderTheme, 'sider', 'fixed-sider', 'shadow']" width="256px" :collapsible="collapsible" v-model="collapsed" :trigger="null">
-    <div :class="['logo', siderTheme]">
-      <router-link to="/">
-        <img src="../../public/static/images/oryx_logo.png">
-        <h1>{{appTitle}}</h1>
-      </router-link>
-    </div>
-    <a-menu key="Menu" mode="inline" :openKeys.sync="openKeys" :theme="siderTheme" :inlineCollapsed="collapsed" @click="onClick">
-      <Menu :menuData="sideMenuData"/>
-    </a-menu>
-  </a-layout-sider>
+    <a-layout-sider :class="[siderTheme, 'sider', 'fixed-sider', 'shadow']" width="256px" :collapsible="collapsible"
+                    v-model="collapsed" :trigger="null">
+        <div :class="['logo', siderTheme]">
+            <router-link to="/">
+                <img src="../../public/static/images/oryx_logo.png">
+                <h1>{{appTitle}}</h1>
+            </router-link>
+        </div>
+        <a-menu key="Menu" mode="inline" :openKeys.sync="openKeys" :theme="siderTheme" :inlineCollapsed="collapsed"
+                @click="onClick">
+            <Menu :menuData="sideMenuData"/>
+        </a-menu>
+    </a-layout-sider>
 </template>
 <script>
     import Menu from '../components/Menu.vue'
 
     export default {
         name: "SideMenu",
-        components: { Menu },
+        components: {Menu},
         props: {
             collapsible: {
                 type: Boolean,
@@ -37,24 +39,23 @@
                 required: false,
                 default: 'dark'
             },
-          appTitle: {
+            appTitle: {
                 type: String,
             },
             isMobile: {
-                type:Boolean
+                type: Boolean
             }
         },
-        data () {
+        data() {
             return {
                 currentPath: [],
                 openKeys: [],
                 selectedKeys: [],
             }
         },
-        computed: {
-        },
+        computed: {},
         methods: {
-            onClick (e) {
+            onClick(e) {
                 // console.log('click ', e)
                 this.currentPath = e.key
             },
@@ -71,7 +72,7 @@
             // }
         },
         watch: {
-            openKeys (val) {
+            openKeys(val) {
                 // console.log('openKeys', val)
             },
             currentPath(val) {
@@ -95,60 +96,79 @@
 </script>
 
 <style lang="less" scoped>
-  .shadow{
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
-  }
-  .sider{
-    overflow-x: auto;
-    z-index: 10;
-    &.light{
-      background-color: #fff;
+    .shadow {
+        box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
     }
-    &.dark{
-      background-color: #001529;
-    }
-    &.fixed-sider{
-      position: fixed;
-      overflow-y: auto;
-      height: 100%;
-    }
-    .logo{
-      height: 64px;
-      position: relative;
-      line-height: 64px;
-      padding-left: 24px;
-      /*padding-left: 50px;*/
-      -webkit-transition: all .3s;
-      transition: all .3s;
-      overflow: hidden;
-      &.light{
-        background-color: #fff;
-        h1{
-          color: #1890ff;
+
+    .sider {
+        overflow-x: auto;
+        z-index: 10;
+
+        &.light {
+            background-color: #fff;
         }
-      }
-      &.dark{
-        background-color: #002140;
-        h1{
-          color: #fff;
+
+        &.dark {
+            background-color: #001529;
         }
-      }
-      h1{
-        color: #fff;
-        font-size: 20px;
-        margin: 0 0 0 12px;
-        font-family: "Myriad Pro","Helvetica Neue",Arial,Helvetica,sans-serif;
-        font-weight: 600;
-        display: inline-block;
-        height: 32px;
-        line-height: 32px;
-        vertical-align: middle;
-      }
-      img{
-        width: 32px;
-        display: inline-block;
-        vertical-align: middle;
-      }
+
+        &.fixed-sider {
+            position: fixed;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .logo {
+            height: 64px;
+            position: relative;
+            line-height: 64px;
+            padding-left: 24px;
+            /*padding-left: 50px;*/
+            -webkit-transition: all .3s;
+            transition: all .3s;
+            overflow: hidden;
+            /*position: fixed; //*/
+            /*z-index: 11; //*/
+            /*width: 249px; //*/
+
+            &.light {
+                background-color: #fff;
+
+                h1 {
+                    color: #1890ff;
+                }
+            }
+
+            &.dark {
+                background-color: #002140;
+
+                h1 {
+                    color: #fff;
+                }
+            }
+
+            h1 {
+                color: #fff;
+                font-size: 20px;
+                margin: 0 0 0 12px;
+                font-family: "Myriad Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+                font-weight: 600;
+                display: inline-block;
+                height: 32px;
+                line-height: 32px;
+                vertical-align: middle;
+            }
+
+            img {
+                width: 32px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
     }
-  }
+
+
+   /*.ant-menu-root {*/
+   /*     padding-top: 70px;*/
+   /* }*/
 </style>

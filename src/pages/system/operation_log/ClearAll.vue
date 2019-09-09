@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <a-button @click="clearAll">清空</a-button>
-  </div>
+    <div>
+        <a-button @click="clearAll">清空</a-button>
+    </div>
 </template>
 
 <script>
@@ -14,7 +14,7 @@
             clearAll() {
                 this.$confirm({
                     title: '确定操作',
-                    content: '确定删除吗？',
+                    content: '确定清空吗？',
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {

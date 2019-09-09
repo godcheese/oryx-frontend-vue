@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../store'
-import {getAccessToken} from "../common/token.js"
+import store from '../store/index.js'
+import {getToken} from "../common/token.js"
 import {basicNotification} from '../common/index.js'
+import axios from "axios";
 
 Vue.use(Router);
 
@@ -103,24 +104,47 @@ router.beforeEach((to, from, next) => {
   } else {
     window.document.title = appTitle
   }
-  if (getAccessToken()) {
+  if (getToken()) {
     if (to.path === '/user/login') {
       next({path: '/'})
     } else {
       if(!store.state.user.currentUser.loggedIn) {
-        store.dispatch('user/getCurrentUser').then(() => {
-          loadMenu(next, to)
-        }).catch((e) => {
-          console.log(e);
-          basicNotification.error({message: '' + e});
+        // 判断是否需要刷新 token
+        if(store.state.jwt.refreshToken) {
+          store.dispatch('jwt/refreshToken').then((data) => {
+            console.log(data);
+            store.dispatch('user/getCurrentUser').then(() => {
+              loadMenu(next, to)
+            }).catch((e) => {
+              console.log(e);
+              // basicNotification.error({message: '' + e});
+              // 此处不建议直接登出重载
+              store.dispatch('user/logout').then(() => {
+                // 为了重新实例化vue-router对象 避免bug
+                window.location.reload()
+              })
+            })
 
-          // 此处不建议直接登出重载
-          // store.dispatch('user/logout').then(() => {
-          //   // 为了重新实例化vue-router对象 避免bug
-          //   location.reload()
-          // })
-        })
+          }).catch((e) => {
+            console.log(e);
+          });
+        } else {
+          store.dispatch('user/getCurrentUser').then(() => {
+            loadMenu(next, to)
+          }).catch((e) => {
+            console.log(e);
+            // basicNotification.error({message: '' + e});
+            // 此处不建议直接登出重载
+            store.dispatch('user/logout').then(() => {
+              // 为了重新实例化vue-router对象 避免bug
+              window.location.reload()
+            })
+          })
+        }
+
       } else {
+
+
         next();
       }
     }
@@ -178,7 +202,7 @@ export const loadMenu = ((next, to) => {
     if(tempRoutes[0].children.length <= 1 ) {
       tempRoutes[0].children = tempRoutes[0].children.concat(menuList);
       tempRoutes[0].children = tempRoutes[0].children.concat(errorRoutes);
-      router.addRoutes(tempRoutes)
+      router.addRoutes(tempRoutes);
     }
     next({...to, replace: true})
   } else {

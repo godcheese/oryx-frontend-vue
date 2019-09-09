@@ -1,16 +1,24 @@
 <template>
-  <BasicPage>
-    <div slot="container">
-      <div class="table-operations">
-        <JobRuntimeLogClearAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB_RUNTIME_LOG/CLEAR_ALL']" @onOk="() => {this.reloadTable()}"/>
-        <a-button v-has-any-authority="['/COMPONENT/QUARTZ/JOB_RUNTIME_LOG/REFRESH']" @click="() => {this.reloadTable()}">刷新</a-button>
-      </div>
-      <div style="overflow: scroll;height: 450px">
-        <a-table :rowKey="(record) => record.id" @change="jobRuntimeLogTableOnChange" :columns="jobRuntimeLogTableColumns" size="middle" :pagination="jobRuntimeLogTablePagination" :dataSource="jobRuntimeLogTableDataSource" :loading="jobRuntimeLogTableLoading" :customRow="jobRuntimeLogTableCustomRow" :rowSelection="{selectedRowKeys: jobRuntimeLogTableSelectedRowKeys, onChange: jobRuntimeLogTableOnSelectChange}" :scroll="{ x: 1000, y: 0}" bordered>
-        </a-table>
-      </div>
-    </div>
-  </BasicPage>
+    <BasicPage>
+        <div slot="container">
+            <div class="table-operations">
+                <JobRuntimeLogClearAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB_RUNTIME_LOG/CLEAR_ALL']"
+                                       @onOk="() => {this.reloadTable()}"/>
+                <a-button v-has-any-authority="['/COMPONENT/QUARTZ/JOB_RUNTIME_LOG/REFRESH']"
+                          @click="() => {this.reloadTable()}">刷新
+                </a-button>
+            </div>
+            <div style="overflow: scroll;height: 450px">
+                <a-table :rowKey="(record) => record.id" @change="jobRuntimeLogTableOnChange"
+                         :columns="jobRuntimeLogTableColumns" size="middle" :pagination="jobRuntimeLogTablePagination"
+                         :dataSource="jobRuntimeLogTableDataSource" :loading="jobRuntimeLogTableLoading"
+                         :customRow="jobRuntimeLogTableCustomRow"
+                         :rowSelection="{selectedRowKeys: jobRuntimeLogTableSelectedRowKeys, onChange: jobRuntimeLogTableOnSelectChange}"
+                         :scroll="{ x: 1000, y: 0}" bordered>
+                </a-table>
+            </div>
+        </div>
+    </BasicPage>
 </template>
 
 <script type="text/jsx">
@@ -51,7 +59,7 @@
                         sorter: true,
                     }, {
                         title: '创建时间',
-                        dataIndex:'gmtCreated',
+                        dataIndex: 'gmtCreated',
                         sorter: true,
                     }
                 ],
@@ -90,7 +98,7 @@
                     },
                 };
             },
-            jobRuntimeLogTableOnSelectChange (selectedRowKeys) {
+            jobRuntimeLogTableOnSelectChange(selectedRowKeys) {
                 this.jobRuntimeLogTableSelectedRowKeys = selectedRowKeys
             },
             jobRuntimeLogTableOnChange(pagination, filters, sorter) {
@@ -130,5 +138,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../assets/styles/common.less";
+    @import "../../../assets/styles/common.less";
 </style>

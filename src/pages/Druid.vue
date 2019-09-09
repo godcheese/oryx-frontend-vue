@@ -1,9 +1,9 @@
 <template>
-  <BasicPage>
-    <div slot="container">
-      <Iframe :src="src"/>
-  </div>
-  </BasicPage>
+    <BasicPage>
+        <div slot="container">
+            <Iframe :src="src"/>
+        </div>
+    </BasicPage>
 </template>
 
 <script>
@@ -11,12 +11,12 @@
     import Iframe from '../components/Iframe.vue'
 
     export default {
-    name: "Druid",
-    components: {BasicPage, Iframe },
-    data() {
-      return {
-        src: process.env.VUE_APP_APP.BACKEND_URL + '/druid/index.html'
-      }
+        name: "Druid",
+        components: {BasicPage, Iframe},
+        data() {
+            return {
+                src: process.env.VUE_APP_APP.BACKEND_URL + '/druid/index.html'
+            }
+        }
     }
-  }
 </script>

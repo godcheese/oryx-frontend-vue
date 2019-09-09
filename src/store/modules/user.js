@@ -1,10 +1,11 @@
 import {getCurrentUser, login} from "../../api/user.js";
-import {getAccessToken, removeAccessToken, setAccessToken} from "../../common/token.js";
+import {getToken, removeToken, setToken} from "../../common/token.js";
+import request from "../../api";
 
 const user = {
   namespaced: true,
   state: {
-    accessToken: getAccessToken(),
+    token: getToken(),
     currentUser: {
       loggedIn: false,
       username: '',
@@ -18,8 +19,8 @@ const user = {
     rolePrefix: ['ROLE_']
   },
   mutations: {
-    SET_ACCESS_TOKEN: (state, accessToken) => {
-      state.accessToken = accessToken
+    SET_TOKEN: (state, token) => {
+      state.token = token
     },
     SET_LOGGED_IN: (state, loggedIn) => {
       state.currentUser.loggedIn = loggedIn
@@ -44,34 +45,15 @@ const user = {
     },
   },
   actions: {
-    login({commit}, user) {
-      let username = user.username;
-      let password = user.password;
-      let rememberMe = user.rememberMe;
-      return new Promise((resolve, reject) => {
-        login(username, password).then((data) => {
-          setAccessToken(data.access_token, rememberMe);
-          commit('SET_ACCESS_TOKEN', data.access_token);
-          resolve(data)
-        }).catch((error) => {
-          reject(error)
-        })
-      })
-    },
     logout({commit}) {
       return new Promise((resolve, reject) => {
         // logout().then((response) => {
-        commit('SET_ACCESS_TOKEN', '');
-        commit('SET_LOGGED_IN', false);
-        commit('SET_SIDE_MENU', []);
-        commit('SET_AUTHORITY', []);
-        commit('SET_DEPARTMENT', []);
-        removeAccessToken();
+        commit('SET_TOKEN', '');
+        removeToken();
         resolve()
         // }).catch((error) => {
         //   reject(error)
-        // })
-      })
+        })
     },
     /**
      * 获取当前用户资料，包括判断当前用户登录
@@ -95,19 +77,9 @@ const user = {
         })
       })
     },
-    // getSideMenu({ commit }) {
-    //   return new Promise( (resolve, reject) => {
-    //     if(getAccessToken()) {
-    //       viewMenuListAllAsAntdVueMenuByCurrentUser().then((data) => {
-    //         console.log(data)
-    //         commit('SET_SIDER_MENU', data);
-    //         resolve(data)
-    //       }).catch((error) => {
-    //         reject(error)
-    //       })
-    //     }
-    //   })
-    // },
+    setLoggedIn({commit}, loggedIn) {
+      commit('SET_LOGGED_IN', loggedIn);
+    }
   }
 };
 

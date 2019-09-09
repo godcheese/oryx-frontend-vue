@@ -1,20 +1,30 @@
 <template>
-  <BasicPage>
-    <div slot="container">
-      <div class="table-operations">
-        <AddOne v-has-any-authority="['/COMPONENT/QUARTZ/JOB/ADD_ONE']" @onOk="reloadTable"/>
-        <EditOne v-has-any-authority="['/COMPONENT/QUARTZ/JOB/EDIT_ONE']" :tableSelectedRows="jobTableSelectedRows" @onOk="reloadTable"/>
-        <DeleteAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB/DELETE_ALL']" :tableSelectedRows="jobTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
-        <PauseAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB/PAUSE_ALL']" :tableSelectedRows="jobTableSelectedRows" @onOk="() => {this.reloadTable()}"/>
-        <ResumeAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB/RESUME_ALL']" :tableSelectedRows="jobTableSelectedRows" @onOk="() => {this.reloadTable()}"/>
-        <a-button v-has-any-authority="['/COMPONENT/QUARTZ/JOB/REFRESH']" @click="() => {this.reloadTable()}">刷新</a-button>
-      </div>
-      <div style="overflow: scroll;height: 450px">
-        <a-table :rowKey="(record) => (record.jobClassName + record.jobGroup)" @change="jobTableOnChange" :columns="jobTableColumns" size="middle" :pagination="jobTablePagination" :dataSource="jobTableDataSource" :loading="jobTableLoading" :customRow="jobTableCustomRow" :rowSelection="{selectedRowKeys: jobTableSelectedRowKeys, onChange: jobTableOnSelectChange}" :scroll="{ x: 1200, y: 0}" bordered>
-        </a-table>
-      </div>
-    </div>
-  </BasicPage>
+    <BasicPage>
+        <div slot="container">
+            <div class="table-operations">
+                <AddOne v-has-any-authority="['/COMPONENT/QUARTZ/JOB/ADD_ONE']" @onOk="reloadTable"/>
+                <EditOne v-has-any-authority="['/COMPONENT/QUARTZ/JOB/EDIT_ONE']"
+                         :tableSelectedRows="jobTableSelectedRows" @onOk="reloadTable"/>
+                <DeleteAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB/DELETE_ALL']"
+                           :tableSelectedRows="jobTableSelectedRowKeys" @onOk="() => {this.reloadTable()}"/>
+                <PauseAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB/PAUSE_ALL']"
+                          :tableSelectedRows="jobTableSelectedRows" @onOk="() => {this.reloadTable()}"/>
+                <ResumeAll v-has-any-authority="['/COMPONENT/QUARTZ/JOB/RESUME_ALL']"
+                           :tableSelectedRows="jobTableSelectedRows" @onOk="() => {this.reloadTable()}"/>
+                <a-button v-has-any-authority="['/COMPONENT/QUARTZ/JOB/REFRESH']" @click="() => {this.reloadTable()}">
+                    刷新
+                </a-button>
+            </div>
+            <div style="overflow: scroll;height: 450px">
+                <a-table :rowKey="(record) => (record.jobClassName + record.jobGroup)" @change="jobTableOnChange"
+                         :columns="jobTableColumns" size="middle" :pagination="jobTablePagination"
+                         :dataSource="jobTableDataSource" :loading="jobTableLoading" :customRow="jobTableCustomRow"
+                         :rowSelection="{selectedRowKeys: jobTableSelectedRowKeys, onChange: jobTableOnSelectChange}"
+                         :scroll="{ x: 1200, y: 0}" bordered>
+                </a-table>
+            </div>
+        </div>
+    </BasicPage>
 </template>
 
 <script>
@@ -22,7 +32,7 @@
     import {jobPageAll} from '../../../api/quartz.js'
 
     import DeleteAll from './DeleteAll.vue'
-    import {dictionaryListAllByKey, dictionaryFormatter} from "../../../api/dictionary.js"
+    import {dictionaryFormatter, dictionaryListAllByKey} from "../../../api/dictionary.js"
     import AddOne from './AddOne.vue'
     import EditOne from './EditOne.vue'
     import PauseAll from './PauseAll.vue'
@@ -55,11 +65,11 @@
                         sorter: true,
                     }, {
                         title: '时区 ID',
-                        dataIndex:'timeZoneId',
+                        dataIndex: 'timeZoneId',
                         sorter: true,
                     }, {
                         title: '描述',
-                        dataIndex:'description',
+                        dataIndex: 'description',
                         sorter: true,
                     }
                 ],
@@ -101,7 +111,7 @@
                     },
                 };
             },
-            jobTableOnSelectChange (selectedRowKeys, selectedRows) {
+            jobTableOnSelectChange(selectedRowKeys, selectedRows) {
                 this.jobTableSelectedRowKeys = selectedRowKeys
                 this.jobTableSelectedRows = selectedRows
             },
@@ -142,6 +152,5 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../../assets/styles/common.less";
-  @import "../../../assets/styles/page.less";
+    @import "../../../assets/styles/common.less";
 </style>

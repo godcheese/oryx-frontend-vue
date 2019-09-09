@@ -1,19 +1,19 @@
 import Cookies from 'js-cookie'
 
-const accessTokenKey = process.env.VUE_APP_ACCESS_TOKEN.KEY;
+const tokenKey = process.env.VUE_APP_TOKEN.KEY;
 
-export const getAccessToken  = (() => {
-  return Cookies.get(accessTokenKey)
+export const getToken = (() => {
+    return Cookies.get(tokenKey);
 });
 
-export const setAccessToken = ((accessToken, rememberMe) => {
-  if(rememberMe) {
-    return Cookies.set(accessTokenKey, accessToken, {expires: process.env.VUE_APP_ACCESS_TOKEN.EXPIRES})
-  } else {
-    return Cookies.set(accessTokenKey, accessToken)
-  }
+export const setToken = ((token, rememberMe) => {
+    if (rememberMe) {
+        return Cookies.set(tokenKey, token, {expires: parseInt(process.env.VUE_APP_TOKEN.EXPIRES)})
+    } else {
+        return Cookies.set(tokenKey, token)
+    }
 });
 
-export const removeAccessToken = (() => {
-  return Cookies.remove(accessTokenKey)
+export const removeToken = (() => {
+    return Cookies.remove(tokenKey)
 });

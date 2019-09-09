@@ -6,7 +6,7 @@
     <img src="https://img.shields.io/github/last-commit/godcheese/oryx-frontend-vue.svg" alt="GitHub Last Commit">
   </a>
   <a href="https://github.com/godcheese/oryx/releases">
-    <img src="https://img.shields.io/github/release/godcheese/ory.svg" alt="GitHub release">
+    <img src="https://img.shields.io/github/release/godcheese/oryx.svg" alt="GitHub release">
   </a>
   <a href="https://travis-ci.org/godcheese/oryx-frontend-vue" rel="nofollow">
     <img src="https://travis-ci.org/godcheese/oryx-frontend-vue.svg?branch=master" alt="Build Status">
@@ -14,13 +14,10 @@
   <a href="https://sonarcloud.io/dashboard?id=godcheese_oryx-frontend-vue" rel="nofollow">
      <img src="https://sonarcloud.io/api/project_badges/measure?project=godcheese_oryx-frontend-vue&metric=alert_status" alt="Quality Gate Status">
    </a>
- <a href="https://www.codacy.com/app/godcheese/oryx-frontend-vue?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=godcheese/oryx-frontend-vue&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/e64226d583a14fd9b9c5fd51fe323a94" alt="Codacy Badge"/></a>
+ <a href="https://www.codacy.com/manual/godcheese/oryx-frontend-vue?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=godcheese/oryx-frontend-vue&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/e74079cb01814d8094bc8ba92ff8da45" alt="Codacy Badge"/></a>
   <a href="https://github.com/godcheese/oryx-frontend-vue/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
-<!--   <a href="https://gitter.im/repo-name/discuss">
-    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
-  </a> -->
 </p>
 
 ## Oryx 前端项目

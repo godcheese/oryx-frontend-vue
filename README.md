@@ -20,7 +20,7 @@
   </a>
 </p>
 
-## Oryx 前端项目
+## Oryx 前端项目 作者QQ：1176394803（可有尝提供技术支持或改代码）
 - [后端项目地址](https://github.com/godcheese/oryx)
 - Oryx 开发交流群：[547252502](https://jq.qq.com/?_wv=1027&k=5yxyg73)（QQ 群）
 
